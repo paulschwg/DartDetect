@@ -2,7 +2,7 @@ package application;
 
 public class DartDemo {
 
-	public static void main() {
+	public static void main(String args[]) {
 		
 		Dartscheibe dartscheibe = new Dartscheibe();
 		int[] score;
