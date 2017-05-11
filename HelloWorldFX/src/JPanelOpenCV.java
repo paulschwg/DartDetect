@@ -18,9 +18,13 @@ public class JPanelOpenCV extends JPanel{
 
         JPanelOpenCV t = new JPanelOpenCV();
         VideoCapture camera = new VideoCapture(0);
+        VideoCapture camera2 = new VideoCapture(1);
 
         Mat frame = new Mat();
         camera.read(frame);
+        
+        Mat frame2 = new Mat();
+        camera2.read(frame2);
 
         if(!camera.isOpened()){
             System.out.println("Error");
@@ -34,7 +38,6 @@ public class JPanelOpenCV extends JPanel{
 
                     t.window(image, "Original Image", 0, 0);
 
-                    t.window(t.grayscale(image), "Processed Image", 40, 60);
 
                     //t.window(t.loadImage("ImageName"), "Image loaded", 0, 0);
 
@@ -92,29 +95,6 @@ public class JPanelOpenCV extends JPanel{
         } catch (Exception e) {
             System.out.println("error");
         }
-    }
-
-    //Grayscale filter
-    public BufferedImage grayscale(BufferedImage img) {
-        for (int i = 0; i < img.getHeight(); i++) {
-            for (int j = 0; j < img.getWidth(); j++) {
-                Color c = new Color(img.getRGB(j, i));
-
-                int red = (int) (c.getRed() * 0.299);
-                int green = (int) (c.getGreen() * 0.587);
-                int blue = (int) (c.getBlue() * 0.114);
-
-                Color newColor =
-                        new Color(
-                                red + green + blue,
-                                red + green + blue,
-                                red + green + blue);
-
-                img.setRGB(j, i, newColor.getRGB());
-            }
-        }
-
-        return img;
     }
 
     public BufferedImage MatToBufferedImage(Mat frame) {
