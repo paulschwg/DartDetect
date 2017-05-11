@@ -15,34 +15,40 @@ public class JPanelOpenCV extends JPanel{
 
     public static void main (String args[]) throws InterruptedException{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
         JPanelOpenCV t = new JPanelOpenCV();
-        VideoCapture camera = new VideoCapture(0);
+        VideoCapture camera1 = new VideoCapture(0);
+        VideoCapture camera2 = new VideoCapture(1);
+        VideoCapture [] cameras = new VideoCapture[2];
+        cameras[0] = camera1;
+        cameras[1] = camera2;
+        t.captureImage(cameras,t);
+    }
+    public void captureImage(VideoCapture [] cameras, JPanelOpenCV t){
+        for(VideoCapture camera: cameras) {
+            Mat frame = new Mat();
+            camera.read(frame);
 
-        Mat frame = new Mat();
-        camera.read(frame);
+            if (!camera.isOpened()) {
+                System.out.println("Error");
+            } else {
+                while (true) {
 
-        if(!camera.isOpened()){
-            System.out.println("Error");
-        }
-        else {
-            while(true){
+                    if (camera.read(frame)) {
 
-                if (camera.read(frame)){
+                        BufferedImage image = t.MatToBufferedImage(frame);
 
-                    BufferedImage image = t.MatToBufferedImage(frame);
+                        t.window(image, "Original Image", 0, 0);
 
-                    t.window(image, "Original Image", 0, 0);
+                        //t.window(t.grayscale(image), "Processed Image", 40, 60);
 
-                    t.window(t.grayscale(image), "Processed Image", 40, 60);
+                        //t.window(t.loadImage("ImageName"), "Image loaded", 0, 0);
 
-                    //t.window(t.loadImage("ImageName"), "Image loaded", 0, 0);
-
-                    break;
+                        break;
+                    }
                 }
             }
+            camera.release();
         }
-        camera.release();
     }
 
     @Override
@@ -59,13 +65,13 @@ public class JPanelOpenCV extends JPanel{
 
     //Show image on window
     public void window(BufferedImage img, String text, int x, int y) {
-        JFrame frame0 = new JFrame();
-        frame0.getContentPane().add(new JPanelOpenCV(img));
-        frame0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame0.setTitle(text);
-        frame0.setSize(img.getWidth(), img.getHeight() + 30);
-        frame0.setLocation(x, y);
-        frame0.setVisible(true);
+            JFrame frame0 = new JFrame();
+            frame0.getContentPane().add(new JPanelOpenCV(img));
+            frame0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame0.setTitle(text);
+            frame0.setSize(img.getWidth(), img.getHeight() + 30);
+            frame0.setLocation(x, y);
+            frame0.setVisible(true);
     }
 
     //Load an image
