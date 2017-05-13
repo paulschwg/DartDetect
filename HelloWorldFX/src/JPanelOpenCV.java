@@ -9,40 +9,62 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
 
+import static org.opencv.videoio.Videoio.CV_CAP_PROP_BACKLIGHT;
+import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
+import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
+
 public class JPanelOpenCV extends JPanel{
 
     BufferedImage image;
 
     public static void main (String args[]) throws InterruptedException{
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-
         JPanelOpenCV t = new JPanelOpenCV();
-        VideoCapture camera = new VideoCapture(0);
 
-        Mat frame = new Mat();
-        camera.read(frame);
+        VideoCapture camera1 = new VideoCapture(0);
+        //Optionen für die Kameraauflösung
+        camera1.set(CV_CAP_PROP_FRAME_WIDTH,4000);
+        camera1.set(CV_CAP_PROP_FRAME_HEIGHT,4000);
 
-        if(!camera.isOpened()){
-            System.out.println("Error");
-        }
-        else {
-            while(true){
+        VideoCapture camera2 = new VideoCapture(1);
+        VideoCapture [] cameras = new VideoCapture[2];
 
-                if (camera.read(frame)){
+        cameras[0] = camera1;
+        cameras[1] = camera2;
 
-                    BufferedImage image = t.MatToBufferedImage(frame);
+        t.captureImage(cameras,t);
+    }
+    //Aufnahme und Ausgabe von Bildern aller im cameras Array abgespeichterter WebCams
+    public void captureImage(VideoCapture [] cameras, JPanelOpenCV t){
+        for(VideoCapture camera: cameras) {
+            Mat frame = new Mat();
+            camera.read(frame);
 
-                    t.window(image, "Original Image", 0, 0);
+            if (!camera.isOpened()) {
+                System.out.println("Error");
+            } else {
+                while (true) {
 
-                    t.window(t.grayscale(image), "Processed Image", 40, 60);
+                    if (camera.read(frame)) {
+                        //Beispiel zum Ausschneiden bestimmter Elemente aus einem Bild (Zuschneiden):
+                        /*Rect roi = new Rect(0, 0, frame.width()/2, frame.height()/2);
+                        Mat cropped = new Mat(frame, roi);
+                        BufferedImage image = t.MatToBufferedImage(cropped);*/
 
-                    //t.window(t.loadImage("ImageName"), "Image loaded", 0, 0);
+                        BufferedImage image = t.MatToBufferedImage(frame);
 
-                    break;
+                        t.window(image, "Original Image", 0, 0);
+
+                        //t.window(t.grayscale(image), "Processed Image", 40, 60);
+
+                        //t.window(t.loadImage("ImageName"), "Image loaded", 0, 0);
+
+                        break;
+                    }
                 }
             }
+            camera.release();
         }
-        camera.release();
     }
 
     @Override
