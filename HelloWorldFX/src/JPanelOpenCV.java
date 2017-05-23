@@ -27,6 +27,8 @@ public class JPanelOpenCV extends JPanel{
         camera1.set(CV_CAP_PROP_FRAME_HEIGHT,4000);
 
         VideoCapture camera2 = new VideoCapture(1);
+        camera2.set(CV_CAP_PROP_FRAME_WIDTH,4000);
+        camera2.set(CV_CAP_PROP_FRAME_HEIGHT,4000);
         VideoCapture [] cameras = new VideoCapture[2];
 
         cameras[0] = camera1;
