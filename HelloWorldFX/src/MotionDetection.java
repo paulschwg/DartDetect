@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -30,6 +32,7 @@ public class MotionDetection {
         MotionDetection motionDetection = new MotionDetection();
         motionDetection.runDual();
     }
+
     public void runDual(){
         //Camera Objects
         //VideoCapture [] videoCaptures = {new VideoCapture(0),new VideoCapture(1)};
@@ -38,17 +41,23 @@ public class MotionDetection {
         VideoCapture [] videoCaptures = {new VideoCapture(0)};
         SettingObject [] settingObjects = {new SettingObject()};
 
-
         while (true) {
             for (int j = 0; j < videoCaptures.length; j++){
+
                 videoCaptures[j].set(CV_CAP_PROP_FRAME_WIDTH,1280);
                 videoCaptures[j].set(CV_CAP_PROP_FRAME_HEIGHT,720);
                 SettingObject s = settingObjects[j];
+
                 if (videoCaptures[j].read(s.frame)) {
                     Imgproc.resize(s.frame, s.frame, s.sz);
                     s.mat = s.frame.clone();
-                    s.outerBox = new Mat(s.frame.size(), CvType.CV_8UC1);
-                    Imgproc.cvtColor(s.frame, s.outerBox, Imgproc.COLOR_BGR2GRAY);
+                    //TODO: Define mat size as cropped
+                    //s.outerBox = new Mat(s.frame.size(), CvType.CV_8UC1);
+                    s.outerBox = new Mat(s.frame,new Rect(s.x,s.y,s.width,s.height));
+                    //displayImage(Mat2bufferedImage(s.outerBox));
+
+
+                    Imgproc.cvtColor(s.outerBox, s.outerBox, Imgproc.COLOR_BGR2GRAY);
                     Imgproc.GaussianBlur(s.outerBox, s.outerBox, new Size(3, 3), 0);
 
                     if (s.i == 0) {
@@ -58,18 +67,21 @@ public class MotionDetection {
                     }
 
                     if (s.i == 1) {
+                        //Subtrahiert outerBox von tempon_frame und speichert differenz in diff_frsme
                         Core.subtract(s.outerBox, s.tempon_frame, s.diff_frame);
                         Imgproc.adaptiveThreshold(s.diff_frame, s.diff_frame, 255,
                                 Imgproc.ADAPTIVE_THRESH_MEAN_C,
                                 Imgproc.THRESH_BINARY_INV, 5, 2);
-                        s.array = detection_contours(s.mat,s.diff_frame);
+                        s.array = detection_contours(s.mat,s.diff_frame,s);
                         if (s.array.size() > 0) {
-                            System.out.println("Motion Detected!");
+                            //System.out.println("Motion Detected!");
 
                             Iterator<Rect> it2 = s.array.iterator();
                             while (it2.hasNext()) {
                                 Rect obj = it2.next();
                                 //Hier werden die umrandenden Rechtecke eingezeichnet
+                                obj.x += s.x;
+                                obj.y += +s.y;
                                 Imgproc.rectangle(s.mat, obj.br(), obj.tl(),
                                         new Scalar(0, 255, 0), 1);
                             }
@@ -90,8 +102,8 @@ public class MotionDetection {
             }
         }
     }
-
-    public static BufferedImage Mat2bufferedImage(Mat image) {
+    //Kovertiert eine Matrix zu einem .jpg Bild
+    public BufferedImage Mat2bufferedImage(Mat image) {
         MatOfByte bytemat = new MatOfByte();
         Imgcodecs.imencode(".jpg", image, bytemat);
         byte[] bytes = bytemat.toArray();
@@ -105,8 +117,23 @@ public class MotionDetection {
         }
         return img;
     }
+    public void displayImage(Image img2)
+    {
+        //BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
+        ImageIcon icon=new ImageIcon(img2);
+        JFrame frame=new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(img2.getWidth(null)+50, img2.getHeight(null)+50);
+        JLabel lbl=new JLabel();
+        lbl.setIcon(icon);
+        frame.add(lbl);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    public ArrayList<Rect> detection_contours(Mat imag, Mat outmat) {
+    }
+
+    //Erkennung der Konturen des Objektes
+    public ArrayList<Rect> detection_contours(Mat imag, Mat outmat, SettingObject s) {
         Mat v = new Mat();
         Mat vv = outmat.clone();
         List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
@@ -127,7 +154,7 @@ public class MotionDetection {
                 r = Imgproc.boundingRect(contours.get(maxAreaIdx));
                 rect_array.add(r);
                 //Hier werden die Konturen vom erkannten Objekt eingezeichnet
-                Imgproc.drawContours(imag, contours, maxAreaIdx, new Scalar(0,255, 255));
+                Imgproc.drawContours(imag, contours, maxAreaIdx, new Scalar(0,255, 255),1,8,v,1,new Point(s.x,s.y));
             }
 
         }
@@ -136,6 +163,7 @@ public class MotionDetection {
 
         return rect_array;
     }
+    //Klasse zur Speicherung der Kamera-Settings
     class SettingObject {
         Mat mat, frame, outerBox, diff_frame, tempon_frame;
         ArrayList<Rect> array;
@@ -143,10 +171,15 @@ public class MotionDetection {
         int i;
         JFrame jFrame;
         JLabel jLabel;
+        int x,y,width,height;
 
         public SettingObject() {
             sz = new Size(1280, 720);
             i = 0;
+            x = 35;
+            y = 200;
+            width = 1190;
+            height = 100;
             initializeFrame();
             initializeMat();
         }
