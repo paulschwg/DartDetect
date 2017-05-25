@@ -23,8 +23,7 @@ public class MotionDetection {
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
-    //TODO: Start parallel Motion Detection of both cameras
-    //TODO: Calculate the Angle to the Pixel (Rect.width()/2)
+    //TODO: Calculate the Angle to a specific Pixel (maybe Rect.width()/2 -> Spitze des Dartpfeiles)
     //TODO: Calculate the crossing point of the two lines
     //TODO: Calculate the pixel value for 1700 x 1700 coordinate system
 
@@ -39,7 +38,7 @@ public class MotionDetection {
         //SettingObject [] settingObjects = {new SettingObject(), new SettingObject()};
 
         VideoCapture [] videoCaptures = {new VideoCapture(0)};
-        SettingObject [] settingObjects = {new SettingObject()};
+        SettingObject [] settingObjects = {new SettingObject(35,200,1190,100)};
 
         while (true) {
             for (int j = 0; j < videoCaptures.length; j++){
@@ -51,11 +50,8 @@ public class MotionDetection {
                 if (videoCaptures[j].read(s.frame)) {
                     Imgproc.resize(s.frame, s.frame, s.sz);
                     s.mat = s.frame.clone();
-                    //TODO: Define mat size as cropped
                     //s.outerBox = new Mat(s.frame.size(), CvType.CV_8UC1);
                     s.outerBox = new Mat(s.frame,new Rect(s.x,s.y,s.width,s.height));
-                    //displayImage(Mat2bufferedImage(s.outerBox));
-
 
                     Imgproc.cvtColor(s.outerBox, s.outerBox, Imgproc.COLOR_BGR2GRAY);
                     Imgproc.GaussianBlur(s.outerBox, s.outerBox, new Size(3, 3), 0);
@@ -117,6 +113,7 @@ public class MotionDetection {
         }
         return img;
     }
+    //Optional: Nur zu Testzwecken zur Ausgabe eines Bildes
     public void displayImage(Image img2)
     {
         //BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
@@ -173,13 +170,13 @@ public class MotionDetection {
         JLabel jLabel;
         int x,y,width,height;
 
-        public SettingObject() {
+        public SettingObject(int x, int y, int width, int height) {
             sz = new Size(1280, 720);
             i = 0;
-            x = 35;
-            y = 200;
-            width = 1190;
-            height = 100;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
             initializeFrame();
             initializeMat();
         }
