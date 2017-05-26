@@ -82,9 +82,9 @@ public class MotionDetection {
                                         new Scalar(0, 255, 0), 1);
                             }
                         }
-                        Imgproc.rectangle(s.mat, new Point(35,200), new Point(1225,300),
+                        Imgproc.rectangle(s.mat, new Point(s.x,s.y), new Point(s.x+s.width,s.y+s.height),
                                 new Scalar(255, 255, 255), 1);
-                        Imgproc.line(s.mat,new Point(630,200), new Point(630,300),
+                        Imgproc.line(s.mat,new Point(s.width/2+s.x,s.y), new Point(s.width/2+s.x,s.y+s.height),
                                 new Scalar(0,255,255));
                     }
 
