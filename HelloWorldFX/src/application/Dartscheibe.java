@@ -1,5 +1,12 @@
 package application;
 
+/*
+ * Koordinaten der Einschlagsstelle: Koordinatensystem von (0,0) bis (3400,3400)
+ * (hoehe, breite)
+ * Mitte des Bulls-Eyes bei (1700,1700)
+ * 10 Einheiten entsprechen 1 Millimeter.
+ */
+
 public class Dartscheibe {
 
 	private final static int RANGE_DOUBLE = 1700;
