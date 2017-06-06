@@ -2,7 +2,7 @@ package application;
 
 /*
  * Koordinaten der Einschlagsstelle: Koordinatensystem von (0,0) bis (3400,3400)
- * (hoehe, breite)
+ * (breite, hoehe)
  * Mitte des Bulls-Eyes bei (1700,1700)
  * 10 Einheiten entsprechen 1 Millimeter.
  */
@@ -18,7 +18,7 @@ public class Dartscheibe {
 	
 	public Dartscheibe () { }
 	
-	public int[] getScore(int hoehe, int breite){
+	public int[] getScore(int breite, int hoehe){
 		/*
 		 * Abstandsberechnung mit Pythagoras
 		 */

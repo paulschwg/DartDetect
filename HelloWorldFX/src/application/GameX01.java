@@ -13,6 +13,7 @@ public class GameX01 extends Game {
 		return player.getScore() == 0;
 	}
 	
+	@Override
 	public void run(){
 		printAll();
 		running = true;
@@ -30,6 +31,7 @@ public class GameX01 extends Game {
 		}
 	}
 	
+	@Override
 	public void playRound(Player player){
 		for (int i = 1; i <= 3; i++){
 			int[] wurfCoord = player.wirfPfeil();
@@ -50,7 +52,6 @@ public class GameX01 extends Game {
 				System.out.println("Überworfen!");
 				return;
 			}
-	
 		}
 	}
 	
