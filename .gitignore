@@ -1,0 +1,5 @@
+.idea/
+**/*.class
+**/*.rej
+**/application.css
+**/*.iml
