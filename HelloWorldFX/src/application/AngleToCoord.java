@@ -1,5 +1,7 @@
 package application;
 
+import java.lang.reflect.Array;
+
 /**
  * Created by JohannesKoppe on 08.06.2017.
  */
@@ -14,8 +16,8 @@ public class AngleToCoord {
     public AngleToCoord(){}
 
     public AngleToCoord(int a1, int a2){
-        this.setAngle1(a1);
-        this.setAngle2(a2);
+        this.setAngle1(30 - a1);
+        this.setAngle2(30 - a2);
     }
 
     public int getAngle1() {
@@ -34,7 +36,50 @@ public class AngleToCoord {
         this.angle2 = angle2;
     }
 
-    public int[] calculateAngle(){
+    public int[] calculateCoord(){
 
+        double m1, m2, n1, n2, x, y;
+        int xf, yf;
+
+        m1 = -1 * cot(degtorad(this.angle1));
+        m2 = Math.tan(degtorad(this.angle2));
+
+        n1 = this.ay+this.ax*cot(degtorad(this.angle1));
+        n2 = this.by-this.bx*Math.tan(degtorad(angle2));
+
+        x = solve(m1,n1,m2,n2);
+
+        y = m1*x+n1;
+
+        xf = (int) Math.round(x);
+        yf = (int) Math.round(y);
+
+        int[] coord = {xf,yf};
+
+        return coord;
+    }
+
+    public double solve(double m1,double n1,double m2,double n2){
+        double x;
+
+        /*
+        ax + b = cx + d;
+        ax + b - d = cx;
+        b-d = cx - ax;
+        b-d = (c-a)x:
+        (b-d)/(c-a) = x
+         */
+
+        x = (n1-n2)/(m2-m1);
+
+        return x;
+    }
+
+    public double cot(double a){
+        return (Math.cos(a)/Math.sin(a));
+    }
+
+    public double degtorad(int deg){
+        return Math.PI*deg/180;
     }
 }

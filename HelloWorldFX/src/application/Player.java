@@ -33,6 +33,7 @@ public class Player {
 		/*
 		 * Hier müssen die Werte von den Kameras übergeben werden.
 		 */
-		return new int[] {1451,1109};
+		AngleToCoord atc = new AngleToCoord(20,20);
+		return atc.calculateCoord();
 	}
 }
