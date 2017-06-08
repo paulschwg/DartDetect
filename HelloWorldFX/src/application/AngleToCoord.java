@@ -15,6 +15,14 @@ public class AngleToCoord {
 
     public AngleToCoord(){}
 
+    /**
+     * Konstruktor
+     *
+     * erhält als Parameter 2 Winkel
+     *
+     * @param a1 Winkel untere Kamera
+     * @param a2 Winkel rechte Kamera
+     */
     public AngleToCoord(int a1, int a2){
         this.setAngle1(30 - a1);
         this.setAngle2(30 - a2);
