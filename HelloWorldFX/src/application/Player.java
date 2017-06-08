@@ -33,6 +33,6 @@ public class Player {
 		/*
 		 * Hier müssen die Werte von den Kameras übergeben werden.
 		 */
-		return new int[] {2250,3250};
+		return new int[] {1451,1109};
 	}
 }
