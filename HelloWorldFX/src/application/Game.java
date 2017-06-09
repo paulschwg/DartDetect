@@ -37,4 +37,17 @@ public abstract class Game {
 	public boolean running(){
 		return running;
 	}
+	
+	/** 
+	 * Diese Methode wartet nach dem Aufruf auf einen Pfeil und bekommt die von den Kameras erkannten Winkel übergeben.
+	 * @return Score-Array [Multiplikator, Zahlenwert]
+	 */
+	public int[] getPfeil(){
+		/*
+		 * Hier müssen die Werte von den Kameras (Winkel) übergeben werden.
+		 */
+		AngleToCoord atc = new AngleToCoord(20,20);
+		int wurfCoord[] = atc.calculateCoord();
+		return dartscheibe.getScore(wurfCoord[0], wurfCoord[1]);
+	}
 }
