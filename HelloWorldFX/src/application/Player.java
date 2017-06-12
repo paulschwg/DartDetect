@@ -29,6 +29,7 @@ public class Player {
 		return name;
 	}
 	
+<<<<<<< HEAD
 	public int[] wirfPfeil(){
 		/*
 		 * Hier müssen die Werte von den Kameras übergeben werden.
@@ -36,4 +37,6 @@ public class Player {
 		AngleToCoord atc = new AngleToCoord(0, 27.5);
 		return atc.calculateCoord();
 	}
+=======
+>>>>>>> ae97477439b2eff1e7c0b6e3b080f480010aab42
 }
