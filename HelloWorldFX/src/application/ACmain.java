@@ -5,7 +5,7 @@ package application;
  */
 public class ACmain {
     public static void main(String[] args) {
-        AngleToCoord atc = new AngleToCoord(20,20);
+        AngleToCoord atc = new AngleToCoord(30,20);
         int[] coord = atc.calculateCoord();
         System.out.println(coord[0]);
         System.out.println(coord[1]);
