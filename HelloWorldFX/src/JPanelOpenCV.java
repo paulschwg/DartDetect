@@ -1,4 +1,6 @@
 import org.opencv.core.*;
+import org.opencv.core.Point;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
 import javax.imageio.ImageIO;
@@ -52,6 +54,23 @@ public class JPanelOpenCV extends JPanel{
                         /*Rect roi = new Rect(0, 0, frame.width()/2, frame.height()/2);
                         Mat cropped = new Mat(frame, roi);
                         BufferedImage image = t.MatToBufferedImage(cropped);*/
+                        Mat gray = new Mat();
+                        Imgproc.cvtColor(frame, gray, Imgproc.COLOR_BGR2GRAY);
+                        Imgproc.blur(gray, gray, new Size(3, 3));
+
+                        // detect the edges
+                        Mat edges = new Mat();
+                        int lowThreshold = 50;
+                        int ratio = 3;
+                        Imgproc.Canny(gray, edges, lowThreshold, lowThreshold * ratio);
+
+                        Mat lines = new Mat();
+                        Imgproc.HoughLinesP(edges, lines, 1, Math.PI / 180, 50, 50, 30);
+
+                        for(int i = 0; i < lines.cols(); i++) {
+                            double[] val = lines.get(0, i);
+                            Imgproc.line(frame, new Point(val[0], val[1]), new Point(val[2], val[3]), new Scalar(0, 0, 255), 2);
+                        }
 
                         BufferedImage image = t.MatToBufferedImage(frame);
 
@@ -90,6 +109,22 @@ public class JPanelOpenCV extends JPanel{
         frame0.setSize(img.getWidth(), img.getHeight() + 30);
         frame0.setLocation(x, y);
         frame0.setVisible(true);
+    }
+    public BufferedImage MatToBufferedImage(Mat frame) {
+        //Mat() to BufferedImage
+        int type = 0;
+        if (frame.channels() == 1) {
+            type = BufferedImage.TYPE_BYTE_GRAY;
+        } else if (frame.channels() == 3) {
+            type = BufferedImage.TYPE_3BYTE_BGR;
+        }
+        BufferedImage image = new BufferedImage(frame.width(), frame.height(), type);
+        WritableRaster raster = image.getRaster();
+        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+        byte[] data = dataBuffer.getData();
+        frame.get(0, 0, data);
+
+        return image;
     }
 
     //Load an image
@@ -139,23 +174,6 @@ public class JPanelOpenCV extends JPanel{
         }
 
         return img;
-    }
-
-    public BufferedImage MatToBufferedImage(Mat frame) {
-        //Mat() to BufferedImage
-        int type = 0;
-        if (frame.channels() == 1) {
-            type = BufferedImage.TYPE_BYTE_GRAY;
-        } else if (frame.channels() == 3) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
-        }
-        BufferedImage image = new BufferedImage(frame.width(), frame.height(), type);
-        WritableRaster raster = image.getRaster();
-        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-        byte[] data = dataBuffer.getData();
-        frame.get(0, 0, data);
-
-        return image;
     }
 
 }

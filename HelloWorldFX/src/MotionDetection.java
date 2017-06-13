@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,9 +38,11 @@ public class MotionDetection {
         //Camera Objects
         //VideoCapture [] videoCaptures = {new VideoCapture(0),new VideoCapture(1)};
         //SettingObject [] settingObjects = {new SettingObject(), new SettingObject()};
+        Mat temp = new Mat();
+        boolean last_throw_motion = false;
 
         VideoCapture [] videoCaptures = {new VideoCapture(0)};
-        SettingObject [] settingObjects = {new SettingObject(35,200,1190,100)};
+        SettingObject [] settingObjects = {new SettingObject(5,170,1265,100)};
 
         while (true) {
             for (int j = 0; j < videoCaptures.length; j++){
@@ -60,6 +64,7 @@ public class MotionDetection {
                         s.jFrame.setSize(s.frame.width(), s.frame.height());
                         s.tempon_frame = new Mat(s.outerBox.size(), CvType.CV_8UC1);
                         s.diff_frame = s.outerBox.clone();
+                        temp = s.outerBox.clone();
                     }
 
                     if (s.i == 1) {
@@ -68,11 +73,12 @@ public class MotionDetection {
                         Imgproc.adaptiveThreshold(s.diff_frame, s.diff_frame, 255,
                                 Imgproc.ADAPTIVE_THRESH_MEAN_C,
                                 Imgproc.THRESH_BINARY_INV, 5, 2);
-                        s.array = detection_contours(s.mat,s.diff_frame,s);
+                        s.array = detection_contours(s.mat,s.diff_frame,s,false);
                         if (s.array.size() > 0) {
-                            //System.out.println("Motion Detected!");
+                            last_throw_motion = true;
+                            System.out.println("Motion Detected!");
 
-                            Iterator<Rect> it2 = s.array.iterator();
+                            /*Iterator<Rect> it2 = s.array.iterator();
                             while (it2.hasNext()) {
                                 Rect obj = it2.next();
                                 //Hier werden die umrandenden Rechtecke eingezeichnet
@@ -80,7 +86,35 @@ public class MotionDetection {
                                 obj.y += +s.y;
                                 Imgproc.rectangle(s.mat, obj.br(), obj.tl(),
                                         new Scalar(0, 255, 0), 1);
+                            }*/
+                        }
+                        else{ if(last_throw_motion){
+                            System.out.println("Motion subtraction detected!");
+                            Core.subtract(s.outerBox, temp, s.diff_frame);
+                            window(MatToBufferedImage(temp.clone()),"Testi",0,0);
+                            window(MatToBufferedImage(new Mat(s.frame,new Rect(s.x,s.y,s.width,s.height))),"TestB",0,0);
+                            Imgproc.adaptiveThreshold(s.diff_frame, s.diff_frame, 255,
+                                    Imgproc.ADAPTIVE_THRESH_MEAN_C,
+                                    Imgproc.THRESH_BINARY_INV, 5, 2);
+                            window(MatToBufferedImage(s.diff_frame),"Testi2",0,0);
+                            s.array = detection_contours(s.mat,s.diff_frame,s,true);
+                            if (s.array.size() > 0) {
+                                last_throw_motion = true;
+                                System.out.println("Motion sub Detected!");
+
+                                Iterator<Rect> it2 = s.array.iterator();
+                                while (it2.hasNext()) {
+                                    Rect obj = it2.next();
+                                    //Hier werden die umrandenden Rechtecke eingezeichnet
+                                    obj.x += s.x;
+                                    obj.y += +s.y;
+                                    Imgproc.rectangle(s.mat, obj.br(), obj.tl(),
+                                            new Scalar(0, 255, 0), 1);
+                                }
                             }
+                            temp = s.outerBox.clone();
+                            last_throw_motion = false;
+                        }
                         }
                         Imgproc.rectangle(s.mat, new Point(s.x,s.y), new Point(s.x+s.width,s.y+s.height),
                                 new Scalar(255, 255, 255), 1);
@@ -130,14 +164,14 @@ public class MotionDetection {
     }
 
     //Erkennung der Konturen des Objektes
-    public ArrayList<Rect> detection_contours(Mat imag, Mat outmat, SettingObject s) {
+    public ArrayList<Rect> detection_contours(Mat imag, Mat outmat, SettingObject s, boolean draw) {
         Mat v = new Mat();
         Mat vv = outmat.clone();
         List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
         Imgproc.findContours(vv, contours, v, Imgproc.RETR_LIST,
                 Imgproc.CHAIN_APPROX_SIMPLE);
 
-        double maxArea = 100;
+        double maxArea = 150;
         int maxAreaIdx = -1;
         Rect r = null;
         ArrayList<Rect> rect_array = new ArrayList<Rect>();
@@ -146,12 +180,49 @@ public class MotionDetection {
             Mat contour = contours.get(idx);
             double contourarea = Imgproc.contourArea(contour);
             if (contourarea > maxArea) {
+
+                    /*for(int i = 0; i < contour.rows(); i++){
+                        for(int e = 0; e < contour.row(i).cols(); e++){
+                            double[] values = contour.get(i,e);
+                            System.out.println("Y: "+ i + " X: "+ e + " Erster Wert: " + values[0] + " Zweiter Wert: "+ values[1]);
+                        }
+                    }*/
+
+
                 // maxArea = contourarea;
                 maxAreaIdx = idx;
                 r = Imgproc.boundingRect(contours.get(maxAreaIdx));
+                /*
+                //TODO houghlines with r
+
+                Mat gray = new Mat(imag.clone(),r);
+                //window(MatToBufferedImage(gray),"Hallo",0,0);
+                Imgproc.cvtColor(gray, gray, Imgproc.COLOR_BGR2GRAY);
+                Imgproc.blur(gray, gray, new Size(3, 3));
+                //window(MatToBufferedImage(gray),"Hallo",0,0);
+
+                // detect the edges
+                Mat edges = new Mat();
+                int lowThreshold = 100;
+                int ratio = 3;
+                Imgproc.Canny(gray, edges, lowThreshold, lowThreshold * ratio);
+
+                Mat lines = new Mat();
+                Imgproc.HoughLinesP(gray, lines, 1, Math.PI / 180, 100, 20, 30);
+
+                for(int i = 0; i < lines.cols(); i++) {
+                    double[] val = lines.get(0, i);
+                    if(val!=null) {
+                        Imgproc.line(imag, new Point(val[0], val[1]), new Point(val[2], val[3]), new Scalar(0, 255, 0), 2);
+                    }
+                }*/
+
                 rect_array.add(r);
                 //Hier werden die Konturen vom erkannten Objekt eingezeichnet
-                Imgproc.drawContours(imag, contours, maxAreaIdx, new Scalar(0,255, 255),1,8,v,1,new Point(s.x,s.y));
+                if(draw) {
+                    //Imgproc.drawContours(imag, contours, maxAreaIdx, new Scalar(0, 255, 255), 1, 8, v, 1, new Point(s.x, s.y));
+                    //window(MatToBufferedImage(imag),"Test",0,0);
+                }
             }
 
         }
@@ -194,5 +265,30 @@ public class MotionDetection {
             jFrame.setSize(1280, 720);
             jFrame.setVisible(true);
         }
+    }
+    public void window(BufferedImage img, String text, int x, int y) {
+        JFrame frame0 = new JFrame();
+        frame0.getContentPane().add(new JPanelOpenCV(img));
+        frame0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame0.setTitle(text);
+        frame0.setSize(img.getWidth(), img.getHeight() + 30);
+        frame0.setLocation(x, y);
+        frame0.setVisible(true);
+    }
+    public BufferedImage MatToBufferedImage(Mat frame) {
+        //Mat() to BufferedImage
+        int type = 0;
+        if (frame.channels() == 1) {
+            type = BufferedImage.TYPE_BYTE_GRAY;
+        } else if (frame.channels() == 3) {
+            type = BufferedImage.TYPE_3BYTE_BGR;
+        }
+        BufferedImage image = new BufferedImage(frame.width(), frame.height(), type);
+        WritableRaster raster = image.getRaster();
+        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+        byte[] data = dataBuffer.getData();
+        frame.get(0, 0, data);
+
+        return image;
     }
 }
