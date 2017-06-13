@@ -20,6 +20,14 @@ public class Dartscheibe {
 	
 	public Dartscheibe () { }
 	
+		/**
+	    * Berechnet getroffenes Feld aus den Pfeil-Koordinaten
+	    * 
+	    * @param breite X-Koordinate der Pfeilposition
+	    * @param hoehe Y-Koordinate der Pfeilposition
+	    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
+	    */
+	
 	public int[] getScore(int breite, int hoehe){
 		/*
 		 * Abstandsberechnung mit Pythagoras

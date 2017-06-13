@@ -9,10 +9,6 @@ public class GameX01 extends Game {
 		
 	}
 	
-	public boolean checkIfFinished(Player player){
-		return player.getScore() == 0;
-	}
-	
 	@Override
 	public void run(){
 		printAll();
@@ -29,6 +25,10 @@ public class GameX01 extends Game {
 		for (Player player: players){
 			if (player.getScore() == 0) System.out.println(player.getName() + " hat gewonnen!");
 		}
+	}
+	
+	public boolean checkIfFinished(Player player){
+		return player.getScore() == 0;
 	}
 	
 	@Override

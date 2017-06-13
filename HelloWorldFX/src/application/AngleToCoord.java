@@ -11,11 +11,20 @@ public class AngleToCoord {
     private final static int AY = -3420;
     private final static int BX = 7920;
     private final static int BY = 2250;
+    
     private double angle1, angle2;
     private int vzb1, vzb2;
 
     public AngleToCoord() { }
    
+    /**
+    * Berechnet Koordinaten aus 2 Winkeln
+    * 
+    * @param a1 Winkel untere Kamera
+    * @param a2 Winkel rechte Kamera
+    * @return int[] mit x & y Koordinaten
+    */
+    
     public int[] calculateCoord(double a1, double a2){
     	setMemberVariables(a1, a2);
 
@@ -44,7 +53,7 @@ public class AngleToCoord {
             x = solve(m1, n1, m2, n2);
             y = m1*x+n1;
         }
-        else{
+        else {
             x = 2250;
             y = m2*x+n2;
         }
@@ -70,11 +79,13 @@ public class AngleToCoord {
         double x;
 
         /*
-        ax + b = cx + d;
-        ax + b - d = cx;
-        b-d = cx - ax;
-        b-d = (c-a)x:
-        (b-d)/(c-a) = x
+	        Herleitung der Berechnungsformel:
+	        
+	        ax + b = cx + d;
+	        ax + b - d = cx;
+	        b-d = cx - ax;
+	        b-d = (c-a)x:
+	        (b-d)/(c-a) = x
          */
 
         x = (n1-n2)/(m2-m1);
