@@ -28,12 +28,4 @@ public class Player {
 	public String getName(){
 		return name;
 	}
-	
-	public int[] wirfPfeil(){
-		/*
-		 * Hier müssen die Werte von den Kameras übergeben werden.
-		 */
-		AngleToCoord atc = new AngleToCoord(30, 30);
-		return atc.calculateCoord();
-	}
 }

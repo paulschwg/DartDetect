@@ -6,6 +6,7 @@ public abstract class Game {
 	protected boolean running;
 	protected int goal = -1;
 	protected Dartscheibe dartscheibe = new Dartscheibe();
+	protected AngleToCoord atc = new AngleToCoord();
 	
 	public Game(int playerCount){
 		this.playerCount = playerCount;
@@ -36,5 +37,13 @@ public abstract class Game {
 	
 	public boolean running(){
 		return running;
+	}
+	
+	public int[] getDart(){
+		/*
+		 * Hier müssen die Werte von den Kameras übergeben werden.
+		 */
+		int wurfCoord[] = atc.calculateCoord(20,20);
+		return dartscheibe.getScore(wurfCoord[0], wurfCoord[1]);
 	}
 }
