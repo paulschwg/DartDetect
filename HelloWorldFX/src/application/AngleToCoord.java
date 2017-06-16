@@ -8,8 +8,8 @@ import java.lang.reflect.Array;
 public class AngleToCoord {
 
     private final static int AX = 2250;
-    private final static int AY = -3420;
-    private final static int BX = 7920;
+    private final static int AY = -3270;
+    private final static int BX = 7730;
     private final static int BY = 2250;
     
     private double angle1, angle2;
@@ -64,13 +64,13 @@ public class AngleToCoord {
     }
     
     public void setMemberVariables(double a1, double a2){
-    	angle1 = Math.abs(30 - a1);
-    	angle2 = Math.abs(30 - a2);
+    	angle1 = Math.abs(23.93 - a1);
+    	angle2 = Math.abs(23.93 - a2);
     	
-    	if(a1 > 30) vzb1 = 1;
+    	if(a1 > 23.93) vzb1 = 1;
         else vzb1 = -1;
     	
-    	if(a2 > 30) vzb2 = -1;
+    	if(a2 > 23.93) vzb2 = -1;
         else vzb2 = 1;
     }
 

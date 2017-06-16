@@ -12,11 +12,11 @@ public class Dartscheibe {
 
 	private final static int POS_MIDDLE = 2250;
 	private final static int RANGE_DOUBLE = 1700;
-	private final static int RANGE_OUTER_SINGLE = 1620;
-	private final static int RANGE_TRIPLE = 1070;
-	private final static int RANGE_INNER_SINGLE = 990;
-	private	final static int RANGE_BULL = 318;
-	private	final static int RANGE_DOUBLE_BULL = 127;
+	private final static int RANGE_OUTER_SINGLE = 1600;
+	private final static int RANGE_TRIPLE = 1080;
+	private final static int RANGE_INNER_SINGLE = 970;
+	private	final static int RANGE_BULL = 180;
+	private	final static int RANGE_DOUBLE_BULL = 80;
 	
 	public Dartscheibe () { }
 	
@@ -31,7 +31,7 @@ public class Dartscheibe {
 		/*
 		 * Abstandsberechnung mit Pythagoras
 		 */
-		double distance = Math.sqrt( Math.pow(Math.abs(hoehe-POS_MIDDLE),2) + Math.pow(Math.abs(breite-POS_MIDDLE),2) );
+		double distance = Math.sqrt( Math.pow(Math.abs(hoehe-POS_MIDDLE),2) + Math.pow(Math.abs(breite-POS_MIDDLE),2))* 1.05;
 		
 		/*
 		 * Winkelberechnung: arctan(Gegenkathete/Ankathete)
@@ -42,7 +42,7 @@ public class Dartscheibe {
 		 * Norden (20) = 0°
 		 * Osten (6)   = 90°
 		 * Süden (3)   = 180°
-		 * Westen (11) = 270° 
+		 * Westen (11) = 270°
 		 */
 		double angle = 0;
 		int xAbs = Math.abs(POS_MIDDLE - breite);
@@ -60,7 +60,7 @@ public class Dartscheibe {
 		else if (breite < POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben links => Winkel von der Gerade nach links + 270
 			angle = Math.atan(1.0*yAbs/xAbs)*180/Math.PI + 270;
 		}
-		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau über der Mitte => Winkel = 0 
+		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau ï¿½ber der Mitte => Winkel = 0 
 			angle = 0;
 		}
 		else if (hoehe == POS_MIDDLE && breite > POS_MIDDLE){ //Genau rechts von der Mitte => Winkel = 90
