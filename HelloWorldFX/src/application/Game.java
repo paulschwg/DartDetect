@@ -40,15 +40,16 @@ public abstract class Game {
 	}
 	
 		/**
-	    * Wartet auf einen geworfenen Pfeil und übernimmt die von den Kameras ausgelesenen Winkel.
+	    * Wartet auf einen geworfenen Pfeil und ï¿½bernimmt die von den Kameras ausgelesenen Winkel.
 	    * Mithilfe der AngleToCoord- und Dartscheibe-Klassen wird dann der Punktwert berechnet.
 	    * 
 	    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
 	    */
 	public int[] getDart(){
 		/*
-		 * Hier müssen die Werte von den Kameras übergeben werden.
+		 * Hier mï¿½ssen die Werte von den Kameras ï¿½bergeben werden.
 		 */
+		//TODO: Winelergebnisse -> getOrientation
 		int dartCoord[] = atc.calculateCoord(20,20);
 		return dartscheibe.getScore(dartCoord[0], dartCoord[1]);
 	}

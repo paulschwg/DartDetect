@@ -1,6 +1,5 @@
 import application.AngleToCoord;
 import application.Dartscheibe;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
+import static org.opencv.imgproc.Imgproc.MORPH_CLOSE;
 import static org.opencv.imgproc.Imgproc.MORPH_ELLIPSE;
 import static org.opencv.imgproc.Imgproc.MORPH_OPEN;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
@@ -25,13 +25,14 @@ import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
 public class TestMOG2 {
 
-    public static final double ANGEL_PER_PIXEL = 60.0/1280.0;
+    public static final double ANGEL_PER_PIXEL = 47.86/1280.0;
     public static final double CENTER = 640.0;
     private Point mPointCameraBottom = null;
     private Point mPointCameraRight = null;
     AngleToCoord mAngleToCoord = new AngleToCoord();
     Dartscheibe mDartscheibe = new Dartscheibe();
     private int dartCount;
+    boolean abfrage = true;
 
 
     public static void main(String[] args) {
@@ -43,13 +44,13 @@ public class TestMOG2 {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         VideoCapture[] videoCaptures = {new VideoCapture(0),new VideoCapture(1)};
-        SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460),
-                new SettingObject(5, 235, 1265, 200,0, 490)};
+        SettingObject[] settingObjects = {new SettingObject(0, 190, 1280, 100,1, 315,324),
+                new SettingObject(0, 355, 1280, 100,0, 500,500)};
         /*VideoCapture[] videoCaptures = {new VideoCapture(0)};
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
 
-        while (true) {
+        while (abfrage) {
 
             for (int j = 0; j < videoCaptures.length; j++) {
                 videoCaptures[j].set(CV_CAP_PROP_FRAME_WIDTH, 1280);
@@ -59,11 +60,11 @@ public class TestMOG2 {
                 if (videoCaptures[j].read(s.frame)) {
                     s.outerBox = new Mat(s.frame, new Rect(s.x, s.y, s.width, s.height));
                     s.backgroundSubtractorMOG2.apply(s.outerBox, s.fgMaskMOG2, s.learningRate);
-                    Imgproc.morphologyEx(s.fgMaskMOG2, s.fgMaskMOG2, MORPH_OPEN, s.kernel);
+                    Imgproc.morphologyEx(s.fgMaskMOG2, s.fgMaskMOG2, MORPH_CLOSE, s.kernel);
                     if (s.i == 1) {
                         ArrayList<Rect> rectArrayList = detectContours(s.frame, s.fgMaskMOG2, s);
                         if (rectArrayList.size() > 0) {
-                            s.detectedDartAtLastFrame = true;
+                            //s.detectedDartAtLastFrame = true;
                             for (Rect rect : rectArrayList) {
                                 //Hier werden die umrandenden Rechtecke eingezeichnet
                                 rect.x += s.x;
@@ -71,10 +72,10 @@ public class TestMOG2 {
                                 Imgproc.rectangle(s.frame, rect.br(), rect.tl(),
                                         new Scalar(0, 255, 0), 2);
                             }
-                        } else {
-                            s.detectedDartAtLastFrame = false;
-                            s.learningRate = -1.0;
-                        }
+                        } //else {
+                            //s.detectedDartAtLastFrame = false;
+                          //  s.learningRate = -1.0;
+                        //}
                     }else {
                         s.i++;
                     }
@@ -83,16 +84,22 @@ public class TestMOG2 {
                     Imgproc.line(s.frame, new Point(s.width / 2 + s.x, s.y), new Point(s.width / 2 + s.x, s.y + s.height),
                             new Scalar(0, 255, 255));
 
-                    Imgproc.line(s.frame, new Point(0, s.yLine), new Point(1280, s.yLine), new Scalar(0, 0, 255), 5);
+                    Imgproc.line(s.frame, new Point(0, s.yLineL), new Point(1280, s.yLineR), new Scalar(0, 0, 255), 2);
                     ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.frame));
                     s.jLabel.setIcon(image);
                     s.jLabel.repaint();
                 }
             }
         }
+        for (int j = 0; j < videoCaptures.length; j++) {
+            SettingObject s = settingObjects[j];
+            ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.frame));
+            s.jLabel.setIcon(image);
+            s.jLabel.repaint();
+        }
     }
 
-    private void calculateAngel(Point point, int id){
+    private void calculateAngle(Point point, int id){
         if(id==0){
             mPointCameraBottom = point;
         }else{
@@ -105,6 +112,7 @@ public class TestMOG2 {
             int [] dartValues = mDartscheibe.getScore(coords[0],coords[1]);
             System.out.println("Treffer: "+dartValues[0]*dartValues[1]);
             System.out.println();
+            //abfrage=false;
             mPointCameraRight = null;
             mPointCameraBottom = null;
         }
@@ -118,8 +126,8 @@ public class TestMOG2 {
         Imgproc.findContours(vv, contours, v, Imgproc.RETR_LIST,
                 Imgproc.CHAIN_APPROX_SIMPLE);
 
-        double minArea = 2300.0;
-        double maxArea = 6000.0;
+        double minArea = 500.0;
+        double maxArea = 9000.0;
         int maxAreaIdx;
         Rect r;
         ArrayList<Rect> rect_array = new ArrayList<>();
@@ -129,7 +137,7 @@ public class TestMOG2 {
             double contourarea = Imgproc.contourArea(contour);
 
             if (minArea < contourarea && contourarea < maxArea) {
-                s.learningRate = 0.95;
+                //s.learningRate = 0.95;
                 // maxArea = contourarea;
                 //System.out.println(contourarea);
                 maxAreaIdx = idx;
@@ -137,15 +145,30 @@ public class TestMOG2 {
                 rect_array.add(r);
                 //Hier werden die Konturen vom erkannten Objekt eingezeichnet
                 Imgproc.drawContours(src, contours, maxAreaIdx, new Scalar(0, 255, 0), 3, 8, v, 1, new Point(s.x, s.y));
-                if (!s.detectedDartAtLastFrame) {
+                getOrientation(contours.get(idx),src,s);
+                /*if (contourarea < s.lastFrameArea && s.lastFrameArea != 0.0) {
                     System.out.println("DartPfeil erkannt.");
                     /*dartCount++;
                     if(dartCount==6) {
                         abfrage = false;
-                    }*/
+                    }
+                    //
                     getOrientation(contours.get(idx),src,s);
+                    s.lastFrameArea = 0.0;
+                    s.learningRate = -1.0 ;
                 }
-            }
+                else{
+                    s.lastFrameArea = contourarea;
+                    s.lastFrameContour = contours.get(idx);
+                }*/
+            }/*
+            else{
+                if(s.lastFrameArea != 0.0 && contourarea < s.lastFrameArea){
+                    getOrientation(s.lastFrameContour,src,s);
+                    s.lastFrameArea = 0.0;
+                    s.lastFrameContour = null;
+                }
+            }*/
         }
         v.release();
 
@@ -154,6 +177,7 @@ public class TestMOG2 {
 
     //Bestimmung der Orientierung eines erkannten Objektes
     private double getOrientation(MatOfPoint pts_, Mat img, SettingObject s){
+        //window(convertMatToBufferedImage(s.frame),"Hallo",1280,720);
         //Construct a buffer used by the pca analysis
         Point[] pts = pts_.toArray();
         int sz = pts.length;
@@ -216,8 +240,8 @@ public class TestMOG2 {
         q1.y += s.y;
         Imgproc.line(img, p, q1, colour, 5, Core.LINE_AA,0);
 
-        Point intersection = intersection(p,q1,new Point(0,s.yLine), new Point(1280,s.yLine),img);
-        calculateAngel(intersection,s.id);
+        Point intersection = intersection(p,q1,new Point(0,s.yLineL), new Point(1280,s.yLineR),img);
+        calculateAngle(intersection,s.id);
     }
 
     //p1 und p2 sind Punkte vom Dartpfeil
@@ -230,7 +254,7 @@ public class TestMOG2 {
 
         double x = (np1-no2) / (mo2-mp1);
         double y = no2;
-        Imgproc.circle(img,new Point(x,y),20,new Scalar(255,0,0),10);
+        Imgproc.circle(img,new Point(x,y),20,new Scalar(0,0,255),2);
         return new Point(x,y);
     }
 
@@ -255,12 +279,14 @@ public class TestMOG2 {
         Mat frame, outerBox, fgMaskMOG2, kernel;
         JFrame jFrame;
         JLabel jLabel;
-        int x,y,width,height, id, yLine, i, dartCount;
+        int x,y,width,height, id, yLineL, yLineR, i, dartCount;
         double learningRate;
         boolean detectedDartAtLastFrame;
+        double lastFrameArea;
+        MatOfPoint lastFrameContour;
         BackgroundSubtractorMOG2 backgroundSubtractorMOG2;
 
-        SettingObject(int x, int y, int width, int height, int id, int yLine) {
+        SettingObject(int x, int y, int width, int height, int id, int yLineL, int yLineR) {
             this.x = x;
             this.y = y;
             this.width = width;
@@ -269,7 +295,8 @@ public class TestMOG2 {
             this.i = 0;
             this.learningRate = -1;
             this.dartCount = 0;
-            this.yLine = yLine;
+            this.yLineL = yLineL;
+            this.yLineR = yLineR;
             this.detectedDartAtLastFrame = false;
             this.backgroundSubtractorMOG2 = Video.createBackgroundSubtractorMOG2();
             initializeFrame();
@@ -285,9 +312,17 @@ public class TestMOG2 {
             jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             jLabel = new JLabel();
             jFrame.setContentPane(jLabel);
-            jFrame.setSize(1280, 720);
+            jFrame.setSize(1320, 800);
             jFrame.setVisible(true);
         }
     }
-
+    public void window(BufferedImage img, String text, int x, int y) {
+        JFrame frame0 = new JFrame();
+        frame0.getContentPane().add(new JPanelOpenCV(img));
+        frame0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame0.setTitle(text);
+        frame0.setSize(img.getWidth(), img.getHeight() + 30);
+        frame0.setLocation(x, y);
+        frame0.setVisible(true);
+    }
 }
