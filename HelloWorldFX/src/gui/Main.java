@@ -20,36 +20,26 @@ public class Main extends Application {
 	GridPane optionsGPane;
 	Scene sceneMain, sceneOptions;
 	Stage stOptions;
-	
-	
 	@Override
 	public void start(Stage primaryStage)
 	{
 		try
 		{
+			primaryStage.setMaximized(true);
 			// load the FXML resource
 			loaderMain = new FXMLLoader(getClass().getResource("GUIMainPage.fxml"));
-			loaderOptions = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
 			// store the root element so that the controllers can use it
 			rootBPane = (BorderPane) loaderMain.load();
-			optionsGPane = (GridPane) loaderOptions.load();
 			// create and style a scene
-			stOptions = new Stage();
-			sceneMain = new Scene(rootBPane, 800, 600);
-			sceneOptions = new Scene(optionsGPane,600,400);
+			sceneMain = new Scene(rootBPane);
 			sceneMain.getStylesheets().add(getClass().getResource("guiscenebuilder.css").toExternalForm());
 			// create the stage with the given title and the previously created
 			// scene
-			primaryStage.setTitle("JavaFX meets OpenCV");
+			primaryStage.setTitle("DartDetect");
 			primaryStage.setScene(sceneMain);
-			stOptions.setTitle("Optionen");
-			stOptions.setScene(sceneOptions);
+			primaryStage.setResizable(false);
 			// show the GUI
 			primaryStage.show();
-			
-			// set the proper behavior on closing the application
-
-			GUIController controller = loaderMain.getController();
 			
 		}
 		catch (Exception e)

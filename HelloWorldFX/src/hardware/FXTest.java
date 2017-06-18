@@ -1,3 +1,4 @@
+package hardware;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -205,4 +206,5 @@ public class FXTest implements MouseListener, KeyListener{
     public void keyReleased(KeyEvent e) {
 
     }
+    
 }
