@@ -2,7 +2,7 @@ package application;
 
 /*
  * Koordinaten der Einschlagsstelle: Koordinatensystem von (0,0) bis (4500,4500)
- * Fläche für Punkte begrenzt bei 550 und 3950 => 34cm Durchmesser der Punktefläche
+ * Fläche für Score begrenzt bei 550 und 3950 => 34cm Durchmesser der Punktefläche
  * (breite, hoehe)
  * Mitte des Bulls-Eyes bei (2250,2250)
  * 10 Einheiten entsprechen 1 Millimeter.
@@ -12,27 +12,26 @@ public class Dartscheibe {
 
 	private final static int POS_MIDDLE = 2250;
 	private final static int RANGE_DOUBLE = 1700;
-	private final static int RANGE_OUTER_SINGLE = 1620;
-	private final static int RANGE_TRIPLE = 1070;
-	private final static int RANGE_INNER_SINGLE = 990;
-	private	final static int RANGE_BULL = 318;
-	private	final static int RANGE_DOUBLE_BULL = 127;
+	private final static int RANGE_OUTER_SINGLE = 1600;
+	private final static int RANGE_TRIPLE = 1080;
+	private final static int RANGE_INNER_SINGLE = 970;
+	private	final static int RANGE_BULL = 180;
+	private	final static int RANGE_DOUBLE_BULL = 80;
 	
 	public Dartscheibe () { }
 	
-		/**
-	    * Berechnet getroffenes Feld aus den Pfeil-Koordinaten
-	    * 
-	    * @param breite X-Koordinate der Pfeilposition
-	    * @param hoehe Y-Koordinate der Pfeilposition
-	    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
-	    */
-	
+	/**
+    * Berechnet getroffenes Feld aus den Pfeil-Koordinaten
+    * 
+    * @param breite X-Koordinate der Pfeilposition
+    * @param hoehe Y-Koordinate der Pfeilposition
+    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
+    */	
 	public int[] getScore(int breite, int hoehe){
 		/*
 		 * Abstandsberechnung mit Pythagoras
 		 */
-		double distance = Math.sqrt( Math.pow(Math.abs(hoehe-POS_MIDDLE),2) + Math.pow(Math.abs(breite-POS_MIDDLE),2) );
+		double distance = Math.sqrt( Math.pow(Math.abs(hoehe-POS_MIDDLE),2) + Math.pow(Math.abs(breite-POS_MIDDLE),2))* 1.05;
 		
 		/*
 		 * Winkelberechnung: arctan(Gegenkathete/Ankathete)
@@ -43,23 +42,25 @@ public class Dartscheibe {
 		 * Norden (20) = 0°
 		 * Osten (6)   = 90°
 		 * Süden (3)   = 180°
-		 * Westen (11) = 270° 
+		 * Westen (11) = 270°
 		 */
 		double angle = 0;
+		int xAbs = Math.abs(POS_MIDDLE - breite);
+		int yAbs = Math.abs(POS_MIDDLE - hoehe);
 		
 		if (breite > POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben rechts => Winkel von der Gerade nach oben + 0
-			angle = Math.atan((1.0*breite-POS_MIDDLE)/(1.0*hoehe-POS_MIDDLE))*180/Math.PI;
+			angle = Math.atan(1.0*xAbs/yAbs)*180/Math.PI;
 		}
 		else if (breite > POS_MIDDLE && hoehe < POS_MIDDLE) { //Unten rechts => Winkel von der Gerade nach rechts + 90
-			angle = Math.atan((1.0*POS_MIDDLE-hoehe)/(1.0*breite-POS_MIDDLE))*180/Math.PI + 90;
+			angle = Math.atan(1.0*yAbs/xAbs)*180/Math.PI + 90;
 		}
 		else if (breite < POS_MIDDLE && hoehe < POS_MIDDLE) { //Unten rechts => Winkel von der Gerade nach unten + 180
-			angle = Math.atan((1.0*POS_MIDDLE-breite)/(1.0*POS_MIDDLE-hoehe))*180/Math.PI + 180;
+			angle = Math.atan(1.0*xAbs/yAbs)*180/Math.PI + 180;
 		}
 		else if (breite < POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben links => Winkel von der Gerade nach links + 270
-			angle = Math.atan((1.0*hoehe-POS_MIDDLE)/(1.0*POS_MIDDLE-breite))*180/Math.PI + 270;
+			angle = Math.atan(1.0*yAbs/xAbs)*180/Math.PI + 270;
 		}
-		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau über der Mitte => Winkel = 0 
+		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau ï¿½ber der Mitte => Winkel = 0 
 			angle = 0;
 		}
 		else if (hoehe == POS_MIDDLE && breite > POS_MIDDLE){ //Genau rechts von der Mitte => Winkel = 90
@@ -72,7 +73,6 @@ public class Dartscheibe {
 			angle = 270;
 		}
 		
-		System.out.println("Abstand von der Mitte: " + distance/10 + " Millimeter, Winkel: " + angle);
 		int[] score = new int[] {0,0};
 		
 		/*
