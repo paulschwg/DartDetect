@@ -41,7 +41,7 @@ public class TestMOG2 {
         testMOG2.run();
     }
 
-    private void run() {
+    public void run() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         VideoCapture[] videoCaptures = {new VideoCapture(0),new VideoCapture(1)};

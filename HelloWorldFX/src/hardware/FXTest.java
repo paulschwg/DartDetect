@@ -83,7 +83,6 @@ public class FXTest implements MouseListener, KeyListener{
     private void initJFrame(){
         frame = new Mat();
         jFrame = new JFrame("HUMAN MOTION DETECTOR FPS");
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setResizable(false);
     }
 

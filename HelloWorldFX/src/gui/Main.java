@@ -13,8 +13,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import java.awt.*;
 
 public class Main extends Application {
+	GUIController test = new GUIController();
 	FXMLLoader loaderMain, loaderOptions;
 	BorderPane rootBPane;
 	GridPane optionsGPane;
@@ -25,7 +27,8 @@ public class Main extends Application {
 	{
 		try
 		{
-			primaryStage.setMaximized(true);
+			primaryStage.setHeight(Toolkit.getDefaultToolkit().getScreenSize().height-60);
+			primaryStage.setWidth(Toolkit.getDefaultToolkit().getScreenSize().width-20);
 			// load the FXML resource
 			loaderMain = new FXMLLoader(getClass().getResource("GUIMainPage.fxml"));
 			// store the root element so that the controllers can use it
@@ -38,9 +41,10 @@ public class Main extends Application {
 			primaryStage.setTitle("DartDetect");
 			primaryStage.setScene(sceneMain);
 			primaryStage.setResizable(false);
+			test.setLblP1T1("Hallo");
 			// show the GUI
 			primaryStage.show();
-			
+
 		}
 		catch (Exception e)
 		{
@@ -49,7 +53,9 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		
 		launch(args);
+		
 	}
 	
 
