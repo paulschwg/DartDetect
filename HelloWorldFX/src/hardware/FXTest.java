@@ -228,8 +228,6 @@ public class FXTest implements MouseListener, KeyListener{
             abfrage = false;
             jCheckBoxRC.setSelected(false);
             videoCapture = new VideoCapture(getKameraID(String.valueOf(jComboBoxBC.getSelectedItem()))-1);
-            videoCapture.set(CV_CAP_PROP_FRAME_WIDTH,1280);
-            videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT,720);
             initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
             changeTextFieldValues();
             abfrage = true;
@@ -241,8 +239,6 @@ public class FXTest implements MouseListener, KeyListener{
             abfrage = false;
             jCheckBoxBC.setSelected(false);
             videoCapture = new VideoCapture(getKameraID(String.valueOf(jComboBoxRC.getSelectedItem()))-1);
-            videoCapture.set(CV_CAP_PROP_FRAME_WIDTH,1280);
-            videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT,720);
             initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
             changeTextFieldValues();
             abfrage = true;
@@ -276,6 +272,7 @@ public class FXTest implements MouseListener, KeyListener{
             if(jCheckBoxBC.isSelected()){
                 JSONObject jsonObjectBC = new JSONObject();
                 jsonObjectBC.put("yLineL", mLineYLeft);
+                mLineYLeft = (int) jsonObjectBC.get("yLineL");
                 jsonObjectBC.put("yLineR",mLineYRight);
                 jsonObjectBC.put("yRect",mRectY);
                 jsonObjectBC.put("yRectHeight",mRectHeight);
