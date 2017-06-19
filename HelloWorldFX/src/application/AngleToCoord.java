@@ -24,7 +24,6 @@ public class AngleToCoord {
     * @param a2 Winkel rechte Kamera
     * @return int[] mit x & y Koordinaten
     */
-    
     public int[] calculateCoord(double a1, double a2){
     	setMemberVariables(a1, a2);
 

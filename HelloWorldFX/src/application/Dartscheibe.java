@@ -2,7 +2,7 @@ package application;
 
 /*
  * Koordinaten der Einschlagsstelle: Koordinatensystem von (0,0) bis (4500,4500)
- * Flï¿½che fï¿½r Punkte begrenzt bei 550 und 3950 => 34cm Durchmesser der Punkteflï¿½che
+ * Fläche für Score begrenzt bei 550 und 3950 => 34cm Durchmesser der Punktefläche
  * (breite, hoehe)
  * Mitte des Bulls-Eyes bei (2250,2250)
  * 10 Einheiten entsprechen 1 Millimeter.
@@ -20,14 +20,13 @@ public class Dartscheibe {
 	
 	public Dartscheibe () { }
 	
-		/**
-	    * Berechnet getroffenes Feld aus den Pfeil-Koordinaten
-	    * 
-	    * @param breite X-Koordinate der Pfeilposition
-	    * @param hoehe Y-Koordinate der Pfeilposition
-	    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
-	    */
-	
+	/**
+    * Berechnet getroffenes Feld aus den Pfeil-Koordinaten
+    * 
+    * @param breite X-Koordinate der Pfeilposition
+    * @param hoehe Y-Koordinate der Pfeilposition
+    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
+    */	
 	public int[] getScore(int breite, int hoehe){
 		/*
 		 * Abstandsberechnung mit Pythagoras
@@ -36,28 +35,30 @@ public class Dartscheibe {
 		
 		/*
 		 * Winkelberechnung: arctan(Gegenkathete/Ankathete)
-		 * Gesucht ist jeweils der Winkel, der an die nï¿½chste Gerade gegen den Uhrzeigersinn anliegt.
-		 * Math.atan liefert Winkel im Bogenmaï¿½, deswegen Umrechnung in Gradmaï¿½.
+		 * Gesucht ist jeweils der Winkel, der an die nächste Gerade gegen den Uhrzeigersinn anliegt.
+		 * Math.atan liefert Winkel im Bogenmaß, deswegen Umrechnung in Gradmaß.
 		 * 
 		 * Ergebnisse:
-		 * Norden (20) = 0ï¿½
-		 * Osten (6)   = 90ï¿½
-		 * Sï¿½den (3)   = 180ï¿½
-		 * Westen (11) = 270ï¿½ 
+		 * Norden (20) = 0°
+		 * Osten (6)   = 90°
+		 * Süden (3)   = 180°
+		 * Westen (11) = 270°
 		 */
 		double angle = 0;
+		int xAbs = Math.abs(POS_MIDDLE - breite);
+		int yAbs = Math.abs(POS_MIDDLE - hoehe);
 		
 		if (breite > POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben rechts => Winkel von der Gerade nach oben + 0
-			angle = Math.atan((1.0*breite-POS_MIDDLE)/(1.0*hoehe-POS_MIDDLE))*180/Math.PI;
+			angle = Math.atan(1.0*xAbs/yAbs)*180/Math.PI;
 		}
 		else if (breite > POS_MIDDLE && hoehe < POS_MIDDLE) { //Unten rechts => Winkel von der Gerade nach rechts + 90
-			angle = Math.atan((1.0*POS_MIDDLE-hoehe)/(1.0*breite-POS_MIDDLE))*180/Math.PI + 90;
+			angle = Math.atan(1.0*yAbs/xAbs)*180/Math.PI + 90;
 		}
 		else if (breite < POS_MIDDLE && hoehe < POS_MIDDLE) { //Unten rechts => Winkel von der Gerade nach unten + 180
-			angle = Math.atan((1.0*POS_MIDDLE-breite)/(1.0*POS_MIDDLE-hoehe))*180/Math.PI + 180;
+			angle = Math.atan(1.0*xAbs/yAbs)*180/Math.PI + 180;
 		}
 		else if (breite < POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben links => Winkel von der Gerade nach links + 270
-			angle = Math.atan((1.0*hoehe-POS_MIDDLE)/(1.0*POS_MIDDLE-breite))*180/Math.PI + 270;
+			angle = Math.atan(1.0*yAbs/xAbs)*180/Math.PI + 270;
 		}
 		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau ï¿½ber der Mitte => Winkel = 0 
 			angle = 0;
@@ -72,12 +73,11 @@ public class Dartscheibe {
 			angle = 270;
 		}
 		
-		System.out.println("Abstand von der Mitte: " + distance/10 + " Millimeter, Winkel: " + angle);
 		int[] score = new int[] {0,0};
 		
 		/*
 		 * Je nach Abstand von der Mitte werden die Score-Variablen gesetzt.
-		 * Trifft der Pfeil auï¿½erhalb vom Bullseye aber innerhalb der Wertungszone, wird zusï¿½tzlich der Zahlenwert anhand des Winkels berechnet.
+		 * Trifft der Pfeil außerhalb vom Bullseye aber innerhalb der Wertungszone, wird zusätzlich der Zahlenwert anhand des Winkels berechnet.
 		 */
 		if (distance < RANGE_DOUBLE_BULL) {
 			score[0] = 2;

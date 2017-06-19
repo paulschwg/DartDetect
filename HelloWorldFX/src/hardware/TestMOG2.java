@@ -1,3 +1,4 @@
+package hardware;
 import application.AngleToCoord;
 import application.Dartscheibe;
 import application.JSONAccess;
