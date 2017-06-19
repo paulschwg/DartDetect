@@ -1,6 +1,8 @@
 package hardware;
 import application.AngleToCoord;
 import application.Dartscheibe;
+import application.JSONAccess;
+import org.json.simple.JSONObject;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -47,6 +49,9 @@ public class TestMOG2 {
         VideoCapture[] videoCaptures = {new VideoCapture(0),new VideoCapture(1)};
         SettingObject[] settingObjects = {new SettingObject(0, 190, 1280, 100,1, 315,324),
                 new SettingObject(0, 355, 1280, 100,0, 500,500)};
+        JSONObject jsonObject = JSONAccess.getJSON();
+        settingObjects[1].initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
+        settingObjects[0].initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
         /*VideoCapture[] videoCaptures = {new VideoCapture(0)};
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
@@ -219,13 +224,13 @@ public class TestMOG2 {
         Point p1 = new Point(cntr.x+0.02*p1_.x,cntr.y+0.02*p1_.y);
 
         Point cntr1 = cntr.clone();
-        drawAxis(img, cntr1, p1, new Scalar(0, 255, 0), 1,s);
+        drawAxis(img, cntr1, p1, 1,s);
 
         return Math.atan2(eigen_vecs[0].y, eigen_vecs[0].x);
     }
 
 
-    private void drawAxis(Mat img, Point p, Point q, Scalar colour, double scale, SettingObject s){
+    private void drawAxis(Mat img, Point p, Point q, double scale, SettingObject s){
         double angle;
         double hypotenuse;
         angle = Math.atan2(p.y - q.y, p.x - q.x ); // angle in radians
@@ -239,7 +244,6 @@ public class TestMOG2 {
         p.y += s.y;
         q1.x += s.x;
         q1.y += s.y;
-        Imgproc.line(img, p, q1, colour, 5, Core.LINE_AA,0);
 
         Point intersection = intersection(p,q1,new Point(0,s.yLineL), new Point(1280,s.yLineR),img);
         calculateAngle(intersection,s.id);
@@ -248,11 +252,11 @@ public class TestMOG2 {
     //p1 und p2 sind Punkte vom Dartpfeil
     private Point intersection(Point p1, Point p2, Point o1, Point o2, Mat img){
         double mp1 = (p2.y-p1.y)/(p2.x-p1.x);
-        double mo2 = 0;
+        double mo2 = (o2.y-o1.y)/(o2.x-o1.x);
 
         double np1 = p2.y - mp1*p2.x;
-        double no2 = o2.y;
-
+        double no2 = o2.y - mo2*o2.x;
+        //TODO edit mit Johannes absprechen
         double x = (np1-no2) / (mo2-mp1);
         double y = no2;
         Imgproc.circle(img,new Point(x,y),20,new Scalar(0,0,255),2);
@@ -315,6 +319,12 @@ public class TestMOG2 {
             jFrame.setContentPane(jLabel);
             jFrame.setSize(1320, 800);
             jFrame.setVisible(true);
+        }
+        void initializeJSONValues(JSONObject jsonObject){
+            this.yLineL = (int) jsonObject.get("yLineL");
+            this.yLineR = (int) jsonObject.get("yLineR");
+            this.y = (int) jsonObject.get("yRect");
+            this.height = (int) jsonObject.get("yRectHeight");
         }
     }
     public void window(BufferedImage img, String text, int x, int y) {
