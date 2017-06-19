@@ -284,7 +284,7 @@ public class TestMOG2 {
         Mat frame, outerBox, fgMaskMOG2, kernel;
         JFrame jFrame;
         JLabel jLabel;
-        int x,y,width,height, id, yLineL, yLineR, i, dartCount;
+        int x,y,width,height, id, yLineL, yLineR, i, dartCount, cameraID;
         double learningRate;
         boolean detectedDartAtLastFrame;
         double lastFrameArea;
@@ -325,6 +325,7 @@ public class TestMOG2 {
             this.yLineR = (int) jsonObject.get("yLineR");
             this.y = (int) jsonObject.get("yRect");
             this.height = (int) jsonObject.get("yRectHeight");
+            this.cameraID = (int) jsonObject.get("KameraID");
         }
     }
     public void window(BufferedImage img, String text, int x, int y) {

@@ -41,7 +41,6 @@ public class Main extends Application {
 			primaryStage.setTitle("DartDetect");
 			primaryStage.setScene(sceneMain);
 			primaryStage.setResizable(false);
-			test.setLblP1T1("Hallo");
 			// show the GUI
 			primaryStage.show();
 

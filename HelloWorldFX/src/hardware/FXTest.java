@@ -159,7 +159,8 @@ public class FXTest implements MouseListener, KeyListener{
 
     private void initJFrame(){
         frame = new Mat();
-        jFrame = new JFrame("HUMAN MOTION DETECTOR FPS");
+        jFrame = new JFrame("Kalibrierunsmaske");
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setResizable(false);
     }
 
@@ -181,10 +182,12 @@ public class FXTest implements MouseListener, KeyListener{
     }
 
     private void initializeJSONValues(JSONObject jsonObject){
-        mLineYLeft = (int) (long) jsonObject.get("yLineL");
-        mLineYRight = (int) (long) jsonObject.get("yLineR");
-        mRectY = (int) (long) jsonObject.get("yRect");
-        mRectHeight = (int) (long) jsonObject.get("yRectHeight");
+        mLineYLeft = (int) jsonObject.get("yLineL");
+        mLineYRight = (int) jsonObject.get("yLineR");
+        mRectY = (int) jsonObject.get("yRect");
+        mRectHeight = (int) jsonObject.get("yRectHeight");
+        //TODO geht später jComboBoxBC.setSelectedIndex((int) jsonObject.get("KameraID")+1);
+
     }
 
     private void changeTextFieldValues(){
@@ -225,8 +228,6 @@ public class FXTest implements MouseListener, KeyListener{
             abfrage = false;
             jCheckBoxRC.setSelected(false);
             videoCapture = new VideoCapture(getKameraID(String.valueOf(jComboBoxBC.getSelectedItem()))-1);
-            videoCapture.set(CV_CAP_PROP_FRAME_WIDTH,1280);
-            videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT,720);
             initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
             changeTextFieldValues();
             abfrage = true;
@@ -238,8 +239,6 @@ public class FXTest implements MouseListener, KeyListener{
             abfrage = false;
             jCheckBoxBC.setSelected(false);
             videoCapture = new VideoCapture(getKameraID(String.valueOf(jComboBoxRC.getSelectedItem()))-1);
-            videoCapture.set(CV_CAP_PROP_FRAME_WIDTH,1280);
-            videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT,720);
             initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
             changeTextFieldValues();
             abfrage = true;
@@ -273,9 +272,11 @@ public class FXTest implements MouseListener, KeyListener{
             if(jCheckBoxBC.isSelected()){
                 JSONObject jsonObjectBC = new JSONObject();
                 jsonObjectBC.put("yLineL", mLineYLeft);
+                mLineYLeft = (int) jsonObjectBC.get("yLineL");
                 jsonObjectBC.put("yLineR",mLineYRight);
                 jsonObjectBC.put("yRect",mRectY);
                 jsonObjectBC.put("yRectHeight",mRectHeight);
+                jsonObjectBC.put("KameraID",jComboBoxBC.getSelectedIndex());
                 jsonObject.put("KameraBC",jsonObjectBC);
             }
             else{
@@ -284,6 +285,7 @@ public class FXTest implements MouseListener, KeyListener{
                 jsonObjectRC.put("yLineR",mLineYRight);
                 jsonObjectRC.put("yRect",mRectY);
                 jsonObjectRC.put("yRectHeight",mRectHeight);
+                jsonObjectRC.put("KameraID",jComboBoxBC.getSelectedIndex());
                 jsonObject.put("KameraBC",jsonObjectRC);
             }
             JSONAccess.storeJSON(jsonObject);
@@ -335,6 +337,7 @@ public class FXTest implements MouseListener, KeyListener{
                     jLabel.repaint();
                 }
             }
+            videoCapture.release();
         }
     }
     private static BufferedImage convertMatToBufferedImage(Mat image) {
