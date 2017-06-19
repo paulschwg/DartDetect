@@ -1,3 +1,4 @@
+package hardware;
 import application.JSONAccess;
 import org.json.simple.JSONObject;
 import org.omg.CORBA.MARSHAL;
@@ -194,7 +195,7 @@ public class FXTest implements MouseListener, KeyListener{
     }
 
     //BC bottom camera | RC right camera
-    private void show(){
+    public void show(){
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         fillKameraList();
