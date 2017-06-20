@@ -28,7 +28,7 @@ public class GUIController {
 	@FXML
 	private ComboBox<String> cbMode, cbPlayer;
 	@FXML
-	Label lblP1T1;
+	Label lblP1T1,lblP1T2,lblP1T3,lblP2T1,lblP2T2,lblP2T3;
 	@FXML
 	// the FXML image view
 	GridPane gridOptions;
@@ -49,6 +49,7 @@ public class GUIController {
 			stageOptions.setTitle("Optionen");
 			stageOptions.setScene(sceneOptions);
 			stageOptions.setResizable(false);
+//			setLblP1T1("asdf");
 			stageOptions.show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,28 +57,29 @@ public class GUIController {
 	}
 
 	public void setLblP1T1(String lblP1T1) {
+//		if(this.lblP1T1 == null){this.lblP1T1 = new Label();}
 		this.lblP1T1.setText(lblP1T1);
 	}
-//
-//	public void setLblP1T2(String lblP1T2) {
-//		this.lblP1T2.setText(lblP1T2);;
-//	}
-//
-//	public void setLblP1T3(String lblP1T3) {
-//		this.lblP1T3.setText(lblP1T3);;
-//	}
-//
-//	public void setLblP2T1(String lblP2T1) {
-//		this.lblP2T1.setText(lblP2T1);;
-//	}
-//
-//	public void setLblP2T2(String lblP2T2) {
-//		this.lblP2T2.setText(lblP2T2);;
-//	}
-//
-//	public void setLblP2T3(String lblP2T3) {
-//		this.lblP2T3.setText(lblP2T3);
-//	}
+
+	public void setLblP1T2(String lblP1T2) {
+		this.lblP1T2.setText(lblP1T2);;
+	}
+
+	public void setLblP1T3(String lblP1T3) {
+		this.lblP1T3.setText(lblP1T3);;
+	}
+
+	public void setLblP2T1(String lblP2T1) {
+		this.lblP2T1.setText(lblP2T1);;
+	}
+
+	public void setLblP2T2(String lblP2T2) {
+		this.lblP2T2.setText(lblP2T2);;
+	}
+
+	public void setLblP2T3(String lblP2T3) {
+		this.lblP2T3.setText(lblP2T3);
+	}
 
 	public void openCamera(ActionEvent event) throws Exception {
 		try {

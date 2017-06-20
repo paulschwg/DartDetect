@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 public class Main extends Application {
-	GUIController test = new GUIController();
+	GUIController test = null;
 	FXMLLoader loaderMain, loaderOptions;
 	BorderPane rootBPane;
 	GridPane optionsGPane;
@@ -29,19 +29,15 @@ public class Main extends Application {
 		{
 			primaryStage.setHeight(Toolkit.getDefaultToolkit().getScreenSize().height-60);
 			primaryStage.setWidth(Toolkit.getDefaultToolkit().getScreenSize().width-20);
-			// load the FXML resource
 			loaderMain = new FXMLLoader(getClass().getResource("GUIMainPage.fxml"));
-			// store the root element so that the controllers can use it
 			rootBPane = (BorderPane) loaderMain.load();
-			// create and style a scene
 			sceneMain = new Scene(rootBPane);
 			sceneMain.getStylesheets().add(getClass().getResource("guiscenebuilder.css").toExternalForm());
-			// create the stage with the given title and the previously created
-			// scene
+			test = (GUIController) loaderMain.getController();
+			test.setLblP1T1("asdf2");
 			primaryStage.setTitle("DartDetect");
 			primaryStage.setScene(sceneMain);
 			primaryStage.setResizable(false);
-			// show the GUI
 			primaryStage.show();
 
 		}
