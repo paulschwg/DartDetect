@@ -43,7 +43,7 @@ public class TestMOG2 {
         testMOG2.run();
     }
 
-    private void run() {
+    public void run() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         SettingObject[] settingObjects = {new SettingObject(0, 355, 1280, 100,0, 500,500),

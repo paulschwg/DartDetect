@@ -77,9 +77,9 @@
                <GridPane.margin>
                   <Insets top="35.0" />
                </GridPane.margin></Label>
-            <Label style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" />
-            <Label style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="lblP1T1" style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" />
+            <Label fx:id="lblP1T2" style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label fx:id="lblP1T3" style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </left>
@@ -106,9 +106,9 @@
                <GridPane.margin>
                   <Insets top="35.0" />
                </GridPane.margin></Label>
-            <Label style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" />
-            <Label style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Label style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="lblP2T1" style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" />
+            <Label fx:id="lblP2T2" style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Label fx:id="lblP2T3" style="-fx-font-size: 15;" text="Label" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </right>
