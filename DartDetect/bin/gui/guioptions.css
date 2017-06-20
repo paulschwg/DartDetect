@@ -1,0 +1,18 @@
+@font-face {
+    font-family: Chalkduster;
+    src: url('Chalkduster.ttf');
+}
+
+
+.label{
+	-fx-font-family: "Chalkduster";
+	-fx-text-fill: white;
+	-fx-font-size: 20.0px;
+}
+
+#bpMain, #gOptions{
+	-fx-background-image: url("background.jpg");
+}
+
+
+
