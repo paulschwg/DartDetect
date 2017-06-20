@@ -64,8 +64,8 @@ public class AngleToCoord {
     }
     
     public void setMemberVariables(double a1, double a2){
-    	angle1 = Math.abs(23.93 - a1);
-    	angle2 = Math.abs(23.93 - a2);
+    	angle1 = anglecorrection(Math.abs(23.93 - a1));
+    	angle2 = anglecorrection(Math.abs(23.93 - a2));
     	
     	if(a1 > 23.93) vzb1 = 1;
         else vzb1 = -1;
@@ -90,6 +90,11 @@ public class AngleToCoord {
         x = (n1-n2)/(m2-m1);
 
         return x;
+    }
+
+    public double anglecorrection(double a){
+
+        return 1.05*a;
     }
 
     public double cot(double a){

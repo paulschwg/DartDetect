@@ -2,7 +2,7 @@ package application;
 
 /*
  * Koordinaten der Einschlagsstelle: Koordinatensystem von (0,0) bis (4500,4500)
- * Fläche für Score begrenzt bei 550 und 3950 => 34cm Durchmesser der Punktefläche
+ * Flï¿½che fï¿½r Score begrenzt bei 550 und 3950 => 34cm Durchmesser der Punkteflï¿½che
  * (breite, hoehe)
  * Mitte des Bulls-Eyes bei (2250,2250)
  * 10 Einheiten entsprechen 1 Millimeter.
@@ -31,18 +31,18 @@ public class Dartscheibe {
 		/*
 		 * Abstandsberechnung mit Pythagoras
 		 */
-		double distance = Math.sqrt( Math.pow(Math.abs(hoehe-POS_MIDDLE),2) + Math.pow(Math.abs(breite-POS_MIDDLE),2))* 1.05;
+		double distance = Math.sqrt( Math.pow(Math.abs(hoehe-POS_MIDDLE),2) + Math.pow(Math.abs(breite-POS_MIDDLE),2));
 		
 		/*
 		 * Winkelberechnung: arctan(Gegenkathete/Ankathete)
-		 * Gesucht ist jeweils der Winkel, der an die nächste Gerade gegen den Uhrzeigersinn anliegt.
-		 * Math.atan liefert Winkel im Bogenmaß, deswegen Umrechnung in Gradmaß.
+		 * Gesucht ist jeweils der Winkel, der an die nï¿½chste Gerade gegen den Uhrzeigersinn anliegt.
+		 * Math.atan liefert Winkel im Bogenmaï¿½, deswegen Umrechnung in Gradmaï¿½.
 		 * 
 		 * Ergebnisse:
-		 * Norden (20) = 0°
-		 * Osten (6)   = 90°
-		 * Süden (3)   = 180°
-		 * Westen (11) = 270°
+		 * Norden (20) = 0ï¿½
+		 * Osten (6)   = 90ï¿½
+		 * Sï¿½den (3)   = 180ï¿½
+		 * Westen (11) = 270ï¿½
 		 */
 		double angle = 0;
 		int xAbs = Math.abs(POS_MIDDLE - breite);
@@ -77,7 +77,7 @@ public class Dartscheibe {
 		
 		/*
 		 * Je nach Abstand von der Mitte werden die Score-Variablen gesetzt.
-		 * Trifft der Pfeil außerhalb vom Bullseye aber innerhalb der Wertungszone, wird zusätzlich der Zahlenwert anhand des Winkels berechnet.
+		 * Trifft der Pfeil auï¿½erhalb vom Bullseye aber innerhalb der Wertungszone, wird zusï¿½tzlich der Zahlenwert anhand des Winkels berechnet.
 		 */
 		if (distance < RANGE_DOUBLE_BULL) {
 			score[0] = 2;
@@ -104,6 +104,7 @@ public class Dartscheibe {
 			score[1] = getFieldNumber(angle);
 		}
 		
+		System.out.println("Abstand zur Mitte: " + (distance/100) + " cm");
 		System.out.println("Faktor: " + score[0] + ", Wert: " + score[1] + " => " + score[0]*score[1] + " Punkte");
 
 		return score;
