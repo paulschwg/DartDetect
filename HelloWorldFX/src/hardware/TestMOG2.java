@@ -58,7 +58,7 @@ public class TestMOG2 {
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
 
-        while (abfrage) {
+        while (true) {
 
             for (int j = 0; j < videoCaptures.length; j++) {
                 videoCaptures[j].set(CV_CAP_PROP_FRAME_WIDTH, 1280);
@@ -66,24 +66,46 @@ public class TestMOG2 {
                 SettingObject s = settingObjects[j];
 
                 if (videoCaptures[j].read(s.frame)) {
+                    s.outerBox = s.frame.clone();
                     s.outerBox = new Mat(s.frame, new Rect(s.x, s.y, s.width, s.height));
+
+                    //http://docs.opencv.org/3.1.0/d1/dc5/tutorial_background_subtraction.html
                     s.backgroundSubtractorMOG2.apply(s.outerBox, s.fgMaskMOG2, s.learningRate);
-                    Imgproc.morphologyEx(s.fgMaskMOG2, s.fgMaskMOG2, MORPH_CLOSE, s.kernel);
-                    if (s.i == 1) {
-                        ArrayList<Rect> rectArrayList = detectContours(s.frame, s.fgMaskMOG2, s);
-                        if (rectArrayList.size() > 0) {
-                            //s.detectedDartAtLastFrame = true;
-                            for (Rect rect : rectArrayList) {
-                                //Hier werden die umrandenden Rechtecke eingezeichnet
-                                rect.x += s.x;
-                                rect.y += s.y;
-                                Imgproc.rectangle(s.frame, rect.br(), rect.tl(),
-                                        new Scalar(0, 255, 0), 2);
+
+                    //http://docs.opencv.org/2.4/doc/tutorials/imgproc/opening_closing_hats/opening_closing_hats.html
+                    Imgproc.morphologyEx(s.fgMaskMOG2, s.fgMaskMOG2, MORPH_OPEN, s.kernel);
+
+                    if (s.i > 10) {
+                        List<MatOfPoint> detectedContours = detectContours(s.fgMaskMOG2);
+                        if (detectedContours.size() > 0) {
+                            if(s.addedContours==null) {
+                                s.addedContours = s.fgMaskMOG2.clone();
+                            }else{
+                                Core.add(s.addedContours.clone(),s.fgMaskMOG2,s.addedContours);
                             }
-                        } //else {
-                            //s.detectedDartAtLastFrame = false;
-                          //  s.learningRate = -1.0;
-                        //}
+                        }
+                        else{
+                            if(s.addedContours!=null){
+                                if(s.toleranceCounter <= 2){
+                                    s.toleranceCounter++;
+                                }else{
+                                    window(convertMatToBufferedImage(s.addedContours.clone()),"Hallo",1280,400);
+                                    List<MatOfPoint> detectContours = detectContours(s.addedContours);
+                                    if(detectContours.size()>0) {
+                                        int maxValue = 0;
+                                        double maxArea = 0.0;
+                                        for (int counter = 0; counter < detectContours.size(); counter++) {
+                                            double tempArea = Imgproc.contourArea(detectContours.get(counter));
+                                            if (tempArea > maxArea)
+                                                maxValue = counter;
+                                        }
+                                        getOrientation(detectContours.get(maxValue), s.frame, s);
+                                    }
+                                    s.toleranceCounter = 0;
+                                    s.addedContours = null;
+                                }
+                            }
+                        }
                     }else {
                         s.i++;
                     }
@@ -99,12 +121,6 @@ public class TestMOG2 {
                 }
             }
         }
-        for (int j = 0; j < videoCaptures.length; j++) {
-            SettingObject s = settingObjects[j];
-            ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.frame));
-            s.jLabel.setIcon(image);
-            s.jLabel.repaint();
-        }
     }
 
     private void calculateAngle(Point point, int id){
@@ -119,6 +135,7 @@ public class TestMOG2 {
             int [] coords = mAngleToCoord.calculateCoord(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
             int [] dartValues = mDartscheibe.getScore(coords[0],coords[1]);
             System.out.println("Treffer: "+dartValues[0]*dartValues[1]);
+
             System.out.println();
             //abfrage=false;
             mPointCameraRight = null;
@@ -127,60 +144,28 @@ public class TestMOG2 {
     }
 
     //Erkennung der Konturen innerhalb eines SW-Differenzbildes
-    private ArrayList<Rect> detectContours(Mat src, Mat outmat, SettingObject s) {
+    private List<MatOfPoint> detectContours(Mat outmat) {
         Mat v = new Mat();
         Mat vv = outmat.clone();
         List<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(vv, contours, v, Imgproc.RETR_LIST,
                 Imgproc.CHAIN_APPROX_SIMPLE);
 
-        double minArea = 500.0;
-        double maxArea = 9000.0;
-        int maxAreaIdx;
-        Rect r;
-        ArrayList<Rect> rect_array = new ArrayList<>();
-
-        for (int idx = 0; idx < contours.size(); idx++) {
-            Mat contour = contours.get(idx);
-            double contourarea = Imgproc.contourArea(contour);
-
-            if (minArea < contourarea && contourarea < maxArea) {
-                //s.learningRate = 0.95;
-                // maxArea = contourarea;
-                //System.out.println(contourarea);
-                maxAreaIdx = idx;
-                r = Imgproc.boundingRect(contours.get(maxAreaIdx));
-                rect_array.add(r);
-                //Hier werden die Konturen vom erkannten Objekt eingezeichnet
-                Imgproc.drawContours(src, contours, maxAreaIdx, new Scalar(0, 255, 0), 3, 8, v, 1, new Point(s.x, s.y));
-                getOrientation(contours.get(idx),src,s);
-                /*if (contourarea < s.lastFrameArea && s.lastFrameArea != 0.0) {
-                    System.out.println("DartPfeil erkannt.");
-                    /*dartCount++;
-                    if(dartCount==6) {
-                        abfrage = false;
-                    }
-                    //
-                    getOrientation(contours.get(idx),src,s);
-                    s.lastFrameArea = 0.0;
-                    s.learningRate = -1.0 ;
-                }
-                else{
-                    s.lastFrameArea = contourarea;
-                    s.lastFrameContour = contours.get(idx);
-                }*/
-            }/*
-            else{
-                if(s.lastFrameArea != 0.0 && contourarea < s.lastFrameArea){
-                    getOrientation(s.lastFrameContour,src,s);
-                    s.lastFrameArea = 0.0;
-                    s.lastFrameContour = null;
-                }
-            }*/
+        double minArea = 450.0; // TODO: nach unten anpassen, wenn sich überschneidende Pfeile eine kleinere Area haben
+        double maxArea = 20000.0;
+        Iterator <MatOfPoint> iterator = contours.iterator();
+        while(iterator.hasNext()){
+            Mat mat = iterator.next();
+            double contourarea = Imgproc.contourArea(mat);
+            if (contourarea < minArea || maxArea < contourarea) {
+                iterator.remove();
+            }
+            else {
+                System.out.println(contourarea);
+            }
         }
         v.release();
-
-        return rect_array;
+        return contours;
     }
 
     //Bestimmung der Orientierung eines erkannten Objektes
@@ -258,9 +243,9 @@ public class TestMOG2 {
 
         double np1 = p2.y - mp1*p2.x;
         double no2 = o2.y - mo2*o2.x;
-        //TODO edit mit Johannes absprechen
+
         double x = (np1-no2) / (mo2-mp1);
-        double y = no2;
+        double y = mp1*x + np1;
         Imgproc.circle(img,new Point(x,y),20,new Scalar(0,0,255),2);
         return new Point(x,y);
     }
@@ -286,11 +271,11 @@ public class TestMOG2 {
         Mat frame, outerBox, fgMaskMOG2, kernel;
         JFrame jFrame;
         JLabel jLabel;
-        int x,y,width,height, id, yLineL, yLineR, i, dartCount, cameraID;
+        int x,y,width,height, id, yLineL, yLineR, i, dartCount, cameraID, toleranceCounter;
         double learningRate;
         boolean detectedDartAtLastFrame;
         double lastFrameArea;
-        MatOfPoint lastFrameContour;
+        Mat addedContours;
         BackgroundSubtractorMOG2 backgroundSubtractorMOG2;
 
         SettingObject(int x, int y, int width, int height, int id, int yLineL, int yLineR) {
@@ -300,11 +285,12 @@ public class TestMOG2 {
             this.height = height;
             this.id = id;
             this.i = 0;
-            this.learningRate = -1;
+            this.learningRate = 0.01;
             this.dartCount = 0;
             this.yLineL = yLineL;
             this.yLineR = yLineR;
             this.detectedDartAtLastFrame = false;
+            this.toleranceCounter = 0;
             this.backgroundSubtractorMOG2 = Video.createBackgroundSubtractorMOG2();
             initializeFrame();
             initializeMat();
@@ -312,7 +298,8 @@ public class TestMOG2 {
         void initializeMat(){
             frame = new Mat();
             fgMaskMOG2 = new Mat();
-            kernel = Imgproc.getStructuringElement(MORPH_ELLIPSE, new Size(3, 3));
+            kernel = Imgproc.getStructuringElement(MORPH_OPEN, new Size(3, 3));
+            addedContours = null;
         }
         void initializeFrame() {
             jFrame = new JFrame("HUMAN MOTION DETECTOR FPS");
