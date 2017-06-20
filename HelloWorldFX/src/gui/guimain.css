@@ -1,0 +1,31 @@
+@font-face {
+    font-family: Chalkduster;
+    src: url('Chalkduster.ttf');
+}
+
+
+.label{
+	-fx-font-family: "Chalkduster";
+	-fx-text-fill: white;
+	-fx-font-size: 20.0px;
+}
+
+#bpMain, #gOptions{
+	-fx-background-image: url("background.jpg");
+}
+
+.list-view .list-cell{
+	-fx-background-color: transparent;
+	-fx-text-fill: white;
+	-fx-font-family: "Chalkduster";
+	-fx-font-size: 20px;
+	-fx-alignment: center;
+}
+
+.text-field{
+	-fx-background-color: transparent;
+	-fx-text-fill: white;
+	-fx-font-family: "Chalkduster";
+	-fx-font-size: 20px;
+	-fx-alignment: center;
+}

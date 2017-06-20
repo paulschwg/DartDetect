@@ -15,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -22,15 +24,15 @@ import javafx.stage.Stage;
 
 public class GUIController {
 	hardware.FXTest cameraWindow = new hardware.FXTest();
-	// the FXML button
+
 	@FXML
-	private Button btnOptions, btnCamera, btnClose, btnPlay;
+	private Button btnOptions, btnCamera, btnClose, btnPlay, btnChangeValue1, btnChangeValue2;
 	@FXML
 	private ComboBox<String> cbMode, cbPlayer;
 	@FXML
-	Label lblP1T1,lblP1T2,lblP1T3,lblP2T1,lblP2T2,lblP2T3;
+	TextField tfP1T1, tfP1T2, tfP1T3, tfP2T1, tfP2T2, tfP2T3;
 	@FXML
-	// the FXML image view
+	ListView lvPlayer1, lvPlayer2;
 	GridPane gridOptions;
 	Stage stageOptions;
 	Scene sceneOptions;
@@ -38,47 +40,64 @@ public class GUIController {
 	application.GameFree gameFree;
 	hardware.TestMOG2 runGame = new hardware.TestMOG2();
 	String inputMode, inputPlayer;
-	
+
 	public void openOptions(ActionEvent event) throws Exception {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
 			gridOptions = (GridPane) fxmlLoader.load();
 			stageOptions = new Stage();
 			sceneOptions = new Scene(gridOptions, 600, 400);
-			sceneOptions.getStylesheets().add(getClass().getResource("guiscenebuilder.css").toExternalForm());
+			sceneOptions.getStylesheets().add(getClass().getResource("guioptions.css").toExternalForm());
 			stageOptions.setTitle("Optionen");
+			gridOptions.setId("gOptions");
 			stageOptions.setScene(sceneOptions);
 			stageOptions.setResizable(false);
-//			setLblP1T1("asdf");
 			stageOptions.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setLblP1T1(String lblP1T1) {
-//		if(this.lblP1T1 == null){this.lblP1T1 = new Label();}
-		this.lblP1T1.setText(lblP1T1);
+	public void setTfP1T1(int throw1) {
+		this.tfP1T1.setText("" + throw1);
 	}
 
-	public void setLblP1T2(String lblP1T2) {
-		this.lblP1T2.setText(lblP1T2);;
+	public void setTfP1T2(int throw2) {
+		this.tfP1T2.setText("" + throw2);
+		;
 	}
 
-	public void setLblP1T3(String lblP1T3) {
-		this.lblP1T3.setText(lblP1T3);;
+	public void setTfP1T3(int throw3) {
+		this.tfP1T3.setText("" + throw3);
+		;
 	}
 
-	public void setLblP2T1(String lblP2T1) {
-		this.lblP2T1.setText(lblP2T1);;
+	public void setTfP2T1(int throw1) {
+		this.tfP2T1.setText("" + throw1);
 	}
 
-	public void setLblP2T2(String lblP2T2) {
-		this.lblP2T2.setText(lblP2T2);;
+	public void setTfP2T2(int throw2) {
+		this.tfP2T2.setText("" + throw2);
 	}
 
-	public void setLblP2T3(String lblP2T3) {
-		this.lblP2T3.setText(lblP2T3);
+	public void setTfP2T3(int throw3) {
+		this.tfP2T3.setText("" + throw3);
+	}
+
+	public void addPointsPlayer1(int points) {
+		lvPlayer1.getItems().add(points);
+	}
+
+	public void addPointsPlayer2(int points) {
+		lvPlayer2.getItems().add(points);
+	}
+	
+	public void changeValue1(){
+		
+	}
+	
+	public void changeValue2(){
+		
 	}
 
 	public void openCamera(ActionEvent event) throws Exception {
@@ -93,7 +112,7 @@ public class GUIController {
 		stageOptions = (Stage) btnClose.getScene().getWindow();
 		stageOptions.close();
 	}
-	
+
 	public void playGame(ActionEvent event) {
 		int numPlayer;
 
@@ -114,27 +133,27 @@ public class GUIController {
 			case ("3"):
 				gameX01 = new application.GameX01(numPlayer, 301);
 				break;
-				
+
 			case ("4"):
 				gameX01 = new application.GameX01(numPlayer, 401);
 				break;
-				
+
 			case ("5"):
 				gameX01 = new application.GameX01(numPlayer, 501);
 				break;
-				
+
 			case ("6"):
 				gameX01 = new application.GameX01(numPlayer, 601);
 				break;
-				
+
 			case ("7"):
 				gameX01 = new application.GameX01(numPlayer, 701);
 				break;
-				
+
 			case ("8"):
 				gameX01 = new application.GameX01(numPlayer, 801);
 				break;
-				
+
 			case ("9"):
 				gameX01 = new application.GameX01(numPlayer, 901);
 				break;

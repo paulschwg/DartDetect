@@ -1,5 +1,5 @@
 package gui;
-	
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -16,42 +16,35 @@ import javafx.stage.Stage;
 import java.awt.*;
 
 public class Main extends Application {
-	GUIController test = null;
+	GUIController test;
 	FXMLLoader loaderMain, loaderOptions;
 	BorderPane rootBPane;
 	GridPane optionsGPane;
 	Scene sceneMain, sceneOptions;
-	Stage stOptions;
+
 	@Override
-	public void start(Stage primaryStage)
-	{
-		try
-		{
-			primaryStage.setHeight(Toolkit.getDefaultToolkit().getScreenSize().height-60);
-			primaryStage.setWidth(Toolkit.getDefaultToolkit().getScreenSize().width-20);
+	public void start(Stage primaryStage) {
+		try {
+			primaryStage.setHeight(Toolkit.getDefaultToolkit().getScreenSize().height - 60);
+			primaryStage.setWidth(Toolkit.getDefaultToolkit().getScreenSize().width - 20);
 			loaderMain = new FXMLLoader(getClass().getResource("GUIMainPage.fxml"));
 			rootBPane = (BorderPane) loaderMain.load();
+			rootBPane.setId("bpMain");
 			sceneMain = new Scene(rootBPane);
-			sceneMain.getStylesheets().add(getClass().getResource("guiscenebuilder.css").toExternalForm());
+			sceneMain.getStylesheets().add(getClass().getResource("guimain.css").toExternalForm());
 			test = (GUIController) loaderMain.getController();
-			test.setLblP1T1("asdf2");
+			test.addPointsPlayer1(30);
+			test.setTfP1T1(30);
 			primaryStage.setTitle("DartDetect");
 			primaryStage.setScene(sceneMain);
 			primaryStage.setResizable(false);
 			primaryStage.show();
-
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void main(String[] args) {
-		
-		launch(args);
-		
-	}
-	
 
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
