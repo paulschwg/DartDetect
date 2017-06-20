@@ -84,9 +84,9 @@
                <GridPane.margin>
                   <Insets top="35.0" />
                </GridPane.margin></Label>
-            <TextField fx:id="tfP1T1" editable="false" />
-            <TextField fx:id="tfP1T2" editable="false" GridPane.rowIndex="1" />
-            <TextField fx:id="tfP1T3" editable="false" GridPane.rowIndex="2" />
+            <TextField fx:id="tfP1T1" />
+            <TextField fx:id="tfP1T2" GridPane.rowIndex="1" />
+            <TextField fx:id="tfP1T3" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </left>
@@ -113,9 +113,9 @@
                <GridPane.margin>
                   <Insets top="35.0" />
                </GridPane.margin></Label>
-            <TextField fx:id="tfP2T1" editable="false" />
-            <TextField fx:id="tfP2T2" editable="false" GridPane.rowIndex="1" />
-            <TextField fx:id="tfP2T3" editable="false" GridPane.rowIndex="2" />
+            <TextField fx:id="tfP2T1" />
+            <TextField fx:id="tfP2T2" GridPane.rowIndex="1" />
+            <TextField fx:id="tfP2T3" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </right>
@@ -130,12 +130,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnChangeValue1" disable="true" mnemonicParsing="false" onAction="#changeValue1" text="Wert ändern" GridPane.valignment="TOP">
+            <Button fx:id="btnChangeValue1" mnemonicParsing="false" onAction="#changeValue1" text="Wert ändern" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="btnChangeValue2" disable="true" mnemonicParsing="false" onAction="#changeValue2" text="Wert ändern" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+            <Button fx:id="btnChangeValue2" mnemonicParsing="false" onAction="#changeValue2" text="Wert ändern" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>

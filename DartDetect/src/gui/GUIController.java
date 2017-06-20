@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -41,6 +42,7 @@ public class GUIController {
 
 			sceneOptions.getStylesheets().add(getClass().getResource("guioptions.css").toExternalForm());
 			stageOptions.setTitle("Optionen");
+			stageOptions.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
 			gridOptions.setId("gOptions");
 			stageOptions.setScene(sceneOptions);
 			stageOptions.setResizable(false);

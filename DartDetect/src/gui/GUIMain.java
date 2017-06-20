@@ -3,6 +3,7 @@ package gui;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public class GUIMain extends Application {
 			primaryStage.setHeight(Toolkit.getDefaultToolkit().getScreenSize().height - 60);
 			primaryStage.setWidth(Toolkit.getDefaultToolkit().getScreenSize().width - 20);
 			primaryStage.setTitle("DartDetect");
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
 			primaryStage.setScene(sceneMain);
 			primaryStage.setResizable(false);
 			primaryStage.show();
