@@ -23,6 +23,7 @@ public abstract class Game {
 	public void run() {
 		printAll();
 		running = true;
+		System.out.println("Spieler 1 ist dran!");
 		detect = new TestMOG2(this);
 	}
 	

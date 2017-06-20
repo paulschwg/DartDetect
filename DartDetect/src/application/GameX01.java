@@ -1,5 +1,7 @@
 package application;
 
+import hardware.TestMOG2;
+
 public class GameX01 extends Game {
 	
 	public GameX01(int playerCount, int goal){
@@ -15,7 +17,7 @@ public class GameX01 extends Game {
 	
 	@Override
 	public void processDart(int mult, int number){
-		Player player = players[playerTurn];
+		Player player = players[playerTurn - 1];
 		int wurfScore = mult * number;
 		player.removeScore(wurfScore);
 
@@ -36,10 +38,13 @@ public class GameX01 extends Game {
 		dartCount++;
 		
 		if (dartCount == 4) { //Runde beendet
+			detect.abort();
 			printAll();
 			dartCount = 1;
 			playerTurn++;
 			if (playerTurn > playerCount) playerTurn = 1;
+			System.out.println("Spieler " + playerTurn + " ist dran!");
+			detect = new TestMOG2(this);
 		}
 	}
 }

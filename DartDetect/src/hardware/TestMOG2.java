@@ -38,6 +38,8 @@ public class TestMOG2 {
     private int dartCount;
     boolean abfrage = true;
     private Game game;
+    
+    private boolean running = true;
 
     public TestMOG2(Game game) {
     	this.game = game;
@@ -59,7 +61,7 @@ public class TestMOG2 {
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
 
-        while (true) {
+        while (running) {
 
             for (int j = 0; j < videoCaptures.length; j++) {
                 videoCaptures[j].set(CV_CAP_PROP_FRAME_WIDTH, 1280);
@@ -320,5 +322,9 @@ public class TestMOG2 {
         frame0.setSize(img.getWidth(), img.getHeight() + 30);
         frame0.setLocation(x, y);
         frame0.setVisible(true);
+    }
+    
+    public void abort(){
+    	running = false;
     }
 }
