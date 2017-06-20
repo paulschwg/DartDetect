@@ -53,6 +53,7 @@ public class GUIController {
 
 	public void openCamera(ActionEvent event) throws Exception {
 		try {
+			cameraWindow = new hardware.FXTest();
 			cameraWindow.show();
 		} catch (Exception e) {
 			e.printStackTrace();
