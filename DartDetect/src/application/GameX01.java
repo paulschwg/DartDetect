@@ -2,9 +2,7 @@ package application;
 
 import java.io.IOException;
 
-import hardware.TestMOG2;
-
-import java.io.IOException;
+import hardware.DartTrack;
 
 public class GameX01 extends Game {
 	
@@ -35,7 +33,7 @@ public class GameX01 extends Game {
 		}
 		if (player.getScore() < 0 || player.getScore() == 1) { //ï¿½berworfen
 			player.addScore(wurfScore);
-			System.out.println("Überworfen!");
+			System.out.println("ï¿½berworfen!");
 			dartCount = 3; //Runde beendet
 		}
 		
@@ -43,7 +41,7 @@ public class GameX01 extends Game {
 		
 		if (dartCount == 4) { //Runde beendet
 			printAll();
-			System.out.println("Drücke eine Taste, wenn du bereit bist!");
+			System.out.println("Drï¿½cke eine Taste, wenn du bereit bist!");
 			try {
 				System.in.read();
 			} catch (IOException e){
@@ -53,7 +51,7 @@ public class GameX01 extends Game {
 			playerTurn++;
 			if (playerTurn > playerCount) playerTurn = 1;
 			System.out.println("Spieler " + playerTurn + " ist dran!");
-			detect = new TestMOG2(this);
+			detect = new DartTrack(this);
 		}
 	}
 }

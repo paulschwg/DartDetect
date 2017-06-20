@@ -27,7 +27,7 @@ import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
 
-public class TestMOG2 {
+public class DartTrack {
 
     public static final double ANGEL_PER_PIXEL = 47.86/1280.0;
     public static final double CENTER = 640.0;
@@ -41,7 +41,7 @@ public class TestMOG2 {
     
     private boolean running = true;
 
-    public TestMOG2(Game game) {
+    public DartTrack(Game game) {
     	this.game = game;
     	run();
     }
@@ -112,15 +112,15 @@ public class TestMOG2 {
                     }else {
                         s.i++;
                     }
-                    Imgproc.rectangle(s.frame, new Point(s.x, s.y), new Point(s.x + s.width, s.y + s.height),
-                            new Scalar(255, 255, 255), 1);
-                    Imgproc.line(s.frame, new Point(s.width / 2 + s.x, s.y), new Point(s.width / 2 + s.x, s.y + s.height),
-                            new Scalar(0, 255, 255));
+                    //Imgproc.rectangle(s.frame, new Point(s.x, s.y), new Point(s.x + s.width, s.y + s.height),
+                            //new Scalar(255, 255, 255), 1);
+                    //Imgproc.line(s.frame, new Point(s.width / 2 + s.x, s.y), new Point(s.width / 2 + s.x, s.y + s.height),
+                            //new Scalar(0, 255, 255));
 
-                    Imgproc.line(s.frame, new Point(0, s.yLineL), new Point(1280, s.yLineR), new Scalar(0, 0, 255), 2);
-                    ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.fgMaskMOG2));
+                    //Imgproc.line(s.frame, new Point(0, s.yLineL), new Point(1280, s.yLineR), new Scalar(0, 0, 255), 2);
+                    /*ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.fgMaskMOG2));
                     s.jLabel.setIcon(image);
-                    s.jLabel.repaint();
+                    s.jLabel.repaint();*/
                 }
             }
         }
@@ -243,7 +243,7 @@ public class TestMOG2 {
 
         double x = (np1-no2) / (mo2-mp1);
         double y = mp1*x + np1;
-        Imgproc.circle(img,new Point(x,y),20,new Scalar(0,0,255),2);
+        //Imgproc.circle(img,new Point(x,y),20,new Scalar(0,0,255),2);
         return new Point(x,y);
     }
 
@@ -289,7 +289,7 @@ public class TestMOG2 {
             this.detectedDartAtLastFrame = false;
             this.toleranceCounter = 0;
             this.backgroundSubtractorMOG2 = Video.createBackgroundSubtractorMOG2();
-            initializeFrame();
+            //initializeFrame();
             initializeMat();
         }
         void initializeMat(){
@@ -313,15 +313,6 @@ public class TestMOG2 {
             this.height = (int) (long)jsonObject.get("yRectHeight");
             this.cameraID = (int) (long)jsonObject.get("KameraID");
         }
-    }
-    public void window(BufferedImage img, String text, int x, int y) {
-        JFrame frame0 = new JFrame();
-        frame0.getContentPane().add(new JPanelOpenCV(img));
-        frame0.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame0.setTitle(text);
-        frame0.setSize(img.getWidth(), img.getHeight() + 30);
-        frame0.setLocation(x, y);
-        frame0.setVisible(true);
     }
     
     public void abort(){

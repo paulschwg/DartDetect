@@ -1,6 +1,6 @@
 package application;
 
-import hardware.TestMOG2;
+import hardware.DartTrack;
 
 public abstract class Game {
 	protected int playerCount;
@@ -9,7 +9,7 @@ public abstract class Game {
 	protected int goal = -1;
 	protected Dartscheibe dartscheibe = new Dartscheibe();
 	protected AngleToCoord atc = new AngleToCoord();
-	protected TestMOG2 detect;
+	protected DartTrack detect;
 	
 	protected int dartCount = 1;
 	protected int playerTurn = 1;
@@ -24,7 +24,7 @@ public abstract class Game {
 		printAll();
 		running = true;
 		System.out.println("Spieler 1 ist dran!");
-		detect = new TestMOG2(this);
+		detect = new DartTrack(this);
 	}
 	
 	public abstract void processDart(int mult, int number);

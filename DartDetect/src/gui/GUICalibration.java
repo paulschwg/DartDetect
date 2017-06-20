@@ -1,7 +1,6 @@
-package hardware;
+package gui;
 import application.JSONAccess;
 import org.json.simple.JSONObject;
-import org.omg.CORBA.MARSHAL;
 import org.opencv.core.*;
 import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
-public class FXTest implements MouseListener, KeyListener{
+public class GUICalibration implements MouseListener, KeyListener, WindowListener{
 
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
@@ -80,8 +79,8 @@ public class FXTest implements MouseListener, KeyListener{
 
 
     public static void main(String[] args) {
-        FXTest fxTest = new FXTest();
-        fxTest.show();
+        GUICalibration GUICalibration = new GUICalibration();
+        GUICalibration.show();
     }
 
     private void initializeContentPanel(){
@@ -340,6 +339,7 @@ public class FXTest implements MouseListener, KeyListener{
         contentPane.setFocusable(true);
 
         jFrame.addKeyListener(this);
+        jFrame.addWindowListener(this);
 
         //Fenster hat 15pt breite und 40 pt hoehe, neben gewuenschter flaeche
         jFrame.setContentPane(contentPane);
@@ -474,6 +474,44 @@ public class FXTest implements MouseListener, KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        for(VideoCapture videoCapture : videoCaptures){
+            videoCapture.release();
+        }
+        abfrage = false;
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
 
     }
 }

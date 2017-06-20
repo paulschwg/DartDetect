@@ -22,7 +22,7 @@ public class GUIController {
 	@FXML
 	ListView lvPlayer1, lvPlayer2;
 
-	hardware.FXTest cameraWindow;
+	GUICalibration cameraWindow;
 	application.GameX01 gameX01;
 	application.GameFree gameFree;
 	FXMLLoader fxmlLoader;
@@ -53,7 +53,7 @@ public class GUIController {
 
 	public void openCamera(ActionEvent event) throws Exception {
 		try {
-			cameraWindow = new hardware.FXTest();
+			cameraWindow = new GUICalibration();
 			cameraWindow.show();
 		} catch (Exception e) {
 			e.printStackTrace();
