@@ -26,7 +26,7 @@ public class GUIController {
 	hardware.FXTest cameraWindow = new hardware.FXTest();
 
 	@FXML
-	private Button btnOptions, btnCamera, btnClose, btnPlay, btnChangeValue1, btnChangeValue2;
+	private Button btnOptions, btnCamera, btnClose, btnPlay, btnChangeValue1, btnChangeValue2, btnConfirm;
 	@FXML
 	private ComboBox<String> cbMode, cbPlayer;
 	@FXML
