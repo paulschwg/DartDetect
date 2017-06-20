@@ -191,7 +191,7 @@ public class GUICalibration implements MouseListener, KeyListener, WindowListene
     }
 
     //BC bottom camera | RC right camera
-    private void show(){
+    public void show(){
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         fillKameraList();
