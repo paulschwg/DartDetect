@@ -51,7 +51,8 @@ public abstract class Game {
 	}
 		
 	public void getDart(double a1, double a2) {
-		int dartCoord[] = atc.calculateCoord(46.4,30.8);
+		int dartCoord[] = atc.calculateCoord(a1,a2);
 		int score[] = dartscheibe.getScore(dartCoord[0], dartCoord[1]);
+		processDart(score[0],score[1]);
 	}
 }

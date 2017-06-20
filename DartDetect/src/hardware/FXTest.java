@@ -15,10 +15,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -40,7 +37,7 @@ public class FXTest implements MouseListener, KeyListener{
     int mLineYLeft = 600;
     int mLineYRight = 600;
     int mRectThickness = 1;
-    int mLineThickness =  10;
+    int mLineThickness =  5;
 
     JFrame jFrame;
     JLabel jLabel;
@@ -163,7 +160,8 @@ public class FXTest implements MouseListener, KeyListener{
     private void initJFrame(){
         frame = new Mat();
         jFrame = new JFrame("Kalibrierungsmaske");
-        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jFrame.setAlwaysOnTop(true);
         jFrame.setResizable(false);
     }
 
@@ -348,6 +346,7 @@ public class FXTest implements MouseListener, KeyListener{
         jFrame.setSize(1385, 850);
         jFrame.setLocationByPlatform(true);
         jFrame.setVisible(true);
+        jFrame.requestFocus();
         abfrage = true;
         runCamera();
     }
@@ -406,12 +405,12 @@ public class FXTest implements MouseListener, KeyListener{
         System.out.println(e.getY());
         System.out.println(jFrame.getY());
         if(((mLineYLeft+mLineYRight)/2) - 20 < e.getY() && e.getY() < ((mLineYLeft+mLineYRight)/2)+20){
-            mLineThickness = 10;
+            mLineThickness = 5;
             mRectThickness = 1;
         }else {
             if(mRectY <= e.getY() && e.getY() <= + mRectY+mRectHeight){
                 mLineThickness = 1;
-                mRectThickness = 10;
+                mRectThickness = 5;
             }
         }
 
@@ -445,7 +444,7 @@ public class FXTest implements MouseListener, KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_UP){
-            if(mRectThickness==10){
+            if(mRectThickness==5){
                 if(mRectY >= + 1)
                 mRectY--;
             }
@@ -457,7 +456,7 @@ public class FXTest implements MouseListener, KeyListener{
             }
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN){
-            if(mRectThickness==10){
+            if(mRectThickness==5){
                 if(mRectY + mRectHeight < 719)
                 mRectY++;
             }
