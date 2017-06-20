@@ -129,35 +129,7 @@ public class GUIController {
 			gameFree = new application.GameFree(numPlayer);
 			gameFree.run();
 		} else {
-			switch (inputMode.substring(0, 1)) {
-			case ("3"):
-				gameX01 = new application.GameX01(numPlayer, 301);
-				break;
-
-			case ("4"):
-				gameX01 = new application.GameX01(numPlayer, 401);
-				break;
-
-			case ("5"):
-				gameX01 = new application.GameX01(numPlayer, 501);
-				break;
-
-			case ("6"):
-				gameX01 = new application.GameX01(numPlayer, 601);
-				break;
-
-			case ("7"):
-				gameX01 = new application.GameX01(numPlayer, 701);
-				break;
-
-			case ("8"):
-				gameX01 = new application.GameX01(numPlayer, 801);
-				break;
-
-			case ("9"):
-				gameX01 = new application.GameX01(numPlayer, 901);
-				break;
-			}
+			gameX01 = new application.GameX01(numPlayer, Integer.parseInt(inputMode.substring(0,1))*100 + 1);
 		}
 		runGame.run();
 		stageOptions = (Stage) btnPlay.getScene().getWindow();
