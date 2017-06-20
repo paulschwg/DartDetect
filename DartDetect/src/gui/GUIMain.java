@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.awt.*;
 
-public class Main extends Application {
+public class GUIMain extends Application {
 	GUIController test;
 	FXMLLoader loaderMain, loaderOptions;
 	BorderPane rootBPane;
