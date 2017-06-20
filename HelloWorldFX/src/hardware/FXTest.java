@@ -360,6 +360,7 @@ public class FXTest implements MouseListener, KeyListener{
                 if (videoCapture.read(frame)) {
                     Imgproc.rectangle(frame, new Point(0, mRectY), new Point(SCREEN_WIDTH, mRectY + mRectHeight), new Scalar(255, 0, 0), mRectThickness);
                     Imgproc.line(frame, new Point(0, mLineYLeft), new Point(SCREEN_WIDTH, mLineYRight), new Scalar(0, 0, 255), mLineThickness);
+                    Imgproc.line(frame,new Point(1280/2,mRectY),new Point(1280/2,mRectY+mRectHeight), new Scalar(50,244,255));
                     ImageIcon image = new ImageIcon(convertMatToBufferedImage(frame));
                     jLabel.setIcon(image);
                     jLabel.repaint();
