@@ -104,6 +104,7 @@ public class Dartscheibe {
 			score[1] = getFieldNumber(angle);
 		}
 		
+		System.out.println("Abstand zur Mitte: " + (distance/100) + " cm");
 		System.out.println("Faktor: " + score[0] + ", Wert: " + score[1] + " => " + score[0]*score[1] + " Punkte");
 
 		return score;
