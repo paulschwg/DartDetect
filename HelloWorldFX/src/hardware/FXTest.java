@@ -42,8 +42,6 @@ public class FXTest implements MouseListener, KeyListener{
     int mRectThickness = 1;
     int mLineThickness =  10;
 
-    VideoCapture videoCapture;
-
     JFrame jFrame;
     JLabel jLabel;
     JPanel contentPane;
@@ -75,7 +73,11 @@ public class FXTest implements MouseListener, KeyListener{
 
     JSONObject jsonObject;
 
+    ArrayList <VideoCapture> videoCaptures = new ArrayList<>();
+
     boolean abfrage;
+
+    int currentCamera;
 
     private ArrayList <String> kameras = new ArrayList<>();
 
@@ -108,7 +110,9 @@ public class FXTest implements MouseListener, KeyListener{
 
     private JComboBox initJComboBoxCameras(int x, int y, int id){
         // Array für unsere JComboBo
-
+        for(int i = 0; i < kameras.size(); i++){
+            videoCaptures.add(new VideoCapture(i));
+        }
         //JComboBox mit Bundesländer-Einträgen wird erstellt
         JComboBox jComboBox = new JComboBox(kameras.toArray());
         if(id < kameras.size())
@@ -126,7 +130,6 @@ public class FXTest implements MouseListener, KeyListener{
         jCheckBox.setLocation(x,y);
         if(selected) {
             initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
-            videoCapture = new VideoCapture(0);
             //TODO init cam
         }
         return jCheckBox;
@@ -159,7 +162,7 @@ public class FXTest implements MouseListener, KeyListener{
 
     private void initJFrame(){
         frame = new Mat();
-        jFrame = new JFrame("Kalibrierunsmaske");
+        jFrame = new JFrame("Kalibrierungsmaske");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setResizable(false);
     }
@@ -182,11 +185,14 @@ public class FXTest implements MouseListener, KeyListener{
     }
 
     private void initializeJSONValues(JSONObject jsonObject){
-        mLineYLeft = (int) jsonObject.get("yLineL");
-        mLineYRight = (int) jsonObject.get("yLineR");
-        mRectY = (int) jsonObject.get("yRect");
-        mRectHeight = (int) jsonObject.get("yRectHeight");
-        //TODO geht später jComboBoxBC.setSelectedIndex((int) jsonObject.get("KameraID")+1);
+        mLineYLeft = (int) (long) jsonObject.get("yLineL");
+        mLineYRight = (int) (long) jsonObject.get("yLineR");
+        mRectY = (int) (long) jsonObject.get("yRect");
+        mRectHeight = (int) (long) jsonObject.get("yRectHeight");
+    }
+
+    private int getJSONKameraID(JSONObject jsonObject){
+        return (int) (long) jsonObject.get("KameraID");
 
     }
 
@@ -208,6 +214,10 @@ public class FXTest implements MouseListener, KeyListener{
 
         initializeContentPanel();
 
+        contentPane.setFocusable(true);
+        contentPane.requestFocusInWindow();
+        contentPane.addKeyListener(this);
+
         jsonObject = JSONAccess.getJSON();
 
         //JButton buttonBC = initializeJButton(0,0,100,30,"Hello World");
@@ -219,30 +229,44 @@ public class FXTest implements MouseListener, KeyListener{
         jTextAreaRC = initJTextPane(0,40,110,"Rechte Kamera");
 
         //COMBO-Box Daten: Breite: 200 px; Höhe: 30px
-        jComboBoxBC = initJComboBoxCameras(120,0,0);
-        jComboBoxRC = initJComboBoxCameras(120,40,1);
+        jComboBoxBC = initJComboBoxCameras(120,0,getJSONKameraID((JSONObject)jsonObject.get("KameraBC")));
+        currentCamera = getJSONKameraID((JSONObject)jsonObject.get("KameraBC"));
+        jComboBoxBC.addActionListener(e -> {
+            if(jCheckBoxBC.isSelected())
+                currentCamera=jComboBoxBC.getSelectedIndex();
+        });
+        jComboBoxRC = initJComboBoxCameras(120,40,getJSONKameraID((JSONObject)jsonObject.get("KameraRC")));
+        jComboBoxRC.addActionListener(e -> {
+            if(jCheckBoxRC.isSelected())
+                currentCamera=jComboBoxRC.getSelectedIndex();
+        });
+
 
         //Checkbox Daten: Breite: 50 px; Höhe: 30px
         jCheckBoxBC = initJCheckBox(330,0,true);
         jCheckBoxBC.addActionListener(e -> {
-            abfrage = false;
+            //abfrage = false;
             jCheckBoxRC.setSelected(false);
-            videoCapture = new VideoCapture(getKameraID(String.valueOf(jComboBoxBC.getSelectedItem()))-1);
+            currentCamera = jComboBoxBC.getSelectedIndex();
+            jsonObject = JSONAccess.getJSON();
             initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
             changeTextFieldValues();
-            abfrage = true;
-            runCamera();
+            contentPane.requestFocusInWindow();
+            //abfrage = true;
+            //runCamera();
 
         });
         jCheckBoxRC = initJCheckBox(330, 40,false);
         jCheckBoxRC.addActionListener(e -> {
-            abfrage = false;
+            //abfrage = false;
             jCheckBoxBC.setSelected(false);
-            videoCapture = new VideoCapture(getKameraID(String.valueOf(jComboBoxRC.getSelectedItem()))-1);
+            currentCamera = jComboBoxRC.getSelectedIndex();
+            jsonObject = JSONAccess.getJSON();
             initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
             changeTextFieldValues();
-            abfrage = true;
-            runCamera();
+            contentPane.requestFocusInWindow();
+            //abfrage = true;
+            //runCamera();
 
         });
 
@@ -264,6 +288,7 @@ public class FXTest implements MouseListener, KeyListener{
                 mRectHeight = Integer.parseInt(textFieldRectHeight.getText());
                 mLineYLeft = Integer.parseInt(textFieldY_LineLeft.getText());
                 mLineYRight = Integer.parseInt(textFieldY_LineRight.getText());
+                contentPane.requestFocusInWindow();
             }
 
         });
@@ -285,9 +310,10 @@ public class FXTest implements MouseListener, KeyListener{
                 jsonObjectRC.put("yLineR",mLineYRight);
                 jsonObjectRC.put("yRect",mRectY);
                 jsonObjectRC.put("yRectHeight",mRectHeight);
-                jsonObjectRC.put("KameraID",jComboBoxBC.getSelectedIndex());
-                jsonObject.put("KameraBC",jsonObjectRC);
+                jsonObjectRC.put("KameraID",jComboBoxRC.getSelectedIndex());
+                jsonObject.put("KameraRC",jsonObjectRC);
             }
+            contentPane.requestFocusInWindow();
             JSONAccess.storeJSON(jsonObject);
         });
 
@@ -315,6 +341,7 @@ public class FXTest implements MouseListener, KeyListener{
 
         contentPane.setFocusable(true);
 
+        jFrame.addKeyListener(this);
 
         //Fenster hat 15pt breite und 40 pt hoehe, neben gewuenschter flaeche
         jFrame.setContentPane(contentPane);
@@ -325,10 +352,11 @@ public class FXTest implements MouseListener, KeyListener{
         runCamera();
     }
     private void runCamera(){
-        if(videoCapture != null) {
-            videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
-            videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
             while (abfrage) {
+                VideoCapture videoCapture = videoCaptures.get(currentCamera);
+                videoCapture.set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+                videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, 720);
+
                 if (videoCapture.read(frame)) {
                     Imgproc.rectangle(frame, new Point(0, mRectY), new Point(SCREEN_WIDTH, mRectY + mRectHeight), new Scalar(255, 0, 0), mRectThickness);
                     Imgproc.line(frame, new Point(0, mLineYLeft), new Point(SCREEN_WIDTH, mLineYRight), new Scalar(0, 0, 255), mLineThickness);
@@ -337,8 +365,7 @@ public class FXTest implements MouseListener, KeyListener{
                     jLabel.repaint();
                 }
             }
-            videoCapture.release();
-        }
+            //videoCapture.release();
     }
     private static BufferedImage convertMatToBufferedImage(Mat image) {
         MatOfByte bytemat = new MatOfByte();
@@ -376,11 +403,12 @@ public class FXTest implements MouseListener, KeyListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println(e.getY());
-        if(jFrame.getY() + ((mLineYLeft+mLineYRight)/2) - 10 < e.getY() && e.getY() < jFrame.getY()+((mLineYLeft+mLineYRight)/2)+10){
+        System.out.println(jFrame.getY());
+        if(((mLineYLeft+mLineYRight)/2) - 20 < e.getY() && e.getY() < ((mLineYLeft+mLineYRight)/2)+20){
             mLineThickness = 10;
             mRectThickness = 1;
         }else {
-            if(jFrame.getY() + mRectY <= e.getY() && e.getY() <= jFrame.getY() + mRectY+mRectHeight){
+            if(mRectY <= e.getY() && e.getY() <= + mRectY+mRectHeight){
                 mLineThickness = 1;
                 mRectThickness = 10;
             }
@@ -410,18 +438,18 @@ public class FXTest implements MouseListener, KeyListener{
 
     @Override
     public void keyTyped(KeyEvent e) {
-        //System.out.println(e.getKeyChar());
+        System.out.println(e.getKeyChar());
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_UP){
             if(mRectThickness==10){
-                if(mRectY >= IMAGE_VIEW_Y + 1)
+                if(mRectY >= + 1)
                 mRectY--;
             }
             else{
-                if(Math.min(mLineYLeft,mLineYRight) >= IMAGE_VIEW_Y + 1) {
+                if(Math.min(mLineYLeft,mLineYRight) >= + 1) {
                     mLineYLeft--;
                     mLineYRight--;
                 }
@@ -429,16 +457,18 @@ public class FXTest implements MouseListener, KeyListener{
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN){
             if(mRectThickness==10){
-                if(mRectY + mRectHeight + IMAGE_VIEW_Y < 719)
+                if(mRectY + mRectHeight < 719)
                 mRectY++;
             }
             else{
-                if(Math.max(mLineYLeft,mLineYRight) + IMAGE_VIEW_Y < 719) {
+                if(Math.max(mLineYLeft,mLineYRight) < 719) {
                     mLineYLeft++;
                     mLineYRight++;
                 }
             }
         }
+
+        changeTextFieldValues();
 
     }
 

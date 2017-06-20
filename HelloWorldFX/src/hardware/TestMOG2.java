@@ -46,12 +46,14 @@ public class TestMOG2 {
     private void run() {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        VideoCapture[] videoCaptures = {new VideoCapture(0),new VideoCapture(1)};
-        SettingObject[] settingObjects = {new SettingObject(0, 190, 1280, 100,1, 315,324),
-                new SettingObject(0, 355, 1280, 100,0, 500,500)};
+        SettingObject[] settingObjects = {new SettingObject(0, 355, 1280, 100,0, 500,500),
+                new SettingObject(0, 190, 1280, 100,1, 315,324)};
         JSONObject jsonObject = JSONAccess.getJSON();
-        settingObjects[1].initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
-        settingObjects[0].initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
+        settingObjects[0].initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
+        settingObjects[1].initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
+        VideoCapture[] videoCaptures = {new VideoCapture(settingObjects[0].cameraID),
+                new VideoCapture(settingObjects[1].cameraID)};
+
         /*VideoCapture[] videoCaptures = {new VideoCapture(0)};
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
@@ -321,11 +323,11 @@ public class TestMOG2 {
             jFrame.setVisible(true);
         }
         void initializeJSONValues(JSONObject jsonObject){
-            this.yLineL = (int) jsonObject.get("yLineL");
-            this.yLineR = (int) jsonObject.get("yLineR");
-            this.y = (int) jsonObject.get("yRect");
-            this.height = (int) jsonObject.get("yRectHeight");
-            this.cameraID = (int) jsonObject.get("KameraID");
+            this.yLineL = (int) (long)jsonObject.get("yLineL");
+            this.yLineR = (int) (long)jsonObject.get("yLineR");
+            this.y = (int) (long)jsonObject.get("yRect");
+            this.height = (int) (long)jsonObject.get("yRectHeight");
+            this.cameraID = (int) (long)jsonObject.get("KameraID");
         }
     }
     public void window(BufferedImage img, String text, int x, int y) {

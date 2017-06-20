@@ -26,10 +26,11 @@ public class JSONAccess {
             return (JSONObject) obj;
         } catch (Exception e) {
             e.printStackTrace();
-            return getDefaultJSONObject();
+            createDefaultJSONObject();
+            return getJSON();
         }
     }
-    private static JSONObject getDefaultJSONObject(){
+    private static void createDefaultJSONObject(){
         JSONObject jsonObject = new JSONObject();
 
         JSONObject jsonObjectBC = new JSONObject();
@@ -48,7 +49,6 @@ public class JSONAccess {
 
         jsonObject.put("KameraBC",jsonObjectBC);
         jsonObject.put("KameraRC",jsonObjectRC);
-        return jsonObject;
-
+        JSONAccess.storeJSON(jsonObject);
     }
 }
