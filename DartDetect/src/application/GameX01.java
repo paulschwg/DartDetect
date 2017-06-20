@@ -2,6 +2,8 @@ package application;
 
 import hardware.TestMOG2;
 
+import java.io.IOException;
+
 public class GameX01 extends Game {
 	
 	public GameX01(int playerCount, int goal){
@@ -29,17 +31,22 @@ public class GameX01 extends Game {
 				return;
 			}
 		}
-		if (player.getScore() < 0 || player.getScore() == 1) { //Überworfen
+		if (player.getScore() < 0 || player.getScore() == 1) { //ï¿½berworfen
 			player.addScore(wurfScore);
-			System.out.println("Überworfen!");
+			System.out.println("ï¿½berworfen!");
 			return;
 		}
 		
 		dartCount++;
 		
 		if (dartCount == 4) { //Runde beendet
-			detect.abort();
 			printAll();
+			System.out.println("DrÃ¼cke eine Taste, wenn du bereit bist!");
+			try {
+				System.in.read();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
 			dartCount = 1;
 			playerTurn++;
 			if (playerTurn > playerCount) playerTurn = 1;

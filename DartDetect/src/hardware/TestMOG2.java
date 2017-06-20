@@ -92,7 +92,7 @@ public class TestMOG2 {
                                 if(s.toleranceCounter <= 2){
                                     s.toleranceCounter++;
                                 }else{
-                                    window(convertMatToBufferedImage(s.addedContours.clone()),"Hallo",1280,400);
+                                    //window(convertMatToBufferedImage(s.addedContours.clone()),"Hallo",1280,400);
                                     List<MatOfPoint> detectContours = detectContours(s.addedContours);
                                     if(detectContours.size()>0) {
                                         int maxValue = 0;
