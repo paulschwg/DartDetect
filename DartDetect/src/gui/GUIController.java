@@ -29,6 +29,12 @@ public class GUIController {
 	GridPane gridOptions;
 	Stage stageOptions;
 	Scene sceneOptions;
+<<<<<<< HEAD
+=======
+	application.Game game;
+	hardware.TestMOG2 runGame = new hardware.TestMOG2(game);
+	String inputMode, inputPlayer;
+>>>>>>> b0d192733898fd20c6cbbd6cb34652223203a906
 
 	public void openOptions(ActionEvent event) throws Exception {
 		try {
@@ -127,6 +133,16 @@ public class GUIController {
 
 	public void changeValue2() {
 
+<<<<<<< HEAD
+=======
+		if (inputMode == "Freies Spiel") {
+			game = new application.GameFree(numPlayer);
+		} else {
+			game = new application.GameX01(numPlayer, Integer.parseInt(inputMode.substring(0,1))*100 + 1);
+		}
+		stageOptions = (Stage) btnPlay.getScene().getWindow();
+		stageOptions.close();
+>>>>>>> b0d192733898fd20c6cbbd6cb34652223203a906
 	}
 
 }

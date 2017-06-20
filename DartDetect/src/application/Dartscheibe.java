@@ -13,9 +13,9 @@ public class Dartscheibe {
 	private final static int POS_MIDDLE = 2250;
 	private final static int RANGE_DOUBLE = 1700;
 	private final static int RANGE_OUTER_SINGLE = 1600;
-	private final static int RANGE_TRIPLE = 1080;
-	private final static int RANGE_INNER_SINGLE = 970;
-	private	final static int RANGE_BULL = 180;
+	private final static int RANGE_TRIPLE = 1050;
+	private final static int RANGE_INNER_SINGLE = 950;
+	private	final static int RANGE_BULL = 160;
 	private	final static int RANGE_DOUBLE_BULL = 80;
 	
 	public Dartscheibe () { }

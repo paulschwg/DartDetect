@@ -1,14 +1,17 @@
 package application;
 
-public class Main {
+import gui.GUIController;
 
-	public Main() {
-		// TODO Auto-generated constructor stub
-	}
+public class Main {
+	
+	private Game game;
+	private GUIController gui;
+	
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		Game game = new GameX01(2,501);
+		game.run();
 	}
 
 }

@@ -1,6 +1,7 @@
 package hardware;
 import application.AngleToCoord;
 import application.Dartscheibe;
+import application.Game;
 import application.JSONAccess;
 import org.json.simple.JSONObject;
 import org.opencv.core.*;
@@ -36,11 +37,13 @@ public class TestMOG2 {
     Dartscheibe mDartscheibe = new Dartscheibe();
     private int dartCount;
     boolean abfrage = true;
+    private Game game;
+    
+    private boolean running = true;
 
-
-    public static void main(String[] args) {
-        TestMOG2 testMOG2 = new TestMOG2();
-        testMOG2.run();
+    public TestMOG2(Game game) {
+    	this.game = game;
+    	run();
     }
 
     public void run() {
@@ -58,7 +61,7 @@ public class TestMOG2 {
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
 
-        while (true) {
+        while (running) {
 
             for (int j = 0; j < videoCaptures.length; j++) {
                 videoCaptures[j].set(CV_CAP_PROP_FRAME_WIDTH, 1280);
@@ -75,7 +78,7 @@ public class TestMOG2 {
                     //http://docs.opencv.org/2.4/doc/tutorials/imgproc/opening_closing_hats/opening_closing_hats.html
                     Imgproc.morphologyEx(s.fgMaskMOG2, s.fgMaskMOG2, MORPH_OPEN, s.kernel);
 
-                    if (s.i > 10) {
+                    if (s.i > 20) {
                         List<MatOfPoint> detectedContours = detectContours(s.fgMaskMOG2);
                         if (detectedContours.size() > 0) {
                             if(s.addedContours==null) {
@@ -115,7 +118,7 @@ public class TestMOG2 {
                             new Scalar(0, 255, 255));
 
                     Imgproc.line(s.frame, new Point(0, s.yLineL), new Point(1280, s.yLineR), new Scalar(0, 0, 255), 2);
-                    ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.frame));
+                    ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.fgMaskMOG2));
                     s.jLabel.setIcon(image);
                     s.jLabel.repaint();
                 }
@@ -132,11 +135,8 @@ public class TestMOG2 {
         if(mPointCameraRight!=null && mPointCameraBottom!= null){
             System.out.println("0: "+ mPointCameraBottom.x*ANGEL_PER_PIXEL +
                     "| 1: " + mPointCameraRight.x*ANGEL_PER_PIXEL);
-            int [] coords = mAngleToCoord.calculateCoord(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
-            int [] dartValues = mDartscheibe.getScore(coords[0],coords[1]);
-            System.out.println("Treffer: "+dartValues[0]*dartValues[1]);
-
-            System.out.println();
+            game.getDart(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
+            
             //abfrage=false;
             mPointCameraRight = null;
             mPointCameraBottom = null;
@@ -159,9 +159,6 @@ public class TestMOG2 {
             double contourarea = Imgproc.contourArea(mat);
             if (contourarea < minArea || maxArea < contourarea) {
                 iterator.remove();
-            }
-            else {
-                System.out.println(contourarea);
             }
         }
         v.release();
@@ -325,5 +322,9 @@ public class TestMOG2 {
         frame0.setSize(img.getWidth(), img.getHeight() + 30);
         frame0.setLocation(x, y);
         frame0.setVisible(true);
+    }
+    
+    public void abort(){
+    	running = false;
     }
 }

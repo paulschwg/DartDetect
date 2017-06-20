@@ -1,5 +1,7 @@
 package application;
 
+import hardware.TestMOG2;
+
 public abstract class Game {
 	protected int playerCount;
 	protected Player[] players;
@@ -7,15 +9,25 @@ public abstract class Game {
 	protected int goal = -1;
 	protected Dartscheibe dartscheibe = new Dartscheibe();
 	protected AngleToCoord atc = new AngleToCoord();
+	protected TestMOG2 detect;
+	
+	protected int dartCount = 1;
+	protected int playerTurn = 1;
+
 	
 	public Game(int playerCount){
 		this.playerCount = playerCount;
 		players = new Player[playerCount];
 	}
 	
-	public abstract void run();
+	public void run() {
+		printAll();
+		running = true;
+		System.out.println("Spieler 1 ist dran!");
+		detect = new TestMOG2(this);
+	}
 	
-	public abstract void playRound(Player player);
+	public abstract void processDart(int mult, int number);
 	
 	public void printAll(){
 		for (Player player: players){
@@ -38,18 +50,10 @@ public abstract class Game {
 	public boolean running(){
 		return running;
 	}
-	
-	/**
-    * Wartet auf einen geworfenen Pfeil und übernimmt die von den Kameras ausgelesenen Winkel.
-    * Mithilfe der AngleToCoord- und Dartscheibe-Klassen wird dann der Punktwert berechnet.
-    * 
-    * @return int[] mit Multiplikator (1-3) und Zahlenwert (1-20 oder 25)
-    */
-	public int[] getDart(){
-		/*
-		 * Hier müssen die Werte von den Kameras übergeben werden.
-		 */
-		int dartCoord[] = atc.calculateCoord(46.4,30.8);
-		return dartscheibe.getScore(dartCoord[0], dartCoord[1]);
+		
+	public void getDart(double a1, double a2) {
+		int dartCoord[] = atc.calculateCoord(a1,a2);
+		int score[] = dartscheibe.getScore(dartCoord[0], dartCoord[1]);
+		processDart(score[0],score[1]);
 	}
 }
