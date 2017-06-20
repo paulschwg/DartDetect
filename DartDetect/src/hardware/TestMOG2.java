@@ -1,6 +1,7 @@
 package hardware;
 import application.AngleToCoord;
 import application.Dartscheibe;
+import application.Game;
 import application.JSONAccess;
 import org.json.simple.JSONObject;
 import org.opencv.core.*;
@@ -36,11 +37,11 @@ public class TestMOG2 {
     Dartscheibe mDartscheibe = new Dartscheibe();
     private int dartCount;
     boolean abfrage = true;
+    private Game game;
 
-
-    public static void main(String[] args) {
-        TestMOG2 testMOG2 = new TestMOG2();
-        testMOG2.run();
+    public TestMOG2(Game game) {
+    	this.game = game;
+    	run();
     }
 
     public void run() {
@@ -132,11 +133,12 @@ public class TestMOG2 {
         if(mPointCameraRight!=null && mPointCameraBottom!= null){
             System.out.println("0: "+ mPointCameraBottom.x*ANGEL_PER_PIXEL +
                     "| 1: " + mPointCameraRight.x*ANGEL_PER_PIXEL);
-            int [] coords = mAngleToCoord.calculateCoord(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
+            game.setAngles(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
+            /*int [] coords = mAngleToCoord.calculateCoord(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
             int [] dartValues = mDartscheibe.getScore(coords[0],coords[1]);
             System.out.println("Treffer: "+dartValues[0]*dartValues[1]);
 
-            System.out.println();
+            System.out.println();*/
             //abfrage=false;
             mPointCameraRight = null;
             mPointCameraBottom = null;
