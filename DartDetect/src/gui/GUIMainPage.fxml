@@ -140,9 +140,9 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </Button>
-            <ImageView fitHeight="111.0" fitWidth="111.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+            <ImageView fitHeight="67.0" fitWidth="93.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                <image>
-                  <Image url="@ddlogos.png" />
+                  <Image url="@ddlogow.png" />
                </image>
             </ImageView>
          </children>
