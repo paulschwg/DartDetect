@@ -1,5 +1,7 @@
 package application;
 
+import java.io.IOException;
+
 import hardware.TestMOG2;
 
 public class GameX01 extends Game {
@@ -26,13 +28,13 @@ public class GameX01 extends Game {
 			else { //Kein Double
 				player.addScore(wurfScore);
 				System.out.println("Double-Checkout erforderlich!");
-				return;
+				dartCount = 3; //Runde beendet
 			}
 		}
 		if (player.getScore() < 0 || player.getScore() == 1) { //Überworfen
 			player.addScore(wurfScore);
 			System.out.println("Überworfen!");
-			return;
+			dartCount = 3; //Runde beendet
 		}
 		
 		dartCount++;
