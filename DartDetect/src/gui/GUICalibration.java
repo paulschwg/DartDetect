@@ -26,54 +26,45 @@ import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
 public class GUICalibration implements MouseListener, KeyListener, WindowListener{
 
-    public static final int SCREEN_WIDTH = 1280;
-    public static final int SCREEN_HEIGHT = 720;
-    public static final int IMAGE_VIEW_Y = 80;
-    public static final int COMPONENTS_HEIGHT = 30;
+    private static final int SCREEN_WIDTH = 1280;
+    private static final int IMAGE_VIEW_Y = 80;
+    private static final int COMPONENTS_HEIGHT = 30;
 
-    int mRectY = 300;
-    int mRectHeight = 200;
-    int mLineYLeft = 600;
-    int mLineYRight = 600;
-    int mRectThickness = 1;
-    int mLineThickness =  5;
+    private int mRectY = 300;
+    private int mRectHeight = 200;
+    private int mLineYLeft = 600;
+    private int mLineYRight = 600;
+    private int mRectThickness = 1;
+    private int mLineThickness =  5;
 
-    JFrame jFrame;
-    JLabel jLabel;
-    JPanel contentPane;
-    Mat frame;
+    private JFrame jFrame;
+    private JLabel jLabel;
+    private JPanel contentPane;
+    private Mat frame;
 
-    JTextPane jTextAreaBC;
-    JTextPane jTextAreaRC;
+    private JTextPane jTextAreaBC, jTextAreaRC;
 
     //COMBO-Box Daten: Breite: 200 px; Höhe: 30px
-    JComboBox jComboBoxBC;
-    JComboBox jComboBoxRC;
+    private JComboBox jComboBoxBC, jComboBoxRC;
 
     //Checkbox Daten: Breite: 50 px; Höhe: 30px
-    JCheckBox jCheckBoxBC;
-    JCheckBox jCheckBoxRC;
+    private JCheckBox jCheckBoxBC, jCheckBoxRC;
 
     //Textarea Daten: Breite: width px; Höhe: 30px
-    JTextPane rectHeight;
-    JTextPane lineYLeft;
-    JTextPane lineYRight;
+    private JTextPane rectHeight, lineYLeft, lineYRight;
 
     //Textfield Daten: Breite: 100 px; Höhe: 30px
-    JTextField textFieldRectHeight;
-    JTextField textFieldY_LineLeft;
-    JTextField textFieldY_LineRight;
+    private JTextField textFieldRectHeight, textFieldY_LineLeft, textFieldY_LineRight;
 
-    JButton jButtonChange;
-    JButton jButtonSave;
+    private JButton jButtonChange, jButtonSave;
 
-    JSONObject jsonObject;
+    private JSONObject jsonObject;
 
-    ArrayList <VideoCapture> videoCaptures = new ArrayList<>();
+    private ArrayList <VideoCapture> videoCaptures = new ArrayList<>();
 
-    boolean abfrage;
+    private boolean abfrage;
 
-    int currentCamera;
+    private int currentCamera;
 
     private ArrayList <String> kameras = new ArrayList<>();
 
@@ -90,9 +81,9 @@ public class GUICalibration implements MouseListener, KeyListener, WindowListene
         contentPane.setLayout(null);
     }
 
-    private JButton initializeJButton(int x, int y, int width, int height, String text){
+    private JButton initializeJButton(int x, int y, String text){
         JButton button = new JButton(text);
-        button.setSize(width, height);
+        button.setSize(100, 30);
         button.setLocation(x, y);
         return button;
     }
@@ -200,7 +191,7 @@ public class GUICalibration implements MouseListener, KeyListener, WindowListene
     }
 
     //BC bottom camera | RC right camera
-    public void show(){
+    private void show(){
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
         fillKameraList();
@@ -278,7 +269,7 @@ public class GUICalibration implements MouseListener, KeyListener, WindowListene
         textFieldY_LineRight = initJTextField(790,40);
         changeTextFieldValues();
 
-        jButtonChange = initializeJButton(900,0,100,30,"Ändern");
+        jButtonChange = initializeJButton(900,0,"Ändern");
         jButtonChange.addActionListener(e -> {
             if(isNumeric(textFieldRectHeight.getText()) && isNumeric(textFieldY_LineLeft.getText()) && isNumeric(textFieldY_LineRight.getText())){
                 //TODO Prüfung ob Einagbe korrekt
@@ -289,7 +280,7 @@ public class GUICalibration implements MouseListener, KeyListener, WindowListene
             }
 
         });
-        jButtonSave = initializeJButton(1275,40,100,30,"Speichern");
+        jButtonSave = initializeJButton(1275,40,"Speichern");
         jButtonSave.addActionListener(e -> {
             if(jCheckBoxBC.isSelected()){
                 JSONObject jsonObjectBC = new JSONObject();
@@ -380,10 +371,6 @@ public class GUICalibration implements MouseListener, KeyListener, WindowListene
             e.printStackTrace();
         }
         return img;
-    }
-
-    private int getKameraID(String text){
-        return Integer.parseInt(text.split(" ")[1]);
     }
 
     private boolean isNumeric(String str)

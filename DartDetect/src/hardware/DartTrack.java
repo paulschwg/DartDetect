@@ -1,6 +1,6 @@
 package hardware;
-import application.AngleToCoord;
-import application.Dartscheibe;
+//import application.AngleToCoord;
+//import application.Dartscheibe;
 import application.Game;
 import application.JSONAccess;
 import org.json.simple.JSONObject;
@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-import static org.opencv.imgproc.Imgproc.MORPH_CLOSE;
-import static org.opencv.imgproc.Imgproc.MORPH_ELLIPSE;
 import static org.opencv.imgproc.Imgproc.MORPH_OPEN;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
@@ -29,14 +27,11 @@ import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
 public class DartTrack {
 
-    public static final double ANGEL_PER_PIXEL = 47.86/1280.0;
-    public static final double CENTER = 640.0;
+    private static final double ANGEL_PER_PIXEL = 47.86/1280.0;
     private Point mPointCameraBottom = null;
     private Point mPointCameraRight = null;
-    AngleToCoord mAngleToCoord = new AngleToCoord();
-    Dartscheibe mDartscheibe = new Dartscheibe();
-    private int dartCount;
-    boolean abfrage = true;
+    //AngleToCoord mAngleToCoord = new AngleToCoord();
+    //Dartscheibe mDartscheibe = new Dartscheibe();
     private Game game;
     
     private boolean running = true;
@@ -126,6 +121,7 @@ public class DartTrack {
         }
     }
 
+    //Berechnet Winkel und gibt diesen an die game Instanz weiter
     private void calculateAngle(Point point, int id){
         if(id==0){
             mPointCameraBottom = point;
@@ -190,10 +186,6 @@ public class DartTrack {
         Core.calcCovarMatrix(data_pts, covar, mean, Core.COVAR_NORMAL | Core.COVAR_SCALE | Core.COVAR_ROWS | Core.COVAR_USE_AVG);
         Core.eigen(covar, eigenvalues, eigenvectors);
 
-        //Store the position of the object
-        Point pos = new Point(mean.get(0, 0)[0],
-                mean.get(0, 1)[0]);
-
         //Store the eigenvalues and eigenvectors
         Point cntr = new Point(mean.get(0, 0)[0],mean.get(0, 1)[0]);
         Point [] eigen_vecs = new Point[2];
@@ -208,21 +200,21 @@ public class DartTrack {
         Point p1 = new Point(cntr.x+0.02*p1_.x,cntr.y+0.02*p1_.y);
 
         Point cntr1 = cntr.clone();
-        drawAxis(img, cntr1, p1, 1,s);
+        drawAxis(img, cntr1, p1, s);
 
         return Math.atan2(eigen_vecs[0].y, eigen_vecs[0].x);
     }
 
-
-    private void drawAxis(Mat img, Point p, Point q, double scale, SettingObject s){
+    //Berechnung einer Geraden aus zwei Pixeln
+    private void drawAxis(Mat img, Point p, Point q, SettingObject s){
         double angle;
         double hypotenuse;
         angle = Math.atan2(p.y - q.y, p.x - q.x ); // angle in radians
         hypotenuse = Math.sqrt((p.y - q.y) * (p.y - q.y) + (p.x - q.x) * (p.x - q.x));
 
         Point q1 = new Point();
-        q1.x = (int) (p.x - scale * hypotenuse * Math.cos(angle));
-        q1.y = (int) (p.y - scale * hypotenuse * Math.sin(angle));
+        q1.x = (int) (p.x - 1 * hypotenuse * Math.cos(angle));
+        q1.y = (int) (p.y - 1 * hypotenuse * Math.sin(angle));
 
         p.x += s.x;
         p.y += s.y;
@@ -233,7 +225,7 @@ public class DartTrack {
         calculateAngle(intersection,s.id);
     }
 
-    //p1 und p2 sind Punkte vom Dartpfeil
+    //Berechnung des Schnittpunktes zweier Geraden
     private Point intersection(Point p1, Point p2, Point o1, Point o2, Mat img){
         double mp1 = (p2.y-p1.y)/(p2.x-p1.x);
         double mo2 = (o2.y-o1.y)/(o2.x-o1.x);
@@ -271,7 +263,6 @@ public class DartTrack {
         int x,y,width,height, id, yLineL, yLineR, i, dartCount, cameraID, toleranceCounter;
         double learningRate;
         boolean detectedDartAtLastFrame;
-        double lastFrameArea;
         Mat addedContours;
         BackgroundSubtractorMOG2 backgroundSubtractorMOG2;
 
