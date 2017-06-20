@@ -133,12 +133,8 @@ public class TestMOG2 {
         if(mPointCameraRight!=null && mPointCameraBottom!= null){
             System.out.println("0: "+ mPointCameraBottom.x*ANGEL_PER_PIXEL +
                     "| 1: " + mPointCameraRight.x*ANGEL_PER_PIXEL);
-            game.setAngles(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
-            /*int [] coords = mAngleToCoord.calculateCoord(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
-            int [] dartValues = mDartscheibe.getScore(coords[0],coords[1]);
-            System.out.println("Treffer: "+dartValues[0]*dartValues[1]);
-
-            System.out.println();*/
+            game.getDart(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
+            
             //abfrage=false;
             mPointCameraRight = null;
             mPointCameraBottom = null;
