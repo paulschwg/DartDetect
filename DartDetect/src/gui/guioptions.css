@@ -10,7 +10,7 @@
 	-fx-font-size: 20.0px;
 }
 
-#bpMain, #gOptions{
+#gOptions{
 	-fx-background-image: url("background.jpg");
 }
 

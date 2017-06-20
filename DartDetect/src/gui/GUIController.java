@@ -1,29 +1,17 @@
 package gui;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class GUIController {
-	hardware.FXTest cameraWindow = new hardware.FXTest();
 
 	@FXML
 	private Button btnOptions, btnCamera, btnClose, btnPlay, btnChangeValue1, btnChangeValue2, btnConfirm;
@@ -33,29 +21,68 @@ public class GUIController {
 	TextField tfP1T1, tfP1T2, tfP1T3, tfP2T1, tfP2T2, tfP2T3;
 	@FXML
 	ListView lvPlayer1, lvPlayer2;
+
+	hardware.FXTest cameraWindow;
+	application.GameX01 gameX01;
+	application.GameFree gameFree;
+	FXMLLoader fxmlLoader;
 	GridPane gridOptions;
 	Stage stageOptions;
 	Scene sceneOptions;
-	application.GameX01 gameX01;
-	application.GameFree gameFree;
-	hardware.TestMOG2 runGame = new hardware.TestMOG2();
-	String inputMode, inputPlayer;
 
 	public void openOptions(ActionEvent event) throws Exception {
 		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
-			gridOptions = (GridPane) fxmlLoader.load();
+			fxmlLoader = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
 			stageOptions = new Stage();
+			gridOptions = (GridPane) fxmlLoader.load();
 			sceneOptions = new Scene(gridOptions, 600, 400);
+
 			sceneOptions.getStylesheets().add(getClass().getResource("guioptions.css").toExternalForm());
 			stageOptions.setTitle("Optionen");
 			gridOptions.setId("gOptions");
 			stageOptions.setScene(sceneOptions);
 			stageOptions.setResizable(false);
+
 			stageOptions.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void openCamera(ActionEvent event) throws Exception {
+		try {
+			cameraWindow.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void closeOptions(ActionEvent event) {
+		stageOptions = (Stage) btnClose.getScene().getWindow();
+		stageOptions.close();
+	}
+
+	public void playGame(ActionEvent event) {
+		int numPlayer;
+		String inputMode, inputPlayer;
+
+		inputMode = cbMode.getValue();
+		inputPlayer = cbPlayer.getValue();
+
+		if (inputPlayer == "1 Spieler") {
+			numPlayer = 1;
+		} else {
+			numPlayer = 2;
+		}
+
+		if (inputMode == "Freies Spiel") {
+			gameFree = new application.GameFree(numPlayer);
+		} else {
+			gameX01 = new application.GameX01(numPlayer, Integer.parseInt(inputMode.substring(0, 1)) * 100 + 1);
+		}
+
+		stageOptions = (Stage) btnPlay.getScene().getWindow();
+		stageOptions.close();
 	}
 
 	public void setTfP1T1(int throw1) {
@@ -86,54 +113,20 @@ public class GUIController {
 
 	public void addPointsPlayer1(int points) {
 		lvPlayer1.getItems().add(points);
+
 	}
 
 	public void addPointsPlayer2(int points) {
 		lvPlayer2.getItems().add(points);
-	}
-	
-	public void changeValue1(){
-		
-	}
-	
-	public void changeValue2(){
-		
+
 	}
 
-	public void openCamera(ActionEvent event) throws Exception {
-		try {
-			cameraWindow.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void changeValue1() {
+
 	}
 
-	public void closeOptions(ActionEvent event) {
-		stageOptions = (Stage) btnClose.getScene().getWindow();
-		stageOptions.close();
-	}
+	public void changeValue2() {
 
-	public void playGame(ActionEvent event) {
-		int numPlayer;
-
-		inputMode = cbMode.getValue();
-		inputPlayer = cbPlayer.getValue();
-
-		if (inputPlayer == "1 Spieler") {
-			numPlayer = 1;
-		} else {
-			numPlayer = 2;
-		}
-
-		if (inputMode == "Freies Spiel") {
-			gameFree = new application.GameFree(numPlayer);
-			gameFree.run();
-		} else {
-			gameX01 = new application.GameX01(numPlayer, Integer.parseInt(inputMode.substring(0,1))*100 + 1);
-		}
-		runGame.run();
-		stageOptions = (Stage) btnPlay.getScene().getWindow();
-		stageOptions.close();
 	}
 
 }
