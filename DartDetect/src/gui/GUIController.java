@@ -35,6 +35,8 @@ public class GUIController {
 	application.Game game;
 	String inputMode, inputPlayer;
 
+	static boolean roundReady = false;
+
 	public void openOptions(ActionEvent event) throws Exception {
 		try {
 			fxmlLoaderOptions = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
@@ -69,6 +71,7 @@ public class GUIController {
 		stageOptions.close();
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Methode zum Starten der nächsten Runde
 	 * 
@@ -76,6 +79,38 @@ public class GUIController {
 	 */
 	public void nextRound(ActionEvent event) {
 
+=======
+	public void confirmFrame() {
+		openConfirm();
+	}
+
+	public void openConfirm(){
+		try {
+			fxmlLoaderConfirm = new FXMLLoader(getClass().getResource("GUIConfirm.fxml"));
+			stageConfirm = new Stage();
+			paneConfirm = (Pane) fxmlLoaderConfirm.load();
+			sceneConfirm = new Scene(paneConfirm, 200, 200);
+
+			sceneConfirm.getStylesheets().add(getClass().getResource("guiconfirm.css").toExternalForm());
+			stageConfirm.setTitle("DartDetect");
+			stageConfirm.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+			paneConfirm.setId("pConfirm");
+			stageConfirm.setScene(sceneConfirm);
+			stageConfirm.setResizable(false);
+
+			stageConfirm.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Methode zum Starten der nï¿½chsten Runde
+	 * @param event
+	 */
+	public void nextRound(ActionEvent event){
+		roundReady = true;
+		System.out.println("Ready");
+>>>>>>> 73d7cbc283a9c5bcf5f4bebacc8672db55f700cd
 	}
 
 	public void playGame(ActionEvent event) {
@@ -95,6 +130,7 @@ public class GUIController {
 		stageOptions.close();
 	}
 
+<<<<<<< HEAD
 	public String getInputMode() {
 		return inputMode;
 	}
@@ -105,26 +141,30 @@ public class GUIController {
 
 	public void setTfP1T1(int throw1) {
 		this.tfP1T1.setText("" + throw1);
+=======
+	public void setTfP1T1(int mult, int number) {
+		this.tfP1T1.setText(mult + "*" + number);
+>>>>>>> 73d7cbc283a9c5bcf5f4bebacc8672db55f700cd
 	}
 
-	public void setTfP1T2(int throw2) {
-		this.tfP1T2.setText("" + throw2);
+	public void setTfP1T2(int mult, int number) {
+		this.tfP1T2.setText(mult + "*" + number);
 	}
 
-	public void setTfP1T3(int throw3) {
-		this.tfP1T3.setText("" + throw3);
+	public void setTfP1T3(int mult, int number) {
+		this.tfP1T3.setText(mult + "*" + number);
 	}
 
-	public void setTfP2T1(int throw1) {
-		this.tfP2T1.setText("" + throw1);
+	public void setTfP2T1(int mult, int number) {
+		this.tfP2T1.setText(mult + "*" + number);
 	}
 
-	public void setTfP2T2(int throw2) {
-		this.tfP2T2.setText("" + throw2);
+	public void setTfP2T2(int mult, int number) {
+		this.tfP2T2.setText(mult + "*" + number);
 	}
 
-	public void setTfP2T3(int throw3) {
-		this.tfP2T3.setText("" + throw3);
+	public void setTfP2T3(int mult, int number) {
+		this.tfP2T3.setText(mult + "*" + number);
 	}
 
 	public void clearTfP1() {
@@ -155,6 +195,14 @@ public class GUIController {
 
 	public void changeValue2() {
 
+	}
+
+	public boolean isReady() {
+		return roundReady;
+	}
+
+	public void waitForReady() {
+		roundReady = false;
 	}
 
 }

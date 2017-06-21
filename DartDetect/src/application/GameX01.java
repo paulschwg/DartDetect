@@ -2,7 +2,10 @@ package application;
 
 import java.io.IOException;
 
+import gui.GUIController;
 import hardware.DartTrack;
+
+import javax.swing.*;
 
 public class GameX01 extends Game {
 	
@@ -27,7 +30,7 @@ public class GameX01 extends Game {
 		
 		int wurfScore = mult * number;
 		player.removeScore(wurfScore);
-		sendDartToGUI(playerTurn, dartCount, wurfScore);
+		sendDartToGUI(playerTurn, dartCount, mult, number);
 
 		if (player.getScore() == 0){
 			if (mult == 2) {//Double Checkout => Gewonnen
@@ -41,7 +44,7 @@ public class GameX01 extends Game {
 		}
 		if (player.getScore() < 0 || player.getScore() == 1) { //ï¿½berworfen
 			player.loadScore();
-			System.out.println("Überworfen!");
+			System.out.println("ï¿½berworfen!");
 			dartCount = 3; //Runde beendet
 		}
 		
@@ -50,12 +53,8 @@ public class GameX01 extends Game {
 		if (dartCount == 4) { //Runde beendet
 			printAll();
 			sendPlayerScoreToGUI(playerTurn, player.getScore());
-			System.out.println("Drücke eine Taste, wenn du bereit bist!");
-			try {
-				System.in.read();
-			} catch (IOException e){
-				e.printStackTrace();
-			}
+			gui.controller().waitForReady();
+			while (!gui.controller().isReady()) {/*System.out.println("Waiting for confirmation");*/}
 			dartCount = 1;
 			playerTurn++;
 			if (playerTurn > playerCount) playerTurn = 1;
