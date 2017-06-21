@@ -47,4 +47,8 @@ public class Main {
 		startGame = true;
 	}
 
+	public static void endGame(){
+		game = null;
+	}
+
 }

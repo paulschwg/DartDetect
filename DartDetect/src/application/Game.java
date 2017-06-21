@@ -7,7 +7,6 @@ import hardware.DartTrack;
 public abstract class Game{
 	protected int playerCount;
 	protected Player[] players;
-	protected boolean running;
 	protected int goal = -1;
 	protected Dartscheibe dartscheibe = new Dartscheibe();
 	protected AngleToCoord atc = new AngleToCoord();
@@ -24,12 +23,9 @@ public abstract class Game{
 	}
 	
 	public void run() {
-		printAll();
-		running = true;
 		for (int i = 1; i <= playerCount; i++) {
 			sendPlayerScoreToGUI(i, players[i-1].getScore());
 		}
-		System.out.println("Spieler 1 ist dran!");
 		detect = new DartTrack(this);
 	}
 	
@@ -52,11 +48,7 @@ public abstract class Game{
 			players[i] = new Player(0,"Spieler " + (i + 1));
 		}
 	}
-	
-	public boolean running(){
-		return running;
-	}
-		
+
 	public void getDart(double a1, double a2) {
 		int dartCoord[] = atc.calculateCoord(a1,a2);
 		int score[] = dartscheibe.getScore(dartCoord[0], dartCoord[1]);
