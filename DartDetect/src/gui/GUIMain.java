@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -15,6 +16,7 @@ public class GUIMain extends Application {
 	BorderPane rootBPane;
 	GridPane optionsGPane;
 	Scene sceneMain, sceneOptions;
+	ActionEvent event = new ActionEvent();
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -24,7 +26,6 @@ public class GUIMain extends Application {
 			rootBPane.setId("bpMain");
 			sceneMain = new Scene(rootBPane);
 			sceneMain.getStylesheets().add(getClass().getResource("guimain.css").toExternalForm());
-			
 			primaryStage.setHeight(Toolkit.getDefaultToolkit().getScreenSize().height - 60);
 			primaryStage.setWidth(Toolkit.getDefaultToolkit().getScreenSize().width - 20);
 			primaryStage.setTitle("DartDetect");
@@ -34,14 +35,18 @@ public class GUIMain extends Application {
 			primaryStage.show();
 
 			
-			// test = (GUIController) loaderMain.getController();
-
+			test = (GUIController) loaderMain.getController();
+			test.openConfirm();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		GUIMain stagetest = new GUIMain();
+		Stage teststage = new Stage();
+		stagetest.start(teststage);
+		
+		//launch(args);
 	}
 }

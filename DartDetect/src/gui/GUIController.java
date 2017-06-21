@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class GUIController {
@@ -26,22 +27,23 @@ public class GUIController {
 	GUICalibration cameraWindow;
 	application.GameX01 gameX01;
 	application.GameFree gameFree;
-	FXMLLoader fxmlLoader;
+	FXMLLoader fxmlLoaderOptions, fxmlLoaderConfirm;
+	Pane paneConfirm;
 	GridPane gridOptions;
-	Stage stageOptions;
-	Scene sceneOptions;
+	Stage stageOptions, stageConfirm;
+	Scene sceneOptions, sceneConfirm;
 	application.Game game;
 	String inputMode, inputPlayer;
 
 	public void openOptions(ActionEvent event) throws Exception {
 		try {
-			fxmlLoader = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
+			fxmlLoaderOptions = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
 			stageOptions = new Stage();
-			gridOptions = (GridPane) fxmlLoader.load();
+			gridOptions = (GridPane) fxmlLoaderOptions.load();
 			sceneOptions = new Scene(gridOptions, 600, 400);
 
 			sceneOptions.getStylesheets().add(getClass().getResource("guioptions.css").toExternalForm());
-			stageOptions.setTitle("Optionen");
+			stageOptions.setTitle("DartDetect");
 			stageOptions.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
 			gridOptions.setId("gOptions");
 			stageOptions.setScene(sceneOptions);
@@ -67,6 +69,33 @@ public class GUIController {
 		stageOptions.close();
 	}
 
+	public void openConfirm(){
+		try {
+			fxmlLoaderConfirm = new FXMLLoader(getClass().getResource("GUIConfirm.fxml"));
+			stageConfirm = new Stage();
+			paneConfirm = (Pane) fxmlLoaderConfirm.load();
+			sceneConfirm = new Scene(paneConfirm, 200, 200);
+
+			sceneConfirm.getStylesheets().add(getClass().getResource("guiconfirm.css").toExternalForm());
+			stageConfirm.setTitle("DartDetect");
+			stageConfirm.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
+			paneConfirm.setId("pConfirm");
+			stageConfirm.setScene(sceneConfirm);
+			stageConfirm.setResizable(false);
+
+			stageConfirm.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Methode zum Starten der nächsten Runde
+	 * @param event
+	 */
+	public void nextRound(ActionEvent event){
+		
+	}
+	
 	public void playGame(ActionEvent event) {
 		int numPlayer;
 		String inputMode, inputPlayer;
