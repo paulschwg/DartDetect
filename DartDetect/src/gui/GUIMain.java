@@ -1,5 +1,6 @@
 package gui;
 
+import application.Main;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
@@ -11,7 +12,7 @@ import javafx.fxml.FXMLLoader;
 import java.awt.Toolkit;
 
 public class GUIMain extends Application implements Runnable {
-	GUIController test;
+	GUIController controller;
 	FXMLLoader loaderMain, loaderOptions;
 	BorderPane rootBPane;
 	GridPane optionsGPane;
@@ -35,18 +36,19 @@ public class GUIMain extends Application implements Runnable {
 			primaryStage.show();
 
 			
-			test = (GUIController) loaderMain.getController();
+			controller = (GUIController) loaderMain.getController();
+			Main.gui = this;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public GUIController controller(){
-		return test;
+		return controller;
 	}
 
 	@Override
 	public void run() {
-		Application.launch(GUIMain.class);
+		Application.launch();
 	}
 }

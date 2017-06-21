@@ -13,7 +13,7 @@ public abstract class Game {
 	protected AngleToCoord atc = new AngleToCoord();
 	protected DartTrack detect;
 	protected GUIMain gui;
-	
+
 	protected int dartCount = 1;
 	protected int playerTurn = 1;
 
@@ -64,20 +64,20 @@ public abstract class Game {
 		this.gui = gui;
 	}
 	
-	public void sendDartToGUI(int player, int dart, int score) {
+	public void sendDartToGUI(int player, int dart, int mult, int number) {
 		switch (player) {
 			case 1:
 				switch (dart) {
-					case 1: gui.controller().setTfP1T1(score); break;
-					case 2: gui.controller().setTfP1T2(score); break;
-					case 3: gui.controller().setTfP1T3(score); break;
+					case 1: gui.controller().setTfP1T1(mult,number); break;
+					case 2: gui.controller().setTfP1T2(mult,number); break;
+					case 3: gui.controller().setTfP1T3(mult,number); break;
 					default: break;
 				} break;
 			case 2:
 				switch (dart) {
-				case 1: gui.controller().setTfP2T1(score); break;
-				case 2: gui.controller().setTfP2T2(score); break;
-				case 3: gui.controller().setTfP2T3(score); break;
+				case 1: gui.controller().setTfP2T1(mult,number); break;
+				case 2: gui.controller().setTfP2T2(mult,number); break;
+				case 3: gui.controller().setTfP2T3(mult,number); break;
 				default: break;
 			} break;
 			default: break;
@@ -93,6 +93,7 @@ public abstract class Game {
 	}
 	
 	public void clearDartsInGUI(int player) {
+	    System.out.println(gui);
 		switch (player) {
 			case 1: gui.controller().clearTfP1(); break;
 			case 2: gui.controller().clearTfP2(); break;

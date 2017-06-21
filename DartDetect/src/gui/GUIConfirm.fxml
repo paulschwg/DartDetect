@@ -7,6 +7,6 @@
 <Pane id="pConfirm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GUIController">
    <children>
       <Label layoutX="6.0" layoutY="1.0" prefHeight="129.0" prefWidth="193.0" text="Hole die Pfeile aus der Dartscheibe. Drücke dann auf Bestätigen, um den nächsten Durchgang zu starten." textAlignment="CENTER" wrapText="true" />
-      <Button fx:id="btnConfirm" layoutX="74.0" layoutY="161.0" mnemonicParsing="false" text="Bestätigen" />
+      <Button fx:id="btnConfirm" layoutX="74.0" layoutY="161.0" mnemonicParsing="false" text="Bestätigen" onAction="#nextRound"/>
    </children>
 </Pane>
