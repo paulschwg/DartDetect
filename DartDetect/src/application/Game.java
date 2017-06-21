@@ -90,4 +90,12 @@ public abstract class Game {
 			default: break;
 		}
 	}
+	
+	public void clearDartsInGUI(int player) {
+		switch (player) {
+			case 1: gui.clearTfP1(); break;
+			case 2: gui.clearTfP2(); break;
+			default: break;
+		}
+	}
 }

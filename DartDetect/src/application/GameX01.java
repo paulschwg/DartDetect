@@ -21,6 +21,7 @@ public class GameX01 extends Game {
 	public void processDart(int mult, int number){
 		Player player = players[playerTurn - 1];
 		if (dartCount == 1) {
+			clearDartsInGUI(playerTurn);
 			player.saveScore();
 		}
 		
