@@ -91,7 +91,7 @@ public class GUIController {
 		} else {
 			Main.startNewX01(players,Integer.parseInt(inputMode));
 		}
-
+		System.out.println(inputMode);
 		stageOptions = (Stage) btnPlay.getScene().getWindow();
 		stageOptions.close();
 

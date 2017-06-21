@@ -38,7 +38,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
 		</Label>
-		<Label style="-fx-font-size: 30;" text="Optionen" underline="true" GridPane.halignment="CENTER" />
+		<Label style="-fx-font-size: 30;" text="Start" underline="true" GridPane.halignment="CENTER" />
 		<ComboBox fx:id="cbMode" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
 			<items>
 				<FXCollections fx:factory="observableArrayList">
