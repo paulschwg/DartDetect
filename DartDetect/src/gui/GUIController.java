@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class GUIController {
 
 	@FXML
-	private Button btnOptions, btnCamera, btnClose, btnPlay, btnChangeValue1, btnChangeValue2, btnConfirm;
+	private Button btnOptions, btnCamera, btnClose, btnPlay, btnChangeValue1, btnChangeValue2, btnConfirm, btnEndGame;
 	@FXML
 	private ComboBox<String> cbMode, cbPlayer;
 	@FXML
@@ -97,6 +97,9 @@ public class GUIController {
 
 	}
 
+	public void endGame(){
+		
+	}
 
 	public String getInputMode() {
 		return inputMode;
