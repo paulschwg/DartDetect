@@ -27,11 +27,11 @@ public class GUIController {
 	GUICalibration cameraWindow;
 	application.GameX01 gameX01;
 	application.GameFree gameFree;
-	FXMLLoader fxmlLoaderOptions, fxmlLoaderConfirm;
+	FXMLLoader fxmlLoaderOptions;
 	Pane paneConfirm;
 	GridPane gridOptions;
-	Stage stageOptions, stageConfirm;
-	Scene sceneOptions, sceneConfirm;
+	Stage stageOptions;
+	Scene sceneOptions;
 	application.Game game;
 	String inputMode, inputPlayer;
 
@@ -69,54 +69,38 @@ public class GUIController {
 		stageOptions.close();
 	}
 
-	public void openConfirm(){
-		try {
-			fxmlLoaderConfirm = new FXMLLoader(getClass().getResource("GUIConfirm.fxml"));
-			stageConfirm = new Stage();
-			paneConfirm = (Pane) fxmlLoaderConfirm.load();
-			sceneConfirm = new Scene(paneConfirm, 200, 200);
-
-			sceneConfirm.getStylesheets().add(getClass().getResource("guiconfirm.css").toExternalForm());
-			stageConfirm.setTitle("DartDetect");
-			stageConfirm.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
-			paneConfirm.setId("pConfirm");
-			stageConfirm.setScene(sceneConfirm);
-			stageConfirm.setResizable(false);
-
-			stageConfirm.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	/**
 	 * Methode zum Starten der nächsten Runde
+	 * 
 	 * @param event
 	 */
-	public void nextRound(ActionEvent event){
-		
+	public void nextRound(ActionEvent event) {
+
 	}
-	
+
 	public void playGame(ActionEvent event) {
-		int numPlayer;
-		String inputMode, inputPlayer;
 
 		inputMode = cbMode.getValue();
 		inputPlayer = cbPlayer.getValue();
 
-		if (inputPlayer == "1 Spieler") {
-			numPlayer = 1;
-		} else {
-			numPlayer = 2;
-		}
-
 		if (inputMode == "Freies Spiel") {
-			gameFree = new application.GameFree(numPlayer);
+			if (inputPlayer == "2 Spieler") {
+			}
 		} else {
-			gameX01 = new application.GameX01(numPlayer, Integer.parseInt(inputMode.substring(0, 1)) * 100 + 1);
+			if (inputPlayer == "2 Spieler") {
+			}
 		}
 
 		stageOptions = (Stage) btnPlay.getScene().getWindow();
 		stageOptions.close();
+	}
+
+	public String getInputMode() {
+		return inputMode;
+	}
+
+	public String getInputPlayer() {
+		return inputPlayer;
 	}
 
 	public void setTfP1T1(int throw1) {
@@ -142,13 +126,13 @@ public class GUIController {
 	public void setTfP2T3(int throw3) {
 		this.tfP2T3.setText("" + throw3);
 	}
-	
+
 	public void clearTfP1() {
 		this.tfP1T1.setText("");
 		this.tfP1T2.setText("");
 		this.tfP1T3.setText("");
 	}
-	
+
 	public void clearTfP2() {
 		this.tfP2T1.setText("");
 		this.tfP2T2.setText("");
