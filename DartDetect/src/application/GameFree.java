@@ -1,5 +1,9 @@
 package application;
 
+import java.io.IOException;
+
+import hardware.DartTrack;
+
 public class GameFree extends Game {
 
 	public GameFree(int playerCount) {
@@ -18,7 +22,26 @@ public class GameFree extends Game {
 	
 	@Override
 	public void processDart(int mult, int number){
-		//TODO
+		Player player = players[playerTurn - 1];
+		
+		int wurfScore = mult * number;
+		player.addScore(wurfScore);		
+		dartCount++;
+		
+		if (dartCount == 4) { //Runde beendet
+			printAll();
+			System.out.println("Drücke eine Taste, wenn du bereit bist!");
+			try {
+				System.in.read();
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+			dartCount = 1;
+			playerTurn++;
+			if (playerTurn > playerCount) playerTurn = 1;
+			System.out.println("Spieler " + playerTurn + " ist dran!");
+			detect = new DartTrack(this);
+		}
 	}
 
 }

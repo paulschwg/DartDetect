@@ -125,12 +125,10 @@ public class GUIController {
 
 	public void setTfP1T2(int throw2) {
 		this.tfP1T2.setText("" + throw2);
-		;
 	}
 
 	public void setTfP1T3(int throw3) {
 		this.tfP1T3.setText("" + throw3);
-		;
 	}
 
 	public void setTfP2T1(int throw1) {
@@ -143,6 +141,18 @@ public class GUIController {
 
 	public void setTfP2T3(int throw3) {
 		this.tfP2T3.setText("" + throw3);
+	}
+	
+	public void clearTfP1() {
+		this.tfP1T1.setText("");
+		this.tfP1T2.setText("");
+		this.tfP1T3.setText("");
+	}
+	
+	public void clearTfP2() {
+		this.tfP2T1.setText("");
+		this.tfP2T2.setText("");
+		this.tfP2T3.setText("");
 	}
 
 	public void addPointsPlayer1(int points) {

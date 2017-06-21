@@ -49,4 +49,11 @@ public class GUIMain extends Application {
 		
 		//launch(args);
 	}
+
+	public GUIMain() {
+	}
+
+	public GUIController controller(){
+		return test;
+	}
 }

@@ -1,5 +1,7 @@
 package application;
 
+import gui.GUIController;
+import gui.GUIMain;
 import hardware.DartTrack;
 
 public abstract class Game {
@@ -10,6 +12,7 @@ public abstract class Game {
 	protected Dartscheibe dartscheibe = new Dartscheibe();
 	protected AngleToCoord atc = new AngleToCoord();
 	protected DartTrack detect;
+	protected GUIMain gui;
 	
 	protected int dartCount = 1;
 	protected int playerTurn = 1;
@@ -55,5 +58,45 @@ public abstract class Game {
 		int dartCoord[] = atc.calculateCoord(a1,a2);
 		int score[] = dartscheibe.getScore(dartCoord[0], dartCoord[1]);
 		processDart(score[0],score[1]);
+	}
+	
+	public void addGUIInterface(GUIMain gui) {
+		this.gui = gui;
+	}
+	
+	public void sendDartToGUI(int player, int dart, int score) {
+		switch (player) {
+			case 1:
+				switch (dart) {
+					case 1: gui.controller().setTfP1T1(score); break;
+					case 2: gui.controller().setTfP1T2(score); break;
+					case 3: gui.controller().setTfP1T3(score); break;
+					default: break;
+				} break;
+			case 2:
+				switch (dart) {
+				case 1: gui.controller().setTfP2T1(score); break;
+				case 2: gui.controller().setTfP2T2(score); break;
+				case 3: gui.controller().setTfP2T3(score); break;
+				default: break;
+			} break;
+			default: break;
+		}
+	}
+	
+	public void sendPlayerScoreToGUI(int player, int score) {
+		switch (player) {
+			case 1: gui.controller().addPointsPlayer1(score); break;
+			case 2: gui.controller().addPointsPlayer2(score); break;
+			default: break;
+		}
+	}
+	
+	public void clearDartsInGUI(int player) {
+		switch (player) {
+			case 1: gui.controller().clearTfP1(); break;
+			case 2: gui.controller().clearTfP2(); break;
+			default: break;
+		}
 	}
 }
