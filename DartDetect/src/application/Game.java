@@ -1,6 +1,7 @@
 package application;
 
 import gui.GUIController;
+import gui.GUIMain;
 import hardware.DartTrack;
 
 public abstract class Game {
@@ -11,7 +12,7 @@ public abstract class Game {
 	protected Dartscheibe dartscheibe = new Dartscheibe();
 	protected AngleToCoord atc = new AngleToCoord();
 	protected DartTrack detect;
-	protected GUIController gui;
+	protected GUIMain gui;
 	
 	protected int dartCount = 1;
 	protected int playerTurn = 1;
@@ -59,7 +60,7 @@ public abstract class Game {
 		processDart(score[0],score[1]);
 	}
 	
-	public void addGUIInterface(GUIController gui) {
+	public void addGUIInterface(GUIMain gui) {
 		this.gui = gui;
 	}
 	
@@ -67,16 +68,16 @@ public abstract class Game {
 		switch (player) {
 			case 1:
 				switch (dart) {
-					case 1: gui.setTfP1T1(score); break;
-					case 2: gui.setTfP1T2(score); break;
-					case 3: gui.setTfP1T3(score); break;
+					case 1: gui.controller().setTfP1T1(score); break;
+					case 2: gui.controller().setTfP1T2(score); break;
+					case 3: gui.controller().setTfP1T3(score); break;
 					default: break;
 				} break;
 			case 2:
 				switch (dart) {
-				case 1: gui.setTfP2T1(score); break;
-				case 2: gui.setTfP2T2(score); break;
-				case 3: gui.setTfP2T3(score); break;
+				case 1: gui.controller().setTfP2T1(score); break;
+				case 2: gui.controller().setTfP2T2(score); break;
+				case 3: gui.controller().setTfP2T3(score); break;
 				default: break;
 			} break;
 			default: break;
@@ -85,16 +86,16 @@ public abstract class Game {
 	
 	public void sendPlayerScoreToGUI(int player, int score) {
 		switch (player) {
-			case 1: gui.addPointsPlayer1(score); break;
-			case 2: gui.addPointsPlayer2(score); break;
+			case 1: gui.controller().addPointsPlayer1(score); break;
+			case 2: gui.controller().addPointsPlayer2(score); break;
 			default: break;
 		}
 	}
 	
 	public void clearDartsInGUI(int player) {
 		switch (player) {
-			case 1: gui.clearTfP1(); break;
-			case 2: gui.clearTfP2(); break;
+			case 1: gui.controller().clearTfP1(); break;
+			case 2: gui.controller().clearTfP2(); break;
 			default: break;
 		}
 	}

@@ -44,4 +44,11 @@ public class GUIMain extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	public GUIMain() {
+	}
+
+	public GUIController controller(){
+		return test;
+	}
 }
