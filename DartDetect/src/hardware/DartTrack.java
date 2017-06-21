@@ -27,7 +27,7 @@ import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
 public class DartTrack {
 
-    private static final double ANGEL_PER_PIXEL = 47.86/1280.0;
+    private static final double ANGLE_PER_PIXEL = 47.86/1280.0;
     private Point mPointCameraBottom = null;
     private Point mPointCameraRight = null;
     //AngleToCoord mAngleToCoord = new AngleToCoord();
@@ -129,9 +129,9 @@ public class DartTrack {
             mPointCameraRight = point;
         }
         if(mPointCameraRight!=null && mPointCameraBottom!= null){
-            System.out.println("0: "+ mPointCameraBottom.x*ANGEL_PER_PIXEL +
-                    "| 1: " + mPointCameraRight.x*ANGEL_PER_PIXEL);
-            game.getDart(mPointCameraBottom.x*ANGEL_PER_PIXEL, mPointCameraRight.x*ANGEL_PER_PIXEL);
+            System.out.println("0: "+ mPointCameraBottom.x* ANGLE_PER_PIXEL +
+                    "| 1: " + mPointCameraRight.x* ANGLE_PER_PIXEL);
+            game.getDart(mPointCameraBottom.x* ANGLE_PER_PIXEL, mPointCameraRight.x* ANGLE_PER_PIXEL);
             
             //abfrage=false;
             mPointCameraRight = null;
