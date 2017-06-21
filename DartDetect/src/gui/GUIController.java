@@ -97,6 +97,7 @@ public class GUIController {
 	}
 
 	public void endGame(){
+		//Main.game.getDetect().releaseCameras();
 		System.exit(0);
 	}
 

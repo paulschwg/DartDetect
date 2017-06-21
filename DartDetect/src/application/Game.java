@@ -95,4 +95,8 @@ public abstract class Game{
 			default: break;
 		}
 	}
+
+	public DartTrack getDetect() {
+		return detect;
+	}
 }

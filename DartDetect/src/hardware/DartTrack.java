@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import static org.opencv.imgproc.Imgproc.MORPH_OPEN;
+import static org.opencv.imgproc.Imgproc.circle;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
@@ -50,7 +51,7 @@ public class DartTrack {
         settingObjects[0].initializeJSONValues((JSONObject) jsonObject.get("KameraBC"));
         settingObjects[1].initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
         VideoCapture[] videoCaptures = {new VideoCapture(settingObjects[0].cameraID),
-                new VideoCapture(settingObjects[1].cameraID)};
+            new VideoCapture(settingObjects[1].cameraID)};
 
         /*VideoCapture[] videoCaptures = {new VideoCapture(0)};
         SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
@@ -159,6 +160,13 @@ public class DartTrack {
         }
         v.release();
         return contours;
+    }
+
+    public void releaseCameras(){
+        /*for(VideoCapture videoCapture : videoCaptures){
+            videoCapture.release();
+        }*/
+        System.out.println("HALOO ICH Wurde geloescht");
     }
 
     //Bestimmung der Orientierung eines erkannten Objektes
@@ -306,7 +314,4 @@ public class DartTrack {
         }
     }
     
-    public void abort(){
-    	running = false;
-    }
 }

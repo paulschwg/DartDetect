@@ -5,7 +5,7 @@ import javafx.application.Application;
 
 public class Main {
 	
-	private static Game game;
+	public static Game game;
 	public static GUIMain gui;
 	public Thread guiThread;
 
