@@ -71,38 +71,7 @@ public class GUIController {
 		stageOptions.close();
 	}
 
-<<<<<<< HEAD
-	/**
-	 * Methode zum Starten der nächsten Runde
-	 * 
-	 * @param event
-	 */
-	public void nextRound(ActionEvent event) {
 
-=======
-	public void confirmFrame() {
-		openConfirm();
-	}
-
-	public void openConfirm(){
-		try {
-			fxmlLoaderConfirm = new FXMLLoader(getClass().getResource("GUIConfirm.fxml"));
-			stageConfirm = new Stage();
-			paneConfirm = (Pane) fxmlLoaderConfirm.load();
-			sceneConfirm = new Scene(paneConfirm, 200, 200);
-
-			sceneConfirm.getStylesheets().add(getClass().getResource("guiconfirm.css").toExternalForm());
-			stageConfirm.setTitle("DartDetect");
-			stageConfirm.getIcons().add(new Image(getClass().getResourceAsStream("icon.png")));
-			paneConfirm.setId("pConfirm");
-			stageConfirm.setScene(sceneConfirm);
-			stageConfirm.setResizable(false);
-
-			stageConfirm.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	/**
 	 * Methode zum Starten der nï¿½chsten Runde
 	 * @param event
@@ -110,7 +79,6 @@ public class GUIController {
 	public void nextRound(ActionEvent event){
 		roundReady = true;
 		System.out.println("Ready");
->>>>>>> 73d7cbc283a9c5bcf5f4bebacc8672db55f700cd
 	}
 
 	public void playGame(ActionEvent event) {
@@ -130,7 +98,7 @@ public class GUIController {
 		stageOptions.close();
 	}
 
-<<<<<<< HEAD
+
 	public String getInputMode() {
 		return inputMode;
 	}
@@ -141,10 +109,10 @@ public class GUIController {
 
 	public void setTfP1T1(int throw1) {
 		this.tfP1T1.setText("" + throw1);
-=======
+	}	
+		
 	public void setTfP1T1(int mult, int number) {
 		this.tfP1T1.setText(mult + "*" + number);
->>>>>>> 73d7cbc283a9c5bcf5f4bebacc8672db55f700cd
 	}
 
 	public void setTfP1T2(int mult, int number) {
