@@ -13,7 +13,6 @@ public class GameX01 extends Game {
 		super(playerCount);
 		this.goal = goal;
 		initializePlayers(goal);
-		
 	}
 	
 	public boolean checkIfFinished(Player player){
@@ -54,7 +53,7 @@ public class GameX01 extends Game {
 			printAll();
 			sendPlayerScoreToGUI(playerTurn, player.getScore());
 			gui.controller().waitForReady();
-			while (!gui.controller().isReady()) {/*System.out.println("Waiting for confirmation");*/}
+			while (!gui.controller().isReady()) {System.out.println("Waiting for confirmation");}
 			dartCount = 1;
 			playerTurn++;
 			if (playerTurn > playerCount) playerTurn = 1;

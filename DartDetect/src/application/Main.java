@@ -5,10 +5,14 @@ import javafx.application.Application;
 
 public class Main {
 	
-	private Game game;
+	private static Game game;
 	public static GUIMain gui;
 	public Thread guiThread;
-	
+
+	private static int players;
+	private static int goal = -1;
+	private static boolean startGame;
+
 
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -16,12 +20,31 @@ public class Main {
 	}
 	
 	public void launch() {
-		Game game = new GameX01(2,501);
-
 		(new Thread(new GUIMain())).start();
-		while (gui == null) {System.out.println("Waiting for GUI");};
-		game.addGUIInterface(gui);
-		game.run();
+		while (true) { //Warte auf Spielanfang
+			System.out.println(startGame);
+			if (startGame) {
+				startGame = false;
+				if (goal != -1){ //X01
+					game = new GameX01(players,goal);
+				} else {
+					game = new GameFree(players);
+				}
+				game.addGUIInterface(gui);
+				game.run();
+			}
+		}
+	}
+
+	public static void startNewX01(int pPlayers, int pGoal){
+		players = pPlayers;
+		goal = pGoal;
+		startGame = true;
+	}
+
+	public static void startNewFree(int pPlayers) {
+		players = pPlayers;
+		startGame = true;
 	}
 
 }

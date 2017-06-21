@@ -1,5 +1,7 @@
 package gui;
 
+import application.GameX01;
+import application.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +27,6 @@ public class GUIController {
 	ListView lvPlayer1, lvPlayer2;
 
 	GUICalibration cameraWindow;
-	application.GameX01 gameX01;
-	application.GameFree gameFree;
 	FXMLLoader fxmlLoaderOptions;
 	Pane paneConfirm;
 	GridPane gridOptions;
@@ -78,24 +78,23 @@ public class GUIController {
 	 */
 	public void nextRound(ActionEvent event){
 		roundReady = true;
-		System.out.println("Ready");
 	}
 
 	public void playGame(ActionEvent event) {
 
 		inputMode = cbMode.getValue();
 		inputPlayer = cbPlayer.getValue();
+		int players = Integer.parseInt(inputPlayer.substring(0,1));
 
 		if (inputMode == "Freies Spiel") {
-			if (inputPlayer == "2 Spieler") {
-			}
+			Main.startNewFree(players);
 		} else {
-			if (inputPlayer == "2 Spieler") {
-			}
+			Main.startNewX01(players,Integer.parseInt(inputMode));
 		}
 
 		stageOptions = (Stage) btnPlay.getScene().getWindow();
 		stageOptions.close();
+
 	}
 
 

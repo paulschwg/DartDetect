@@ -4,7 +4,7 @@ import gui.GUIController;
 import gui.GUIMain;
 import hardware.DartTrack;
 
-public abstract class Game {
+public abstract class Game{
 	protected int playerCount;
 	protected Player[] players;
 	protected boolean running;
@@ -26,6 +26,9 @@ public abstract class Game {
 	public void run() {
 		printAll();
 		running = true;
+		for (int i = 1; i <= playerCount; i++) {
+			sendPlayerScoreToGUI(i, players[i-1].getScore());
+		}
 		System.out.println("Spieler 1 ist dran!");
 		detect = new DartTrack(this);
 	}
