@@ -32,6 +32,11 @@
             </Button>
             <Button fx:id="btnConfirm" mnemonicParsing="false" onAction="#nextRound" text="Neue Runde" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
                <GridPane.margin>
+                  <Insets right="80.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="btnEndGame" mnemonicParsing="false" onAction="#endGame" text="Beenden" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+               <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </Button>
