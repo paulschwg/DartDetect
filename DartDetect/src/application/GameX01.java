@@ -20,19 +20,25 @@ public class GameX01 extends Game {
 	@Override
 	public void processDart(int mult, int number){
 		Player player = players[playerTurn - 1];
+		if (dartCount == 1) {
+			player.saveScore();
+		}
+		
 		int wurfScore = mult * number;
 		player.removeScore(wurfScore);
 
 		if (player.getScore() == 0){
-			if (mult == 2) return; //Double Checkout => Gewonnen
+			if (mult == 2) {//Double Checkout => Gewonnen
+				dartCount = 3; //Runde beendet
+			}
 			else { //Kein Double
-				player.addScore(wurfScore);
+				player.loadScore();
 				System.out.println("Double-Checkout erforderlich!");
 				dartCount = 3; //Runde beendet
 			}
 		}
 		if (player.getScore() < 0 || player.getScore() == 1) { //�berworfen
-			player.addScore(wurfScore);
+			player.loadScore();
 			System.out.println("�berworfen!");
 			dartCount = 3; //Runde beendet
 		}

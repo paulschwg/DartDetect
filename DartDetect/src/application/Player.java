@@ -1,7 +1,7 @@
 package application;
 
 public class Player {
-	int score;
+	int score,saveScore;
 	String name;
 	
 	public Player(int score, String name){
@@ -27,5 +27,13 @@ public class Player {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public void saveScore() {
+		saveScore = score;
+	}
+	
+	public void loadScore() {
+		score = saveScore;
 	}
 }
