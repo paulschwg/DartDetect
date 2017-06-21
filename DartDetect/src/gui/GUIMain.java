@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
 import java.awt.Toolkit;
 
-public class GUIMain extends Application {
+public class GUIMain extends Application implements Runnable {
 	GUIController test;
 	FXMLLoader loaderMain, loaderOptions;
 	BorderPane rootBPane;
@@ -36,24 +36,17 @@ public class GUIMain extends Application {
 
 			
 			test = (GUIController) loaderMain.getController();
-			test.openConfirm();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] args) {
-		GUIMain stagetest = new GUIMain();
-		Stage teststage = new Stage();
-		stagetest.start(teststage);
-		
-		//launch(args);
-	}
-
-	public GUIMain() {
-	}
-
 	public GUIController controller(){
 		return test;
+	}
+
+	@Override
+	public void run() {
+		Application.launch(GUIMain.class);
 	}
 }
