@@ -26,6 +26,7 @@ public class GameX01 extends Game {
 		
 		int wurfScore = mult * number;
 		player.removeScore(wurfScore);
+		sendDartToGUI(playerTurn, dartCount, wurfScore);
 
 		if (player.getScore() == 0){
 			if (mult == 2) {//Double Checkout => Gewonnen
@@ -39,7 +40,7 @@ public class GameX01 extends Game {
 		}
 		if (player.getScore() < 0 || player.getScore() == 1) { //ï¿½berworfen
 			player.loadScore();
-			System.out.println("ï¿½berworfen!");
+			System.out.println("Überworfen!");
 			dartCount = 3; //Runde beendet
 		}
 		
@@ -47,7 +48,8 @@ public class GameX01 extends Game {
 		
 		if (dartCount == 4) { //Runde beendet
 			printAll();
-			System.out.println("Drï¿½cke eine Taste, wenn du bereit bist!");
+			sendPlayerScoreToGUI(playerTurn, player.getScore());
+			System.out.println("Drücke eine Taste, wenn du bereit bist!");
 			try {
 				System.in.read();
 			} catch (IOException e){

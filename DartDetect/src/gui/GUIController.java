@@ -96,12 +96,10 @@ public class GUIController {
 
 	public void setTfP1T2(int throw2) {
 		this.tfP1T2.setText("" + throw2);
-		;
 	}
 
 	public void setTfP1T3(int throw3) {
 		this.tfP1T3.setText("" + throw3);
-		;
 	}
 
 	public void setTfP2T1(int throw1) {
