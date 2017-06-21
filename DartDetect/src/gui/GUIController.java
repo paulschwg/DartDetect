@@ -85,8 +85,7 @@ public class GUIController {
 		inputMode = cbMode.getValue();
 		inputPlayer = cbPlayer.getValue();
 		int players = Integer.parseInt(inputPlayer.substring(0,1));
-
-		if (inputMode == "Freies Spiel") {
+		if (inputMode.equals("Freies Spiel")) {
 			Main.startNewFree(players);
 		} else {
 			Main.startNewX01(players,Integer.parseInt(inputMode));
@@ -98,7 +97,7 @@ public class GUIController {
 	}
 
 	public void endGame(){
-		
+		System.exit(0);
 	}
 
 	public String getInputMode() {

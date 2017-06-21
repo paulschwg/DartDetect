@@ -1,11 +1,6 @@
 package application;
 
-import java.io.IOException;
-
-import gui.GUIController;
 import hardware.DartTrack;
-
-import javax.swing.*;
 
 public class GameX01 extends Game {
 	
@@ -14,16 +9,11 @@ public class GameX01 extends Game {
 		this.goal = goal;
 		initializePlayers(goal);
 	}
-	
-	public boolean checkIfFinished(Player player){
-		return player.getScore() == 0;
-	}
-	
+
 	@Override
 	public void processDart(int mult, int number){
 		Player player = players[playerTurn - 1];
 		if (dartCount == 1) {
-			clearDartsInGUI(playerTurn);
 			player.saveScore();
 		}
 		
@@ -37,27 +27,27 @@ public class GameX01 extends Game {
 			}
 			else { //Kein Double
 				player.loadScore();
-				System.out.println("Double-Checkout erforderlich!");
 				dartCount = 3; //Runde beendet
 			}
 		}
 		if (player.getScore() < 0 || player.getScore() == 1) { //�berworfen
 			player.loadScore();
-			System.out.println("�berworfen!");
 			dartCount = 3; //Runde beendet
 		}
 		
 		dartCount++;
 		
 		if (dartCount == 4) { //Runde beendet
-			printAll();
 			sendPlayerScoreToGUI(playerTurn, player.getScore());
+			if (player.getScore() == 0) {
+				detect = null; //Spiel beendet
+			}
 			gui.controller().waitForReady();
 			while (!gui.controller().isReady()) {System.out.println("Waiting for confirmation");}
+			clearDartsInGUI(playerTurn);
 			dartCount = 1;
 			playerTurn++;
-			if (playerTurn > playerCount) playerTurn = 1;
-			System.out.println("Spieler " + playerTurn + " ist dran!");
+			if (playerTurn > playerCount) playerTurn = 1; //Neuer Spieler
 			detect = new DartTrack(this);
 		}
 	}
