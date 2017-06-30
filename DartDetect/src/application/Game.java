@@ -4,6 +4,11 @@ import gui.GUIController;
 import gui.GUIMain;
 import hardware.DartTrack;
 
+/**
+ * 
+ * @author Daniel Klaus
+ *
+ */
 public abstract class Game{
 	protected int playerCount;
 	protected Player[] players;
@@ -23,12 +28,20 @@ public abstract class Game{
 	}
 	
 	public void run() {
+		//Oberste Reihe der Score-Tabelle füllen, sieht fancy aus
 		for (int i = 1; i <= playerCount; i++) {
 			sendPlayerScoreToGUI(i, players[i-1].getScore());
 		}
+		//Erstelle DartTrack-Instanz und verlinke sie mit dem Spiel
 		detect = new DartTrack(this);
 	}
 	
+	/**
+	 * Diese Methode wird aufgerufen, sobald ein neues Score-Array berechnet wurde, welches einem Spieler angerechnet werden kann.
+	 * 
+	 * @param mult		Multiplikator des Wurfs (min: 0, max: 3)
+	 * @param number	Zahlenwert des Wurfs (min: 0, max: 25)
+	 */
 	public abstract void processDart(int mult, int number);
 	
 	public void printAll(){
@@ -49,16 +62,33 @@ public abstract class Game{
 		}
 	}
 
+	/**
+	 * Diese Methode wird aufgerufen, sobald ein neuer Pfeil erkannt wurde und die Winkel feststehen.
+	 * Mit Hilfe unserer beiden Hilfsklassen wird das Winkel-Array in ein Score-Array umgewandelt und an processDart übergeben
+	 * @param a1	Winkel von Kamera 1 erkannt
+	 * @param a2	Winkel von Kamera 2 erkannt
+	 */
 	public void getDart(double a1, double a2) {
 		int dartCoord[] = atc.calculateCoord(a1,a2);
 		int score[] = dartscheibe.getScore(dartCoord[0], dartCoord[1]);
 		processDart(score[0],score[1]);
 	}
 	
+	/**
+	 * Linkt GUI mit dem aktuellen Spiel
+	 * @param gui
+	 */
 	public void addGUIInterface(GUIMain gui) {
 		this.gui = gui;
 	}
 	
+	/**
+	 * Übergibt einen geworfenen Dart an die GUI zur Anzeige (Hände hoch!)
+	 * @param player	SpielerID, bei dem der Dart angezeigt wird
+	 * @param dart		Dart 1, 2, oder 3 einer Runde
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
+	 */
 	public void sendDartToGUI(int player, int dart, int mult, int number) {
 		switch (player) {
 			case 1:
@@ -79,6 +109,11 @@ public abstract class Game{
 		}
 	}
 	
+	/**
+	 * Übergibt einen Player-Score an die GUI, damit er in der Liste an der "Tafel" hinzugefügt werden kann
+	 * @param player	SpielerID, bei dem der Score hinzugefügt wird
+	 * @param score		Player-Score
+	 */
 	public void sendPlayerScoreToGUI(int player, int score) {
 		switch (player) {
 			case 1: gui.controller().addPointsPlayer1(score); break;
@@ -87,6 +122,10 @@ public abstract class Game{
 		}
 	}
 	
+	/**
+	 * Cleart die 3 Dart-Anzeige-Labels für einen Spieler
+	 * @param player	SpielerID, bei dem die Labels gecleart werden
+	 */
 	public void clearDartsInGUI(int player) {
 	    System.out.println(gui);
 		switch (player) {

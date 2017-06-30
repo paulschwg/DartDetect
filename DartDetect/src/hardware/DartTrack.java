@@ -31,8 +31,6 @@ public class DartTrack {
     private static final double ANGLE_PER_PIXEL = 47.86/1280.0;
     private Point mPointCameraBottom = null;
     private Point mPointCameraRight = null;
-    //AngleToCoord mAngleToCoord = new AngleToCoord();
-    //Dartscheibe mDartscheibe = new Dartscheibe();
     private Game game;
     
     private boolean running = true;
@@ -166,7 +164,7 @@ public class DartTrack {
         /*for(VideoCapture videoCapture : videoCaptures){
             videoCapture.release();
         }*/
-        System.out.println("HALOO ICH Wurde geloescht");
+        System.out.println("HALOO ICH Wurde geloescht!einself");
     }
 
     //Bestimmung der Orientierung eines erkannten Objektes

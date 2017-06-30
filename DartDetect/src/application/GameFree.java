@@ -2,6 +2,11 @@ package application;
 
 import hardware.DartTrack;
 
+/**
+ * 
+ * @author Daniel Klaus
+ *
+ */
 public class GameFree extends Game {
 
 	public GameFree(int playerCount) {
@@ -21,7 +26,7 @@ public class GameFree extends Game {
 		if (dartCount == 4) { //Runde beendet
 			sendPlayerScoreToGUI(playerTurn, player.getScore());
 			gui.controller().waitForReady();
-			while (!gui.controller().isReady()) {System.out.println("Waiting for confirmation");}
+			while (!gui.controller().isReady()) {System.out.println("Waiting for confirmation");} //Funktioniert nicht ohne syso, don't ask me why
 			clearDartsInGUI(playerTurn);
 			dartCount = 1;
 			playerTurn++;
