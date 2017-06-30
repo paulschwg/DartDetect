@@ -1,6 +1,4 @@
 package hardware;
-//import application.AngleToCoord;
-//import application.Dartscheibe;
 import application.Game;
 import application.JSONAccess;
 import org.json.simple.JSONObject;
@@ -25,7 +23,11 @@ import static org.opencv.imgproc.Imgproc.circle;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_HEIGHT;
 import static org.opencv.videoio.Videoio.CV_CAP_PROP_FRAME_WIDTH;
 
-
+/**
+ *
+ * @author Martin Thissen
+ *
+ */
 public class DartTrack {
 
     private static final double ANGLE_PER_PIXEL = 47.86/1280.0;
@@ -50,9 +52,6 @@ public class DartTrack {
         settingObjects[1].initializeJSONValues((JSONObject) jsonObject.get("KameraRC"));
         VideoCapture[] videoCaptures = {new VideoCapture(settingObjects[0].cameraID),
             new VideoCapture(settingObjects[1].cameraID)};
-
-        /*VideoCapture[] videoCaptures = {new VideoCapture(0)};
-        SettingObject[] settingObjects = {new SettingObject(5, 195, 1265, 200,1, 460)};*/
 
 
         while (running) {
@@ -86,7 +85,6 @@ public class DartTrack {
                                 if(s.toleranceCounter <= 2){
                                     s.toleranceCounter++;
                                 }else{
-                                    //window(convertMatToBufferedImage(s.addedContours.clone()),"Hallo",1280,400);
                                     List<MatOfPoint> detectContours = detectContours(s.addedContours);
                                     if(detectContours.size()>0) {
                                         int maxValue = 0;
@@ -96,7 +94,7 @@ public class DartTrack {
                                             if (tempArea > maxArea)
                                                 maxValue = counter;
                                         }
-                                        getOrientation(detectContours.get(maxValue), s.frame, s);
+                                        getOrientation(detectContours.get(maxValue), s);
                                     }
                                     s.toleranceCounter = 0;
                                     s.addedContours = null;
@@ -106,10 +104,10 @@ public class DartTrack {
                     }else {
                         s.i++;
                     }
-                    //Imgproc.rectangle(s.frame, new Point(s.x, s.y), new Point(s.x + s.width, s.y + s.height),
-                            //new Scalar(255, 255, 255), 1);
-                    //Imgproc.line(s.frame, new Point(s.width / 2 + s.x, s.y), new Point(s.width / 2 + s.x, s.y + s.height),
-                            //new Scalar(0, 255, 255));
+                    /*Imgproc.rectangle(s.frame, new Point(s.x, s.y), new Point(s.x + s.width, s.y + s.height),
+                            new Scalar(255, 255, 255), 1);
+                    Imgproc.line(s.frame, new Point(s.width / 2 + s.x, s.y), new Point(s.width / 2 + s.x, s.y + s.height),
+                            new Scalar(0, 255, 255));
 
                     //Imgproc.line(s.frame, new Point(0, s.yLineL), new Point(1280, s.yLineR), new Scalar(0, 0, 255), 2);
                     /*ImageIcon image = new ImageIcon(convertMatToBufferedImage(s.fgMaskMOG2));
@@ -120,7 +118,14 @@ public class DartTrack {
         }
     }
 
-    //Berechnet Winkel und gibt diesen an die game Instanz weiter
+
+    /**
+     * Diese Methode speichert erkannte Darteintittspunkte und lässt die Feldwertung berechenen, sobald Darteintrittspunkte von
+     * beiden Kameras abgespeichert wurden. Im Anschluss werden diese wieder "auf Null" gesetzt.
+     *
+     * @param point		Punkt an dem der Dartpfeil in die Dartscheibe eintritt
+     * @param id	ID der Kamera(Unten = 0; Rechts = 1)
+     */
     private void calculateAngle(Point point, int id){
         if(id==0){
             mPointCameraBottom = point;
@@ -138,7 +143,12 @@ public class DartTrack {
         }
     }
 
-    //Erkennung der Konturen innerhalb eines SW-Differenzbildes
+    /**
+     * Diese Methode erkennt Konturen innerhalb eines SW-Bildes und gibt diese, sofern sie denn innerhalb einer definierten Größen-
+     * ordnung sind, zurück.
+     *
+     * @param outmat		Schwarz-Weiß-Differenzbild
+     */
     private List<MatOfPoint> detectContours(Mat outmat) {
         Mat v = new Mat();
         Mat vv = outmat.clone();
@@ -160,17 +170,14 @@ public class DartTrack {
         return contours;
     }
 
-    public void releaseCameras(){
-        /*for(VideoCapture videoCapture : videoCaptures){
-            videoCapture.release();
-        }*/
-        System.out.println("HALOO ICH Wurde geloescht!einself");
-    }
-
-    //Bestimmung der Orientierung eines erkannten Objektes
-    private double getOrientation(MatOfPoint pts_, Mat img, SettingObject s){
-        //window(convertMatToBufferedImage(s.frame),"Hallo",1280,720);
-        //Construct a buffer used by the pca analysis
+    /**
+     * Diese Methode berechnet unter Verwendung des PCA-Algurithmus eine zentrierte Mittellinie.
+     * Vgl. https://github.com/chhuang1992/javaFX-OpenCV-PCA/blob/master/JavaOpenCVPCA/src/usingOpenCV/UsePCA.java
+     *
+     * @param pts_		SW-Bild einer erkannten Kontur
+     * @param s         SettingObject der Kamera
+     */
+    private void getOrientation(MatOfPoint pts_, SettingObject s){
         Point[] pts = pts_.toArray();
         int sz = pts.length;
         Mat data_pts =new Mat(sz, 2, CvType.CV_64FC1);
@@ -180,7 +187,6 @@ public class DartTrack {
             data_pts.put(i, 1,pts[i].y);
         }
 
-        //Perform PCA analysis
         Mat mean = new Mat();
         Mat eigenvalues = new Mat();
         Mat eigenvectors = new Mat();
@@ -188,11 +194,9 @@ public class DartTrack {
         Mat covar = new Mat();
         Core.PCACompute(data_pts, mean, vectors);
 
-        //TODO: Recherche zu calcCovarMatrix() und eigen()
         Core.calcCovarMatrix(data_pts, covar, mean, Core.COVAR_NORMAL | Core.COVAR_SCALE | Core.COVAR_ROWS | Core.COVAR_USE_AVG);
         Core.eigen(covar, eigenvalues, eigenvectors);
 
-        //Store the eigenvalues and eigenvectors
         Point cntr = new Point(mean.get(0, 0)[0],mean.get(0, 1)[0]);
         Point [] eigen_vecs = new Point[2];
         Double [] eigen_val = new Double[2];
@@ -206,13 +210,18 @@ public class DartTrack {
         Point p1 = new Point(cntr.x+0.02*p1_.x,cntr.y+0.02*p1_.y);
 
         Point cntr1 = cntr.clone();
-        drawAxis(img, cntr1, p1, s);
-
-        return Math.atan2(eigen_vecs[0].y, eigen_vecs[0].x);
+        calculateLine(cntr1, p1, s);
     }
 
-    //Berechnung einer Geraden aus zwei Pixeln
-    private void drawAxis(Mat img, Point p, Point q, SettingObject s){
+    /**
+     * Diese Methode berechnet aus zwei Punkten eine Linie
+     * Vgl. https://github.com/chhuang1992/javaFX-OpenCV-PCA/blob/master/JavaOpenCVPCA/src/usingOpenCV/UsePCA.java
+     *
+     * @param p		Zentraler Punkt nach PCA
+     * @param q	    Berechnter Punkt von PCA-Algorithmus
+     * @param s     SettingObject der Kamera
+     */
+    private void calculateLine(Point p, Point q, SettingObject s){
         double angle;
         double hypotenuse;
         angle = Math.atan2(p.y - q.y, p.x - q.x ); // angle in radians
@@ -227,12 +236,17 @@ public class DartTrack {
         q1.x += s.x;
         q1.y += s.y;
 
-        Point intersection = intersection(p,q1,new Point(0,s.yLineL), new Point(1280,s.yLineR),img);
+        Point intersection = intersection(p,q1,new Point(0,s.yLineL), new Point(1280,s.yLineR));
         calculateAngle(intersection,s.id);
     }
 
-    //Berechnung des Schnittpunktes zweier Geraden
-    private Point intersection(Point p1, Point p2, Point o1, Point o2, Mat img){
+    /**
+     * Diese Methode berechnet den Schnittpunkt zweier Geraden
+     *
+     * @param p1,p2		Punkte der ersten Geraden
+     * @param o1,o2	    Punkte der zweiten Geraden
+     */
+    private Point intersection(Point p1, Point p2, Point o1, Point o2){
         double mp1 = (p2.y-p1.y)/(p2.x-p1.x);
         double mo2 = (o2.y-o1.y)/(o2.x-o1.x);
 
@@ -241,7 +255,6 @@ public class DartTrack {
 
         double x = (np1-no2) / (mo2-mp1);
         double y = mp1*x + np1;
-        //Imgproc.circle(img,new Point(x,y),20,new Scalar(0,0,255),2);
         return new Point(x,y);
     }
 
