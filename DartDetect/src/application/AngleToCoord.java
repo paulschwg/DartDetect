@@ -92,8 +92,13 @@ public class AngleToCoord {
         return x;
     }
 
+    /**
+     * Passt einen Winkel an die Verzerrung, die durch die Kameras entsteht, an.
+     * Der Wert 1.05 wurde durch Messreihen festgelegt.
+     * @param a 	Anzupassender Winkel
+     * @return		Angepasster Winkel
+     */
     public double anglecorrection(double a){
-
         return 1.05*a;
     }
 

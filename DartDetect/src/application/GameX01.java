@@ -2,6 +2,11 @@ package application;
 
 import hardware.DartTrack;
 
+/**
+ * 
+ * @author Daniel Klaus
+ *
+ */
 public class GameX01 extends Game {
 	
 	public GameX01(int playerCount, int goal){
@@ -25,12 +30,12 @@ public class GameX01 extends Game {
 			if (mult == 2) {//Double Checkout => Gewonnen
 				dartCount = 3; //Runde beendet
 			}
-			else { //Kein Double
+			else { //Kein Double => Runde wird zurückgesetzt
 				player.loadScore();
 				dartCount = 3; //Runde beendet
 			}
 		}
-		if (player.getScore() < 0 || player.getScore() == 1) { //ï¿½berworfen
+		if (player.getScore() < 0 || player.getScore() == 1) { //Überworfen => Runde wird zurückgesetzt
 			player.loadScore();
 			dartCount = 3; //Runde beendet
 		}
@@ -43,7 +48,7 @@ public class GameX01 extends Game {
 				detect = null; //Spiel beendet
 			}
 			gui.controller().waitForReady();
-			while (!gui.controller().isReady()) {System.out.println("Waiting for confirmation");}
+			while (!gui.controller().isReady()) {System.out.println("Waiting for confirmation");} //Funktioniert nicht ohne syso, don't ask me why
 			clearDartsInGUI(playerTurn);
 			dartCount = 1;
 			playerTurn++;

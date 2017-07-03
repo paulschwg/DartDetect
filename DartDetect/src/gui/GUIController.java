@@ -115,7 +115,6 @@ public class GUIController {
 		} else {
 			Main.startNewX01(players,Integer.parseInt(inputMode));
 		}
-		System.out.println(inputMode);
 		stageOptions = (Stage) btnPlay.getScene().getWindow();
 		stageOptions.close();
 
@@ -152,48 +151,72 @@ public class GUIController {
 	}
 	
 	/**
-	 * Setter zum Anzeigen der geworfenen Würfe
-	 * Created by EH, PS
-	 * 
-	 * @param mult
-	 * @param number
+	 * Setzt das Label des 1. Darts für Spieler 1
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
 	 */
-	
+
 	public void setTfP1T1(int mult, int number) {
 		this.tfP1T1.setText(mult + "*" + number);
 	}
-
+	
+	/**
+	 * Setzt das Label des 2. Darts für Spieler 1
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
+	 */
 	public void setTfP1T2(int mult, int number) {
 		this.tfP1T2.setText(mult + "*" + number);
 	}
-
+	
+	/**
+	 * Setzt das Label des 3. Darts für Spieler 1
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
+	 */
 	public void setTfP1T3(int mult, int number) {
 		this.tfP1T3.setText(mult + "*" + number);
 	}
 
+	/**
+	 * Setzt das Label des 1. Darts für Spieler 2
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
+	 */
 	public void setTfP2T1(int mult, int number) {
 		this.tfP2T1.setText(mult + "*" + number);
 	}
 
+	/**
+	 * Setzt das Label des 2. Darts für Spieler 2
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
+	 */
 	public void setTfP2T2(int mult, int number) {
 		this.tfP2T2.setText(mult + "*" + number);
 	}
 
+	/**
+	 * Setzt das Label des 3. Darts für Spieler 2
+	 * @param mult		Score-Multiplikator
+	 * @param number	Score-Basis
+	 */
 	public void setTfP2T3(int mult, int number) {
 		this.tfP2T3.setText(mult + "*" + number);
 	}
 	
 	/**
-	 * Loescht geworfene Werte
-	 * Created by DK
+	 * Cleart alle Dart-Anzeige-Labels für Spieler 1
 	 */
-
 	public void clearTfP1() {
 		this.tfP1T1.setText("");
 		this.tfP1T2.setText("");
 		this.tfP1T3.setText("");
 	}
 
+	/**
+	 * Cleart alle Dart-Anzeige-Labels für Spieler 2
+	 */
 	public void clearTfP2() {
 		this.tfP2T1.setText("");
 		this.tfP2T2.setText("");
@@ -201,17 +224,18 @@ public class GUIController {
 	}
 	
 	/**
-	 * Setzt Punkte in Haupttabelle
-	 * Created by EH, PS
-	 * 
-	 * @param points
+	 * Fügt den aktuellen Score von Spieler 1, übergeben im Parameter, der Liste an der "Tafel" hinzu.
+	 * @param points	Aktueller Score des Spielers
 	 */
-
 	public void addPointsPlayer1(int points) {
 		lvPlayer1.getItems().add(points);
 
 	}
 
+	/**
+	 * Fügt den aktuellen Score von Spieler 2, übergeben im Parameter, der Liste an der "Tafel" hinzu.
+	 * @param points	Aktueller Score des Spielers
+	 */
 	public void addPointsPlayer2(int points) {
 		lvPlayer2.getItems().add(points);
 

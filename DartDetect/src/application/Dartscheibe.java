@@ -8,6 +8,11 @@ package application;
  * 10 Einheiten entsprechen 1 Millimeter.
  */
 
+/**
+ * 
+ * @author Daniel Klaus
+ *
+ */
 public class Dartscheibe {
 
 	private final static int POS_MIDDLE = 2250;
@@ -35,19 +40,22 @@ public class Dartscheibe {
 		
 		/*
 		 * Winkelberechnung: arctan(Gegenkathete/Ankathete)
-		 * Gesucht ist jeweils der Winkel, der an die nï¿½chste Gerade gegen den Uhrzeigersinn anliegt.
-		 * Math.atan liefert Winkel im Bogenmaï¿½, deswegen Umrechnung in Gradmaï¿½.
+		 * Gesucht ist jeweils der Winkel, der an die nächste Gerade gegen den Uhrzeigersinn anliegt.
+		 * Math.atan liefert Winkel im Bogenmaß, deswegen Umrechnung in Gradmaß.
 		 * 
 		 * Ergebnisse:
-		 * Norden (20) = 0ï¿½
-		 * Osten (6)   = 90ï¿½
-		 * Sï¿½den (3)   = 180ï¿½
-		 * Westen (11) = 270ï¿½
+		 * Norden (20) = 0
+		 * Osten  (6)  = 90
+		 * Süden  (3)  = 180
+		 * Westen (11) = 270
 		 */
 		double angle = 0;
 		int xAbs = Math.abs(POS_MIDDLE - breite);
 		int yAbs = Math.abs(POS_MIDDLE - hoehe);
 		
+		/*
+		 * Mögliche Verringerung von Codeduplizierung: Verwendung von atan2
+		 */
 		if (breite > POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben rechts => Winkel von der Gerade nach oben + 0
 			angle = Math.atan(1.0*xAbs/yAbs)*180/Math.PI;
 		}
@@ -60,7 +68,7 @@ public class Dartscheibe {
 		else if (breite < POS_MIDDLE && hoehe > POS_MIDDLE) { //Oben links => Winkel von der Gerade nach links + 270
 			angle = Math.atan(1.0*yAbs/xAbs)*180/Math.PI + 270;
 		}
-		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau ï¿½ber der Mitte => Winkel = 0 
+		else if (breite == POS_MIDDLE && hoehe > POS_MIDDLE){ //Genau über der Mitte => Winkel = 0 
 			angle = 0;
 		}
 		else if (hoehe == POS_MIDDLE && breite > POS_MIDDLE){ //Genau rechts von der Mitte => Winkel = 90
@@ -77,7 +85,7 @@ public class Dartscheibe {
 		
 		/*
 		 * Je nach Abstand von der Mitte werden die Score-Variablen gesetzt.
-		 * Trifft der Pfeil auï¿½erhalb vom Bullseye aber innerhalb der Wertungszone, wird zusï¿½tzlich der Zahlenwert anhand des Winkels berechnet.
+		 * Trifft der Pfeil außerhalb vom Bullseye aber innerhalb der Wertungszone, wird zusätzlich der Zahlenwert anhand des Winkels berechnet.
 		 */
 		if (distance < RANGE_DOUBLE_BULL) {
 			score[0] = 2;
@@ -111,6 +119,9 @@ public class Dartscheibe {
 	}
 	
 	public int getFieldNumber(double angle){
+		/*
+		 * Mögliche Verringerung von Codeduplizierung: return angleArray[(angle-9)/18]
+		 */
 		if (angle <= 9) return 20;
 		else if (angle <= 27) return 1;
 		else if (angle <= 45) return 18;
