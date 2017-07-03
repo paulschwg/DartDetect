@@ -15,6 +15,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * Created by PaulSchwieg, ElenaHackstein, DanielKlaus on 15.06.2017.
+ */
+
 public class GUIController {
 
 	@FXML
@@ -36,7 +40,11 @@ public class GUIController {
 	String inputMode, inputPlayer;
 
 	static boolean roundReady = false;
-
+/**
+ * Öffnet Optionenfenster
+ * Created by EH, PS
+ * 
+ */
 	public void openOptions(ActionEvent event) throws Exception {
 		try {
 			fxmlLoaderOptions = new FXMLLoader(getClass().getResource("GUIOptions.fxml"));
@@ -56,6 +64,11 @@ public class GUIController {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Öffnet Kalibrierungsfenster
+	 * Created by EH, PS
+	 */
 
 	public void openCamera(ActionEvent event) throws Exception {
 		try {
@@ -66,6 +79,11 @@ public class GUIController {
 		}
 	}
 
+	/**
+	 * Schließt Optionenfenster
+	 * Created by EH, PS
+	 */
+	
 	public void closeOptions(ActionEvent event) {
 		stageOptions = (Stage) btnClose.getScene().getWindow();
 		stageOptions.close();
@@ -73,13 +91,20 @@ public class GUIController {
 
 
 	/**
-	 * Methode zum Starten der nï¿½chsten Runde
+	 * Methode zum Starten der naechsten Runde
+	 * Created by DK
 	 * @param event
 	 */
+	
 	public void nextRound(ActionEvent event){
 		roundReady = true;
 	}
 
+	/**
+	 * Startet ein Spiel
+	 * Created by EH, PS
+	 */
+	
 	public void playGame(ActionEvent event) {
 
 		inputMode = cbMode.getValue();
@@ -95,24 +120,45 @@ public class GUIController {
 		stageOptions.close();
 
 	}
+	
+	/**
+	 * Beendet das Spiel
+	 * Created by EH, PS
+	 */
 
 	public void endGame(){
 		//Main.game.getDetect().releaseCameras();
 		System.exit(0);
 	}
+	
+	/**
+	 * Getter für Spielmodi
+	 * Created by EH, PS
+	 * @return
+	 */
 
 	public String getInputMode() {
 		return inputMode;
 	}
 
+	/**
+	 * Getter für Spieleranzahl
+	 * Created by EH, PS
+	 * @return
+	 */
+	
 	public String getInputPlayer() {
 		return inputPlayer;
 	}
-
-	public void setTfP1T1(int throw1) {
-		this.tfP1T1.setText("" + throw1);
-	}	
-		
+	
+	/**
+	 * Setter zum Anzeigen der geworfenen Würfe
+	 * Created by EH, PS
+	 * 
+	 * @param mult
+	 * @param number
+	 */
+	
 	public void setTfP1T1(int mult, int number) {
 		this.tfP1T1.setText(mult + "*" + number);
 	}
@@ -136,6 +182,11 @@ public class GUIController {
 	public void setTfP2T3(int mult, int number) {
 		this.tfP2T3.setText(mult + "*" + number);
 	}
+	
+	/**
+	 * Loescht geworfene Werte
+	 * Created by DK
+	 */
 
 	public void clearTfP1() {
 		this.tfP1T1.setText("");
@@ -148,6 +199,13 @@ public class GUIController {
 		this.tfP2T2.setText("");
 		this.tfP2T3.setText("");
 	}
+	
+	/**
+	 * Setzt Punkte in Haupttabelle
+	 * Created by EH, PS
+	 * 
+	 * @param points
+	 */
 
 	public void addPointsPlayer1(int points) {
 		lvPlayer1.getItems().add(points);
@@ -158,14 +216,11 @@ public class GUIController {
 		lvPlayer2.getItems().add(points);
 
 	}
-
-	public void changeValue1() {
-
-	}
-
-	public void changeValue2() {
-
-	}
+	
+	/**
+	 * Abfrage, ob die Pfeile von der Dartscheibe genommen wurden
+	 * Created by DK
+	 */
 
 	public boolean isReady() {
 		return roundReady;

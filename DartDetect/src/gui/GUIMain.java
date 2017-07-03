@@ -11,6 +11,10 @@ import javafx.scene.layout.GridPane;
 import javafx.fxml.FXMLLoader;
 import java.awt.Toolkit;
 
+/**
+ * Created by PaulSchwieg, ElenaHackstein on 08.06.2017.
+ */
+
 public class GUIMain extends Application implements Runnable {
 	GUIController controller;
 	FXMLLoader loaderMain, loaderOptions;
@@ -19,6 +23,13 @@ public class GUIMain extends Application implements Runnable {
 	Scene sceneMain, sceneOptions;
 	ActionEvent event = new ActionEvent();
 
+	/**
+	    * Startet die GUI
+	    * Lädt FXML-Datei Main
+	    * Created by EH, PS
+	    * 
+	    */
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
